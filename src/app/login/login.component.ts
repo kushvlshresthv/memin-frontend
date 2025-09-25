@@ -1,9 +1,16 @@
-import { HttpClient } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { validateUsernameFormat } from './login.validators';
+import { BACKEND_URL } from '../../global_constants';
+import { Response } from '../response/response';
+import { catchError, of, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +21,8 @@ import { validateUsernameFormat } from './login.validators';
 })
 export class LoginComponent implements OnInit {
   router = inject(Router);
-  http = inject(HttpClient);
+  httpClient = inject(HttpClient);
+  subscription!: Subscription;
 
   formData = new FormGroup({
     username: new FormControl('', {
@@ -34,6 +42,32 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('form has been submitted');
+    const authenticationDetails = `${this.username.value}:${this.password.value}`;
+    const encodedAuthenticationDetails = btoa(authenticationDetails);
+
+    const headers = new HttpHeaders({
+      Authorization: `Basic ${encodedAuthenticationDetails}`,
+    });
+
+    this.subscription = this.httpClient
+      .get<Response<Object>>(BACKEND_URL + '/api/login', {
+        headers: headers,
+        withCredentials: true,
+      })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.log('error message: ' + error.error.message);
+          return of(null);
+        }),
+      )
+      .subscribe({
+        next: (response) => {
+          this.router.navigateByUrl('/home');
+        },
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
