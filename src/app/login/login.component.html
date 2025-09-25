@@ -12,10 +12,15 @@
           class="form-input"
           [class.error]="username.touched && username.dirty && username.invalid"
         />
-        @if(username.touched && username.dirty) {
-        @if(username.errors?.['required']) {
-        <p class="error-message">Username is required</p>
-        } }
+        @if (username.touched && username.dirty) {
+          @if (username.errors?.["required"]) {
+            <p class="error-message">Username is required</p>
+          } @else if (username.errors?.["usernameImproperFormat"]) {
+            <p class="error-message">
+              Username must not have any spaces or special symbols
+            </p>
+          }
+        }
       </div>
 
       <div class="input-group">
@@ -27,10 +32,11 @@
           class="form-input"
           [class.error]="password.touched && password.dirty && password.invalid"
         />
-        @if(password.touched && password.dirty) {
-        @if(password.errors?.['required']) {
-        <p class="error-message">Password is required</p>
-        } }
+        @if (password.touched && password.dirty) {
+          @if (password.errors?.["required"]) {
+            <p class="error-message">Password is required</p>
+          }
+        }
       </div>
 
       <button type="submit" class="submit-btn" [disabled]="formData.invalid">
