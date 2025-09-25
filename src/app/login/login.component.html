@@ -1,40 +1,41 @@
-<form [formGroup] = "formData" (ngSubmit) = onSubmit()>
+<div class="login-container">
+  <div class="login-card">
+    <h2 class="login-title">Welcome Back</h2>
 
-  <li class="username">
-    <input
-        id = "control-username"
-        type = "text"
-        formControlName = "username"
-        placeholder="Username"
-        [class.errorInput]="username.touched && username.dirty && username.invalid"
-    />
-  </li>
+    <form class="login-form" [formGroup]="formData" (ngSubmit)="onSubmit()">
+      <div class="input-group">
+        <input
+          id="control-username"
+          type="text"
+          formControlName="username"
+          placeholder="Username"
+          class="form-input"
+          [class.error]="username.touched && username.dirty && username.invalid"
+        />
+        @if(username.touched && username.dirty) {
+        @if(username.errors?.['required']) {
+        <p class="error-message">Username is required</p>
+        } }
+      </div>
 
-  @if(username.touched && username.dirty) {
-    @if(username.errors?.['required']) {
-      <p class="fieldError">Username is required</p>
-    }
-  }
+      <div class="input-group">
+        <input
+          id="control-password"
+          type="password"
+          formControlName="password"
+          placeholder="Password"
+          class="form-input"
+          [class.error]="password.touched && password.dirty && password.invalid"
+        />
+        @if(password.touched && password.dirty) {
+        @if(password.errors?.['required']) {
+        <p class="error-message">Password is required</p>
+        } }
+      </div>
 
-
-    <li class="password">
-    <input
-        id = "control-password"
-        type = "text"
-        formControlName = "password"
-        placeholder="Password"
-        [class.errorInput]="username.touched && username.dirty && username.invalid"
-    />
-  </li>
-
-  @if(password.touched && username.dirty) {
-    @if(password.errors?.['required']) {
-      <p class="fieldError">Password is required</p>
-    }
-  }
-
-  <div class = "submit-button">
-    <button type = "submit" [disabled]="formData.invalid">Submit</button>
+      <button type="submit" class="submit-btn" [disabled]="formData.invalid">
+        Sign In
+      </button>
+    </form>
   </div>
-
-</form>
+</div>
