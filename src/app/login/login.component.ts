@@ -54,15 +54,14 @@ export class LoginComponent implements OnInit {
         headers: headers,
         withCredentials: true,
       })
-      .pipe(
-        catchError((error: HttpErrorResponse) => {
-          console.log('error message: ' + error.error.message);
-          return of(null);
-        }),
-      )
       .subscribe({
         next: (response) => {
+          console.log(response.message);
           this.router.navigateByUrl('/home');
+        },
+        error: (error) => {
+          console.log(error.error.message);
+          this.router.navigateByUrl('/login');
         },
       });
   }
