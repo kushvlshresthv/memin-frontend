@@ -1,6 +1,17 @@
 <div class="committee-card">
   <div class="card-header">
-    <h2 class="committee-name">{{ committeeSummary.name }}</h2>
+    <div class="header-content">
+      <h2
+        class="committee-name"
+        [class.nepali-font]="
+          committeeSummary.name &&
+          committeeSummary.name.charCodeAt(0) >= 2304 &&
+          committeeSummary.name.charCodeAt(0) <= 2431
+        "
+      >
+        {{ committeeSummary.name }}
+      </h2>
+    </div>
     <span
       class="status-badge"
       [class]="'status-' + committeeSummary.status.toLowerCase()"
@@ -11,7 +22,15 @@
 
   <div class="card-content">
     <div class="description">
-      <p>{{ committeeSummary.description }}</p>
+      <p
+        [class.nepali-font]="
+          committeeSummary.name &&
+          committeeSummary.name.charCodeAt(0) >= 2304 &&
+          committeeSummary.name.charCodeAt(0) <= 2431
+        "
+      >
+        {{ committeeSummary.description }}
+      </p>
     </div>
 
     <div class="info-grid">
@@ -21,8 +40,14 @@
       </div>
 
       <div class="info-item">
-        <span class="label">Max Meetings</span>
-        <span class="value">{{ committeeSummary.maxNoOfMeetings }}</span>
+        <span class="label">No. of Meetings</span>
+        <span class="value"
+          >{{ committeeSummary.numberOfMeetings }}
+          @if (committeeSummary.maxNoOfMeetings) {
+            /
+            {{ committeeSummary.maxNoOfMeetings }}
+          }
+        </span>
       </div>
 
       <div class="info-item">
