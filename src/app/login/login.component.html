@@ -1,14 +1,15 @@
 <div class="login-container">
   <div class="login-card">
-    <h2 class="login-title">Welcome Back</h2>
+    <h2 class="login-title">Welcome back!</h2>
+    <h3 class="login-sub-title">Let's organize your meetings!</h3>
 
     <form class="login-form" [formGroup]="formData" (ngSubmit)="onSubmit()">
       <div class="input-group">
+        <label> Username<span class="astrick">*</span> </label>
         <input
           id="control-username"
           type="text"
           formControlName="username"
-          placeholder="Username"
           class="form-input"
           [class.error]="username.touched && username.dirty && username.invalid"
         />
@@ -24,11 +25,11 @@
       </div>
 
       <div class="input-group">
+        <label>Password<span class="astrick">*</span></label>
         <input
           id="control-password"
           type="password"
           formControlName="password"
-          placeholder="Password"
           class="form-input"
           [class.error]="password.touched && password.dirty && password.invalid"
         />
