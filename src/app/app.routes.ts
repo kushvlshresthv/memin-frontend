@@ -4,6 +4,7 @@ import { ErrorComponent } from './error/error.component';
 import { HomeComponent } from './home/home.component';
 import { isAuthenticated } from './app.guards';
 import { CommitteeSummariesComponent } from './home/committee-summaries/committee-summaries.component';
+import { SearchBarComponent } from './search-bar/search-bar.component';
 
 export const routes: Routes = [
   {
@@ -30,6 +31,11 @@ export const routes: Routes = [
         component: ErrorComponent,
       },
     ],
+  },
+
+  {
+    path: 'search',
+    component: SearchBarComponent,
   },
 
   {
