@@ -1,10 +1,4 @@
-<div class="summaryCards">
-  @for (summary of committeeSummaries; track summary.id) {
-    <app-committee-summary
-      [committeeSummary]="summary"
-      class="summaryCard"
-    ></app-committee-summary>
-  } @empty {
-    <p>There isn't any committee available yet, create a new one please</p>
-  }
+<div class="total-screen">
+  <app-sidebar></app-sidebar>
+  <router-outlet></router-outlet>
 </div>

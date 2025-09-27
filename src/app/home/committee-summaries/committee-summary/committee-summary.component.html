@@ -21,14 +21,15 @@
   </div>
 
   <div class="card-content">
-    <div class="description">
-      <p
-        [class.nepali-font]="
-          committeeSummary.name &&
-          committeeSummary.name.charCodeAt(0) >= 2304 &&
-          committeeSummary.name.charCodeAt(0) <= 2431
-        "
-      >
+    <div
+      class="description"
+      [class.nepali-font]="
+        committeeSummary.name &&
+        committeeSummary.name.charCodeAt(0) >= 2304 &&
+        committeeSummary.name.charCodeAt(0) <= 2431
+      "
+    >
+      <p>
         {{ committeeSummary.description }}
       </p>
     </div>

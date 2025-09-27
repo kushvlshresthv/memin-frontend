@@ -1,15 +1,18 @@
-.summaryCards {
+.total-screen {
   display:flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-content: center;
-  // border: 1px solid blue;
+  min-height: 90vh;
+  margin-top: 4px; //avoids the header's shadow overlap
 }
 
-.summaryCard {
-  // border: 1px solid red;
-  width: 400px;
+router-outlet {
+  flex-grow: 1;
+  border-left: 1px solid #202225;
 }
 
+app-sidebar {
+  width: 205px;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
 
 

@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Route, UrlSegment, Router, UrlTree } from '@angular/router';
 import { BACKEND_URL } from '../global_constants';
 import { Response } from './response/response';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 
 export function isAuthenticated(
   route: Route,
@@ -23,6 +23,10 @@ export function isAuthenticated(
         } else {
           return router.parseUrl('/login');
         }
+      }),
+      //when login fails, server returns HTTP error, and this will be executed
+      catchError((error: HttpErrorResponse) => {
+        return of(router.parseUrl('/login'));
       }),
     );
 }
