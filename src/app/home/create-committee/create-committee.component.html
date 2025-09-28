@@ -1,0 +1,49 @@
+<dialog (click)="onDialogClick($event)" #new_project_dialogue>
+  <app-select-member-for-committee></app-select-member-for-committee>
+  <div class="dialog-container">
+    <div class="title">
+      <h1>Committee Details</h1>
+    </div>
+    <form [formGroup]="formData">
+      <input type="text" placeholder="Committee Name" formControlName="name" />
+
+      @if (name.touched && name.dirty) {
+        @if (name.errors?.["required"]) {
+          <p class="fieldError">Project name is required</p>
+        }
+      }
+
+      <textarea
+        placeholder="Committee Description or Name"
+        formControlName="description"
+      ></textarea>
+
+      <div class="select-container">
+        <select name="projectType" formControlName="status">
+          <option value="">Select Committee Status</option>
+          <option value="marketing">ACTIVE</option>
+          <option value="development">INACTIVE</option>
+        </select>
+        <select name="coordinator" formControlName="coordinator">
+          <option value="">Select Priority</option>
+          @for (member of allMembers; track member.memberId) {
+            <option [value]="member.memberId">
+              {{ member.firstName + " " + member.lastName }}
+            </option>
+          }
+        </select>
+      </div>
+
+      <div class="submit-button-container">
+        <button
+          type="submit"
+          [disabled]="formData.invalid"
+          (click)="onSubmit()"
+        >
+          Submit
+        </button>
+        <button type="cancel">Cancel</button>
+      </div>
+    </form>
+  </div>
+</dialog>

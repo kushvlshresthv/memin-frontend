@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MemberSearchResult } from '../models/models';
 import { BACKEND_URL } from '../../global_constants';
@@ -8,7 +8,8 @@ import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FormControlName } from '@angular/forms';
 import Fuse from 'fuse.js';
 import { query } from '@angular/animations';
-import { debounceTime } from 'rxjs';
+import { debounceTime, Subscription } from 'rxjs';
+import { MemberService } from '../members-service.service';
 
 @Component({
   selector: 'app-search-bar',
@@ -17,8 +18,10 @@ import { debounceTime } from 'rxjs';
   templateUrl: './search-bar.component.html',
   styleUrl: './search-bar.component.scss',
 })
-export class SearchBarComponent implements OnInit {
+export class SearchBarComponent implements OnInit, OnDestroy {
+  memberService = inject(MemberService);
   allMembers!: MemberSearchResult[];
+  searchInputFieldSubscription!: Subscription;
   searchResults!: MemberSearchResult[];
   httpClient = inject(HttpClient);
   router = inject(Router);
@@ -27,34 +30,30 @@ export class SearchBarComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.httpClient
-      .get<Response<MemberSearchResult[]>>(BACKEND_URL + '/api/getAllMembers', {
-        withCredentials: true,
-      })
-      .subscribe({
-        next: (response) => {
-          this.allMembers = response.mainBody;
-          this.searchResults = response.mainBody;
-          console.log(this.allMembers);
-        },
-        error: (error) => {
-          //TODO: show the error in the pop up
-          console.log(error);
-        },
-      });
+    this.searchInputFieldSubscription =
+      this.formData.controls.searchInput.valueChanges
+        .pipe(debounceTime(500)) // wait 0.5 seconds after user stops typing
+        .subscribe((value) => {
+          if (value === '') {
+            this.searchResults = this.allMembers;
+          } else {
+            this.searchResults = this.fuzzySearch(
+              this.allMembers,
+              value as string,
+            );
+          }
+        });
 
-    this.formData.controls.searchInput.valueChanges
-      .pipe(debounceTime(500)) // wait 0.5 seconds after user stops typing
-      .subscribe((value) => {
-        if (value === '') {
-          this.searchResults = this.allMembers;
-        } else {
-          this.searchResults = this.fuzzySearch(
-            this.allMembers,
-            value as string,
-          );
-        }
-      });
+    this.memberService.loadAllMembers().subscribe({
+      next: (response) => {
+        this.allMembers = response;
+        this.searchResults = response;
+      },
+      error: (error) => {
+        //TODO: show in popup
+        console.log(error);
+      },
+    });
   }
 
   fuzzySearch(
@@ -66,5 +65,9 @@ export class SearchBarComponent implements OnInit {
       threshold: 0.3, // lower = stricter match
     });
     return fuse.search(query).map((result) => result.item);
+  }
+
+  ngOnDestroy(): void {
+    this.searchInputFieldSubscription.unsubscribe();
   }
 }

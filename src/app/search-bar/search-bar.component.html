@@ -9,7 +9,7 @@
   </form>
 
   <div class="search-results">
-    @for (searchResult of searchResults; track searchResult.id) {
+    @for (searchResult of searchResults; track searchResult.memberId) {
       <div class="result-item">
         {{ searchResult.firstName + " " + searchResult.lastName }}
       </div>
