@@ -52,6 +52,14 @@ export class MemberSelectionService {
     );
   }
 
+  addMemberToUnselectedMembers(memberToAdd: MemberSearchResult) {
+    this.unselectedMembers = [...this.unselectedMembers, memberToAdd];
+  }
+
+  addMemberToSearchedMembers(memberToAdd: MemberSearchResult) {
+    this.searchedMembers = [...this.searchedMembers, memberToAdd];
+  }
+
   addMemberToSelectedMembersWithRoles(
     selectedMember: MemberSearchResult,
     role: string,
@@ -74,7 +82,9 @@ export class MemberSelectionService {
   }
 
   unselected() {
-    return this.unselectedMembers;
+    return this.unselectedMembers.sort((member1, member2) =>
+      member1.firstName.localeCompare(member2.firstName),
+    );
   }
 
   searched() {
@@ -100,6 +110,11 @@ export class MemberSelectionService {
       keys: ['firstName', 'lastName'],
       threshold: 0.3, // lower = stricter match
     });
-    return fuse.search(query).map((result) => result.item);
+    return fuse
+      .search(query)
+      .map((result) => result.item)
+      .sort((member1, member2) =>
+        member1.firstName.localeCompare(member2.firstName),
+      );
   }
 }

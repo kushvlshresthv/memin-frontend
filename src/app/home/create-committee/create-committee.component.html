@@ -20,14 +20,25 @@
 
       <div class="select-container">
         <select name="projectType" formControlName="status">
-          <option value="">Select Committee Status</option>
-          <option value="marketing">ACTIVE</option>
-          <option value="development">INACTIVE</option>
+          <option value="ACTIVE">ACTIVE</option>
+          <option value="INACTIVE">INACTIVE</option>
         </select>
-        <select name="coordinator" formControlName="coordinator">
-          <option value="">Select Priority</option>
-          @for (member of allMembers; track member.memberId) {
-            <option [value]="member.memberId">
+        <select
+          formControlName="coordinator"
+          (change)="onCoordinatorSelectionOrChange()"
+        >
+          @if (currentCoordinator != undefined) {
+            <option [ngValue]="currentCoordinator">
+              {{
+                currentCoordinator.firstName + " " + currentCoordinator.lastName
+              }}
+            </option>
+          }
+          @for (
+            member of memberSelectionService.unselected();
+            track member.memberId
+          ) {
+            <option [ngValue]="member">
               {{ member.firstName + " " + member.lastName }}
             </option>
           }

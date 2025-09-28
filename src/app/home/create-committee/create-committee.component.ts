@@ -11,37 +11,36 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MemberService } from '../../members-service.service';
-import { MemberSearchResult } from '../../models/models';
 import { SearchBarComponent } from '../../search-bar/search-bar.component';
 import { SelectMemberForCommitteeComponent } from './select-member-for-committee/select-member-for-committee.component';
+import { MemberSelectionService } from './member-selection.service';
+import { MemberSearchResult } from '../../models/models';
 
 @Component({
   selector: 'app-create-committee',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    SearchBarComponent,
-    SelectMemberForCommitteeComponent,
-  ],
+  imports: [ReactiveFormsModule, SelectMemberForCommitteeComponent],
   templateUrl: './create-committee.component.html',
   styleUrl: './create-committee.component.scss',
 })
 export class CreateCommitteeComponent {
   diag = viewChild<ElementRef<HTMLDialogElement>>('new_project_dialogue');
-  memberService = inject(MemberService);
-  allMembers!: MemberSearchResult[];
-  subscription = this.memberService.loadAllMembers().subscribe({
-    next: (response) => (this.allMembers = response),
-    error: (error) => {
-      //TODO: handle error with popup
-      console.log(error);
-    },
-  });
+  memberSelectionService = inject(MemberSelectionService);
   name = new FormControl();
   description = new FormControl();
-  coordinator = new FormControl();
-  status = new FormControl();
+  coordinator = new FormControl<MemberSearchResult>(
+    {
+      memberId: 0,
+      firstName: 'no name',
+      lastName: 'no name',
+      post: 'no string',
+      institution: 'no institution',
+    },
+    {
+      nonNullable: true,
+    },
+  );
+  status = new FormControl('ACTIVE');
   maxNoOfMeetings = new FormControl();
   formData = new FormGroup({
     name: this.name,
@@ -55,6 +54,27 @@ export class CreateCommitteeComponent {
     effect(() => {
       this.diag()!.nativeElement.showModal();
     });
+  }
+
+  currentCoordinator!: MemberSearchResult;
+
+  onCoordinatorSelectionOrChange() {
+    const newCoordinator = this.coordinator.value;
+    if (this.currentCoordinator != undefined) {
+      this.memberSelectionService.addMemberToUnselectedMembers(
+        this.currentCoordinator,
+      );
+      this.memberSelectionService.addMemberToSearchedMembers(
+        this.currentCoordinator,
+      );
+    }
+
+    this.memberSelectionService.removeMemberFromUnselectedMembers(
+      newCoordinator,
+    );
+    this.memberSelectionService.removeMemberFromSearchedMembers(newCoordinator);
+    this.currentCoordinator = this.coordinator.value;
+    console.log(this.memberSelectionService.unselected());
   }
 
   onOpenDialog() {}
