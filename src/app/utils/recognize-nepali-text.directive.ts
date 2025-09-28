@@ -11,7 +11,7 @@ import {
   standalone: true,
 })
 export class RecognizeNepaliTextDirective {
-  @Input('appNepaliFont') text: string | null = null;
+  @Input('appRecognizeNepaliText') text: string | null = null;
 
   constructor(
     private el: ElementRef,

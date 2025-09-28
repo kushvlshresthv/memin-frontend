@@ -42,11 +42,6 @@
   line-height: 1.4;
   min-height: calc(1.3rem * 1.4 * 2);
   font-family: "Roboto", sans-serif;
-
-  &.nepali-font {
-    font-family: "Poppins", sans-serif;
-    letter-spacing: 1px;
-  }
 }
 
 .status-badge {
@@ -81,10 +76,6 @@
     min-height: calc(16px * 1.6 * 2);
   }
 
-  &.nepali-font {
-    font-family: "Poppins", sans-serif;
-    letter-spacing: 1px;
-  }
 
 }
 
