@@ -1,60 +1,106 @@
 <dialog (click)="onDialogClick($event)" #new_project_dialogue>
-  <app-select-member-for-committee></app-select-member-for-committee>
-  <div class="dialog-container">
-    <div class="title">
-      <h1>Committee Details</h1>
+  <div class="dialog-wrapper">
+    <!-- Left Panel - Member Selection -->
+    <div class="member-selection-panel">
+      <div class="panel-header">
+        <h2>Select Members</h2>
+        <p class="panel-subtitle">
+          Search and assign roles to committee members
+        </p>
+      </div>
+      <app-select-member-for-committee></app-select-member-for-committee>
     </div>
-    <form [formGroup]="formData">
-      <input type="text" placeholder="Committee Name" formControlName="name" />
 
-      @if (name.touched && name.dirty) {
-        @if (name.errors?.["required"]) {
-          <p class="fieldError">Project name is required</p>
-        }
-      }
-
-      <textarea
-        placeholder="Committee Description or Name"
-        formControlName="description"
-      ></textarea>
-
-      <div class="select-container">
-        <select name="projectType" formControlName="status">
-          <option value="ACTIVE">ACTIVE</option>
-          <option value="INACTIVE">INACTIVE</option>
-        </select>
-        <select
-          formControlName="coordinator"
-          (change)="onCoordinatorSelectionOrChange()"
-        >
-          @if (currentCoordinator != undefined) {
-            <option [ngValue]="currentCoordinator">
-              {{
-                currentCoordinator.firstName + " " + currentCoordinator.lastName
-              }}
-            </option>
-          }
-          @for (
-            member of memberSelectionService.unselected();
-            track member.memberId
-          ) {
-            <option [ngValue]="member">
-              {{ member.firstName + " " + member.lastName }}
-            </option>
-          }
-        </select>
+    <!-- Right Panel - Committee Details -->
+    <div class="committee-details-panel">
+      <div class="panel-header">
+        <h2>Committee Details</h2>
+        <p class="panel-subtitle">Configure your committee information</p>
       </div>
 
-      <div class="submit-button-container">
-        <button
-          type="submit"
-          [disabled]="formData.invalid"
-          (click)="onSubmit()"
-        >
-          Submit
-        </button>
-        <button type="cancel">Cancel</button>
-      </div>
-    </form>
+      <form [formGroup]="formData" class="committee-form">
+        <div class="form-group">
+          <label for="committee-name">Committee Name</label>
+          <input
+            id="committee-name"
+            type="text"
+            placeholder="Enter committee name"
+            formControlName="name"
+            class="form-input"
+          />
+          @if (name.touched && name.dirty) {
+            @if (name.errors?.["required"]) {
+              <p class="field-error">Committee name is required</p>
+            }
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="committee-description">Description</label>
+          <textarea
+            id="committee-description"
+            placeholder="Describe the committee's purpose and objectives"
+            formControlName="description"
+            class="form-textarea"
+            rows="4"
+          ></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half-width">
+            <label for="committee-status">Status</label>
+            <select
+              id="committee-status"
+              name="projectType"
+              formControlName="status"
+              class="form-select"
+            >
+              <option value="ACTIVE">Active</option>
+              <option value="INACTIVE">Inactive</option>
+            </select>
+          </div>
+
+          <div class="form-group half-width">
+            <label for="committee-coordinator">Coordinator</label>
+            <select
+              id="committee-coordinator"
+              formControlName="coordinator"
+              (change)="onCoordinatorSelectionOrChange()"
+              class="form-select"
+            >
+              <option value="" disabled selected>Select coordinator</option>
+              @if (currentCoordinator != undefined) {
+                <option [ngValue]="currentCoordinator">
+                  {{
+                    currentCoordinator.firstName +
+                      " " +
+                      currentCoordinator.lastName
+                  }}
+                </option>
+              }
+              @for (
+                member of memberSelectionService.unselected();
+                track member.memberId
+              ) {
+                <option [ngValue]="member">
+                  {{ member.firstName + " " + member.lastName }}
+                </option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button
+            type="submit"
+            [disabled]="formData.invalid"
+            (click)="onSubmit()"
+            class="btn btn-primary"
+          >
+            Create Committee
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </dialog>

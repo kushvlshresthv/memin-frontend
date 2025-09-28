@@ -1,60 +1,74 @@
-<div class="search-container" [formGroup]="formData">
-  <input
-    type="text"
-    class="search-input"
-    formControlName="searchBarInput"
-    placeholder="Search members..."
-  />
+<div class="member-selection-container" [formGroup]="formData">
+  <!-- Search Section -->
+  <div class="search-section">
+    <input
+      type="text"
+      class="search-input"
+      formControlName="searchBarInput"
+      placeholder="Search members..."
+    />
 
-  <!-- IMPORTANT NOTE: Search results = selectedMembers and searchedMembers, NEVER unselectedMember -->
-  <!-- When nothing is searched, unselectedMember is assigned to searchedMembers and then searchedMember is rendered again-->
-
-  <div class="search-results">
-    <!-- Selected Member -->
-    @for (
-      selectedMember of memberSelectionService.selected();
-      track selectedMember.memberId
-    ) {
-      <div class="result-item">
-        <span class="name">{{
-          selectedMember.firstName + " " + selectedMember.lastName
-        }}</span>
-
-        <!-- select role -->
-        <select
-          [formControl]="memberRolesMap.get(selectedMember.memberId)!"
-          (change)="onRoleChange(selectedMember)"
-        >
-          <option value="" selected>Select Role</option>
-          <option value="member">Member</option>
-          <option value="treasurer">Treasurer</option>
-        </select>
+    <!-- Selected Members Section -->
+    @if (memberSelectionService.selected().length > 0) {
+    <div class="selected-members-section">
+      <h3 class="section-title">Selected Members</h3>
+      <div class="selected-members-list">
+        @for (selectedMember of memberSelectionService.selected(); track
+        selectedMember.memberId) {
+        <div class="selected-member-item">
+          <div class="member-info">
+            <span class="selected-name">
+              {{ selectedMember.firstName + " " + selectedMember.lastName }}
+            </span>
+          </div>
+          <select
+            [formControl]="memberRolesMap.get(selectedMember.memberId)!"
+            (change)="onRoleChange(selectedMember)"
+            class="role-select"
+          >
+            <option value="" disabled>Select Role</option>
+            <option value="member">Member</option>
+            <option value="treasurer">Treasurer</option>
+          </select>
+        </div>
+        }
       </div>
-    } @empty {
-      <div class="result-item">Select Someone</div>
+    </div>
     }
 
-    @for (
-      searchedMember of memberSelectionService.searched();
-      track searchedMember.memberId
-    ) {
-      <div class="result-item">
-        <span class="name">{{
-          searchedMember.firstName + " " + searchedMember.lastName
-        }}</span>
+    <!-- Unselected Members Section -->
+    @if (memberSelectionService.searched().length > 0) {
+    <div class="unselected-members-section">
+      <h3 class="section-title">Unselected Members</h3>
+    </div>
+    }
 
-        <!-- select role -->
+    <div class="available-members">
+      @for (searchedMember of memberSelectionService.searched(); track
+      searchedMember.memberId) {
+      <div class="available-member-item">
+        <span class="member-name">
+          {{ searchedMember.firstName + " " + searchedMember.lastName }}
+        </span>
         <select
           [formControl]="memberRolesMap.get(searchedMember.memberId)!"
           (change)="onRoleSelect(searchedMember)"
+          class="role-select compact"
         >
-          <option value="" selected>Select Role</option>
+          <option value="" selected>Add</option>
           <option value="member">Member</option>
           <option value="treasurer">Treasurer</option>
         </select>
       </div>
-    } @empty {
-      <div class="result-item">No Results Found</div>
-    }
+      } @empty {
+      <div class="empty-state">
+        @if (memberSelectionService.selected().length === 0) {
+        <span>Select members to add to the committee</span>
+        } @else {
+        <span>No more members found</span>
+        }
+      </div>
+      }
+    </div>
   </div>
 </div>
