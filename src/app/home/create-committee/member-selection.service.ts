@@ -82,13 +82,16 @@ export class MemberSelectionService {
   }
 
   unselected() {
-    return this.unselectedMembers.sort((member1, member2) =>
-      member1.firstName.localeCompare(member2.firstName),
-    );
+    return this.unselectedMembers.sort(this.memberSortingFunction);
   }
 
+  private memberSortingFunction = (
+    member1: MemberSearchResult,
+    member2: MemberSearchResult,
+  ) => member1.firstName.localeCompare(member2.firstName);
+
   searched() {
-    return this.searchedMembers;
+    return this.searchedMembers.sort(this.memberSortingFunction);
   }
 
   selectedWithRoles() {
@@ -113,8 +116,6 @@ export class MemberSelectionService {
     return fuse
       .search(query)
       .map((result) => result.item)
-      .sort((member1, member2) =>
-        member1.firstName.localeCompare(member2.firstName),
-      );
+      .sort(this.memberSortingFunction);
   }
 }

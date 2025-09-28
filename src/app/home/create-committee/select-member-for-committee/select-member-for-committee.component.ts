@@ -26,7 +26,7 @@ import id from '@angular/common/locales/id';
 })
 export class SelectMemberForCommitteeComponent {
   router = inject(Router);
-  selectionService = inject(MemberSelectionService);
+  memberSelectionService = inject(MemberSelectionService);
 
   searchInputFieldSubscription!: Subscription;
 
@@ -42,7 +42,7 @@ export class SelectMemberForCommitteeComponent {
   }
 
   setupObservableForMemberLoadComplete() {
-    this.selectionService.loadingUsers$.subscribe((unselectedMembers) => {
+    this.memberSelectionService.loadingUsers$.subscribe((unselectedMembers) => {
       unselectedMembers.forEach((member) => {
         this.memberRolesMap.set(
           member.memberId,
@@ -59,12 +59,12 @@ export class SelectMemberForCommitteeComponent {
         .subscribe((value) => {
           console.log('searching');
           if (value === '') {
-            this.selectionService.setSearched(
-              this.selectionService.unselected(),
+            this.memberSelectionService.setSearched(
+              this.memberSelectionService.unselected(),
             );
           } else {
-            this.selectionService.setSearched(
-              this.selectionService.fuzzySearchUnselectedMembers(
+            this.memberSelectionService.setSearched(
+              this.memberSelectionService.fuzzySearchUnselectedMembers(
                 value as string,
               ),
             );
@@ -77,17 +77,19 @@ export class SelectMemberForCommitteeComponent {
   }
 
   onRoleSelect(selectedMember: MemberSearchResult) {
-    this.selectionService.removeMemberFromUnselectedMembers(selectedMember);
-    this.selectionService.removeMemberFromSearchedMembers(selectedMember);
+    this.memberSelectionService.removeMemberFromUnselectedMembers(
+      selectedMember,
+    );
+    this.memberSelectionService.removeMemberFromSearchedMembers(selectedMember);
     const role = this.memberRolesMap.get(selectedMember.memberId)!.value;
-    this.selectionService.addMemberToSelectedMembersWithRoles(
+    this.memberSelectionService.addMemberToSelectedMembersWithRoles(
       selectedMember,
       role,
     );
   }
 
   onRoleChange(member: MemberSearchResult): void {
-    this.selectionService.updateRoleOfSelectedMember(
+    this.memberSelectionService.updateRoleOfSelectedMember(
       member,
       this.memberRolesMap.get(member.memberId)!.value,
     );

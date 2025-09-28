@@ -6,9 +6,15 @@
     placeholder="Search members..."
   />
 
+  <!-- IMPORTANT NOTE: Search results = selectedMembers and searchedMembers, NEVER unselectedMember -->
+  <!-- When nothing is searched, unselectedMember is assigned to searchedMembers and then searchedMember is rendered again-->
+
   <div class="search-results">
     <!-- Selected Member -->
-    @for (selectedMember of selectionService.selected(); track $index) {
+    @for (
+      selectedMember of memberSelectionService.selected();
+      track selectedMember.memberId
+    ) {
       <div class="result-item">
         <span class="name">{{
           selectedMember.firstName + " " + selectedMember.lastName
@@ -29,8 +35,8 @@
     }
 
     @for (
-      searchedMember of selectionService.searched();
-      track $index + selectionService.selected().length - 1
+      searchedMember of memberSelectionService.searched();
+      track searchedMember.memberId
     ) {
       <div class="result-item">
         <span class="name">{{

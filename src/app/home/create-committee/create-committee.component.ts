@@ -31,10 +31,10 @@ export class CreateCommitteeComponent {
   coordinator = new FormControl<MemberSearchResult>(
     {
       memberId: 0,
-      firstName: 'no name',
-      lastName: 'no name',
-      post: 'no string',
-      institution: 'no institution',
+      firstName: '',
+      lastName: '',
+      post: '',
+      institution: '',
     },
     {
       nonNullable: true,
