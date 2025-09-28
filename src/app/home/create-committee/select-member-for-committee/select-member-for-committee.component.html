@@ -8,26 +8,17 @@
 
   <div class="search-results">
     <!-- Selected Member -->
-    @for (selectedMemberWithRole of selectedMembersWithRole; track $index) {
+    @for (selectedMember of selectionService.selected(); track $index) {
       <div class="result-item">
         <span class="name">{{
-          selectedMemberWithRole.member.firstName +
-            " " +
-            selectedMemberWithRole.member.lastName
+          selectedMember.firstName + " " + selectedMember.lastName
         }}</span>
 
         <!-- select role -->
         <select
-          [formControl]="
-            memberRolesMap.get(selectedMemberWithRole.member.memberId)!
-          "
-          (change)="onRoleChange(selectedMemberWithRole.member)"
+          [formControl]="memberRolesMap.get(selectedMember.memberId)!"
+          (change)="onRoleChange(selectedMember)"
         >
-          {{
-            memberRolesMap
-              .get(selectedMemberWithRole.member.memberId)!
-              .setValue(selectedMemberWithRole.role)
-          }}
           <option value="" selected>Select Role</option>
           <option value="member">Member</option>
           <option value="treasurer">Treasurer</option>
@@ -38,8 +29,8 @@
     }
 
     @for (
-      searchedMember of searchedMembers;
-      track $index + selectedMembersWithRole.length - 1
+      searchedMember of selectionService.searched();
+      track $index + selectionService.selected().length - 1
     ) {
       <div class="result-item">
         <span class="name">{{
@@ -60,10 +51,4 @@
       <div class="result-item">No Results Found</div>
     }
   </div>
-
-  @if (selectedMembersWithRole.length > 0) {
-    @for (selectedMember of selectedMembersWithRole; track $index) {
-      {{ selectedMember.member.firstName }}
-    }
-  }
 </div>

@@ -14,6 +14,8 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import Fuse from 'fuse.js';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { MatTabLabelWrapper } from '@angular/material/tabs';
+import { MemberSelectionService } from '../member-selection.service';
+import id from '@angular/common/locales/id';
 
 @Component({
   selector: 'app-select-member-for-committee',
@@ -23,16 +25,8 @@ import { MatTabLabelWrapper } from '@angular/material/tabs';
   styleUrl: './select-member-for-committee.component.scss',
 })
 export class SelectMemberForCommitteeComponent {
-  memberService = inject(MemberService);
-  httpClient = inject(HttpClient);
   router = inject(Router);
-
-  allMembers!: MemberSearchResult[];
-  searchedMembers = new Array<MemberSearchResult>();
-  selectedMembersWithRole = new Array<{
-    member: MemberSearchResult;
-    role: string;
-  }>();
+  selectionService = inject(MemberSelectionService);
 
   searchInputFieldSubscription!: Subscription;
 
@@ -44,7 +38,18 @@ export class SelectMemberForCommitteeComponent {
 
   ngOnInit(): void {
     this.setupObservableForSearchBarInputChange();
-    this.loadAllMembersAndSetFormControlForRoles();
+    this.setupObservableForMemberLoadComplete();
+  }
+
+  setupObservableForMemberLoadComplete() {
+    this.selectionService.loadingUsers$.subscribe((unselectedMembers) => {
+      unselectedMembers.forEach((member) => {
+        this.memberRolesMap.set(
+          member.memberId,
+          new FormControl('', { nonNullable: true }),
+        );
+      });
+    });
   }
 
   setupObservableForSearchBarInputChange() {
@@ -54,48 +59,17 @@ export class SelectMemberForCommitteeComponent {
         .subscribe((value) => {
           console.log('searching');
           if (value === '') {
-            this.searchedMembers = this.allMembers;
+            this.selectionService.setSearched(
+              this.selectionService.unselected(),
+            );
           } else {
-            this.searchedMembers = this.fuzzySearch(
-              this.allMembers,
-              value as string,
+            this.selectionService.setSearched(
+              this.selectionService.fuzzySearchUnselectedMembers(
+                value as string,
+              ),
             );
           }
         });
-  }
-
-  loadAllMembersAndSetFormControlForRoles() {
-    this.memberService.loadAllMembers().subscribe({
-      next: (response) => {
-        this.allMembers = response;
-
-        this.searchedMembers = response;
-
-        this.allMembers.forEach((member) => {
-          this.memberRolesMap.set(
-            member.memberId,
-            new FormControl('', { nonNullable: true }),
-          );
-        });
-      },
-      error: (error) => {
-        console.log('TODO: show in popup' + error);
-      },
-      complete: () => {
-        console.log('DON' + this.searchedMembers);
-      },
-    });
-  }
-
-  fuzzySearch(
-    users: MemberSearchResult[],
-    query: string,
-  ): MemberSearchResult[] {
-    const fuse = new Fuse(users, {
-      keys: ['firstName', 'lastName'],
-      threshold: 0.3, // lower = stricter match
-    });
-    return fuse.search(query).map((result) => result.item);
   }
 
   ngOnDestroy(): void {
@@ -103,27 +77,19 @@ export class SelectMemberForCommitteeComponent {
   }
 
   onRoleSelect(selectedMember: MemberSearchResult) {
-    //remove it from all Members and searched Members
-    this.allMembers = this.allMembers.filter(
-      (member) => member.memberId != selectedMember.memberId,
+    this.selectionService.removeMemberFromUnselectedMembers(selectedMember);
+    this.selectionService.removeMemberFromSearchedMembers(selectedMember);
+    const role = this.memberRolesMap.get(selectedMember.memberId)!.value;
+    this.selectionService.addMemberToSelectedMembersWithRoles(
+      selectedMember,
+      role,
     );
-
-    this.searchedMembers = this.searchedMembers.filter(
-      (member) => member.memberId != selectedMember.memberId,
-    );
-
-    this.selectedMembersWithRole.push({
-      member: selectedMember,
-      role: this.memberRolesMap.get(selectedMember.memberId)!.value,
-    });
   }
 
   onRoleChange(member: MemberSearchResult): void {
-    const memberWithRole = this.selectedMembersWithRole.find(
-      (memberWithRole) => memberWithRole.member.memberId == member.memberId,
+    this.selectionService.updateRoleOfSelectedMember(
+      member,
+      this.memberRolesMap.get(member.memberId)!.value,
     );
-
-    const newRole = this.memberRolesMap.get(member.memberId)!.value;
-    memberWithRole!.role = newRole;
   }
 }
