@@ -80,7 +80,6 @@ export class CreateCommitteeComponent {
     console.log(this.memberSelectionService.unselected());
   }
 
-  onOpenDialog() {}
   onDialogClick(event: any) {}
   onSubmit() {}
 }

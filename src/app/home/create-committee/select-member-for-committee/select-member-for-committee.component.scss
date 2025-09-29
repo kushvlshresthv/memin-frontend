@@ -1,5 +1,5 @@
-@use 'colors' as colors;
-@use 'constants' as constants;
+@use "colors" as colors;
+@use "constants" as constants;
 
 :host {
   height: 100%;
@@ -11,7 +11,6 @@
   padding: 16px;
   overflow: hidden;
 }
-
 
 .search-section {
   flex: 1;
@@ -64,7 +63,6 @@
   }
 }
 
-
 .selected-members-list {
   display: flex;
   flex-direction: column;
@@ -95,8 +93,6 @@
   }
 }
 
-
-
 .unselected-members-section {
   margin-bottom: 12px;
 
@@ -115,8 +111,7 @@
 .available-members {
   flex: 1;
   overflow-y: auto;
-  max-height: 65%;;
-
+  max-height: 65%;
 
   &::-webkit-scrollbar {
     width: 6px;
@@ -177,7 +172,6 @@
     background: #484c52;
   }
 
-
   option {
     background: #40444b;
     color: #dcddde;
@@ -191,5 +185,5 @@
   color: #72767d;
   font-size: 1rem;
   font-style: italic;
-  padding: 40px 0px;;
+  padding: 40px 0px;
 }

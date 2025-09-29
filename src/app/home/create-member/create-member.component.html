@@ -1,115 +1,175 @@
-<form class="create-member-form" [formGroup]="formData" (ngSubmit)="onSubmit()">
-  <div class="input-group">
-    <label>First Name<span class="astrick">*</span> </label>
-    <input
-      id="control-firstname"
-      type="text"
-      formControlName="firstName"
-      class="form-input"
-      [class.error]="firstName.touched && firstName.dirty && firstName.invalid"
-    />
-    @if (firstName.touched && firstName.dirty) { @if
-    (firstName.errors?.["required"]) {
-    <p class="error-message">First name is required</p>
-    } @else if (firstName.errors?.["minlength"]) {
-    <p class="error-message">First name should be at least 2 characters long</p>
-    } @else if (firstName.errors?.["maxlength"]) {
-    <p class="error-message">First name should be under 50 characters</p>
-    } }
+<dialog class="main-dialog" (click)="onDialogClick($event)" #create_member_dialog>
+    <div class="member-details-panel">
+      <div class="panel-header">
+        <h2>Create New Member</h2>
+        <p class="panel-subtitle">Add a new member to the system</p>
+      </div>
 
-    <label>Last Name<span class="astrick">*</span> </label>
-    <input
-      id="control-lastname"
-      type="text"
-      formControlName="lastName"
-      class="form-input"
-      [class.error]="lastName.touched && lastName.dirty && lastName.invalid"
-    />
-    @if (lastName.touched && lastName.dirty) { @if
-    (lastName.errors?.["required"]) {
-    <p class="error-message">Last Name is required</p>
-    } @else if (lastName.errors?.["minlength"]) {
-    <p class="error-message">Last name should be at least 2 characters long</p>
-    } @else if (lastName.errors?.["maxlength"]) {
-    <p class="error-message">Last name should be under 50 characters</p>
-    } }
-  </div>
+      <form [formGroup]="formData" (onSubmit)="onSubmit()" class="actual-form">
+        <div class="form-row">
+          <div class="form-group half-width">
+            <label for="control-firstname"
+              >First Name <span class="required">*</span></label
+            >
+            <input
+              id="control-firstname"
+              type="text"
+              formControlName="firstName"
+              class="form-input"
+              placeholder="Enter first name"
+              [class.error]="
+                firstName.touched && firstName.dirty && firstName.invalid
+              "
+            />
+            @if (firstName.touched && firstName.dirty) { @if
+            (firstName.errors?.["required"]) {
+            <p class="field-error">First name is required</p>
+            } @else if (firstName.errors?.["minlength"]) {
+            <p class="field-error">
+              First name should be at least 2 characters long
+            </p>
+            } @else if (firstName.errors?.["maxlength"]) {
+            <p class="field-error">First name should be under 50 characters</p>
+            } }
+          </div>
 
-  <div class="input-group">
-    <label>Username<span class="astrick">*</span> </label>
-    <input
-      id="control-username"
-      type="text"
-      formControlName="username"
-      class="form-input"
-      [class.error]="username.touched && email.dirty && email.invalid"
-    />
-    @if (username.touched && email.dirty) { @if (username.errors?.["required"])
-    {
-    <p class="error-message">Username is required</p>
-    } @else if (username.errors?.["minlength"]) {
-    <p class="error-message">Username should be at least 3 characters long</p>
-    } @else if (username.errors?.["maxlength"]) {
-    <p class="error-message">Username should be under 25 characters</p>
-    } }
-  </div>
+          <div class="form-group half-width">
+            <label for="control-lastname"
+              >Last Name <span class="required">*</span></label
+            >
+            <input
+              id="control-lastname"
+              type="text"
+              formControlName="lastName"
+              class="form-input"
+              placeholder="Enter last name"
+              [class.error]="
+                lastName.touched && lastName.dirty && lastName.invalid
+              "
+            />
+            @if (lastName.touched && lastName.dirty) { @if
+            (lastName.errors?.["required"]) {
+            <p class="field-error">Last name is required</p>
+            } @else if (lastName.errors?.["minlength"]) {
+            <p class="field-error">
+              Last name should be at least 2 characters long
+            </p>
+            } @else if (lastName.errors?.["maxlength"]) {
+            <p class="field-error">Last name should be under 50 characters</p>
+            } }
+          </div>
+        </div>
 
-  <div class="input-group">
-    <label>Title<span class="astrick">*</span> </label>
-    <input
-      id="control-title"
-      type="text"
-      formControlName="title"
-      class="form-input"
-      [class.error]="title.touched && title.dirty && title.invalid"
-    />
-    @if (title.touched && title.dirty) { @if (title.errors?.["required"]) {
-    <p class="error-message">Title is required</p>
-    } }
+        <div class="form-group">
+          <label for="control-username"
+            >Username <span class="required">*</span></label
+          >
+          <input
+            id="control-username"
+            type="text"
+            formControlName="username"
+            class="form-input"
+            placeholder="Enter username"
+            [class.error]="
+              username.touched && username.dirty && username.invalid
+            "
+          />
+          @if (username.touched && username.dirty) { @if
+          (username.errors?.["required"]) {
+          <p class="field-error">Username is required</p>
+          } @else if (username.errors?.["minlength"]) {
+          <p class="field-error">
+            Username should be at least 3 characters long
+          </p>
+          } @else if (username.errors?.["maxlength"]) {
+          <p class="field-error">Username should be under 25 characters</p>
+          } }
+        </div>
 
-    <label>Post<span class="astrick">*</span> </label>
-    <input
-      id="control-post"
-      type="text"
-      formControlName="post"
-      class="form-input"
-      [class.error]="post.touched && post.dirty && post.invalid"
-    />
-    @if (post.touched && post.dirty) { @if (post.errors?.["required"]) {
-    <p class="error-message">Post is required</p>
-    } }
-  </div>
+        <div class="form-row">
+          <div class="form-group half-width">
+            <label for="control-title"
+              >Title <span class="required">*</span></label
+            >
+            <input
+              id="control-title"
+              type="text"
+              formControlName="title"
+              class="form-input"
+              placeholder="Enter title"
+              [class.error]="title.touched && title.dirty && title.invalid"
+            />
+            @if (title.touched && title.dirty) { @if
+            (title.errors?.["required"]) {
+            <p class="field-error">Title is required</p>
+            } }
+          </div>
 
-  <div class="input-group">
-    <label>Email<span class="astrick">*</span> </label>
-    <input
-      id="control-email"
-      type="text"
-      formControlName="email"
-      class="form-input"
-      [class.error]="email.touched && email.dirty && email.invalid"
-    />
-    @if (email.touched && email.dirty) { @if (email.errors?.["email"]) {
-    <p class="error-message">Please enter a valid email address</p>
-    } }
-  </div>
+          <div class="form-group half-width">
+            <label for="control-post"
+              >Post <span class="required">*</span></label
+            >
+            <input
+              id="control-post"
+              type="text"
+              formControlName="post"
+              class="form-input"
+              placeholder="Enter post"
+              [class.error]="post.touched && post.dirty && post.invalid"
+            />
+            @if (post.touched && post.dirty) { @if (post.errors?.["required"]) {
+            <p class="field-error">Post is required</p>
+            } }
+          </div>
+        </div>
 
-  <div class="input-group">
-    <label>Institution<span class="astrick">*</span> </label>
-    <input
-      id="control-institution"
-      type="text"
-      formControlName="institution"
-      class="form-input"
-      [class.error]="institution.touched && email.dirty && email.invalid"
-    />
-    @if (institution.touched && email.dirty) { @if
-    (institution.errors?.["maxlength"]) {
-    <p class="error-message">Institution should be under 100 characters</p>
-    } }
-  </div>
+        <div class="form-group">
+          <label for="control-email"
+            >Email <span class="required">*</span></label
+          >
+          <input
+            id="control-email"
+            type="email"
+            formControlName="email"
+            class="form-input"
+            placeholder="Enter email address"
+            [class.error]="email.touched && email.dirty && email.invalid"
+          />
+          @if (email.touched && email.dirty) { @if (email.errors?.["email"]) {
+          <p class="field-error">Please enter a valid email address</p>
+          } }
+        </div>
 
-  <button type="submit" class="submit-btn" [disabled]="formData.invalid">
-    Sign In
-  </button>
-</form>
+        <div class="form-group">
+          <label for="control-institution"
+            >Institution <span class="required">*</span></label
+          >
+          <input
+            id="control-institution"
+            type="text"
+            formControlName="institution"
+            class="form-input"
+            placeholder="Enter institution name"
+            [class.error]="
+              institution.touched && institution.dirty && institution.invalid
+            "
+          />
+          @if (institution.touched && institution.dirty) { @if
+          (institution.errors?.["maxlength"]) {
+          <p class="field-error">Institution should be under 100 characters</p>
+          } }
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary">Cancel</button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="formData.invalid"
+          >
+            Create Member
+          </button>
+        </div>
+      </form>
+    </div>
+</dialog>

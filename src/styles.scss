@@ -1,155 +1,23 @@
 
-////////////////////////////////////////////////////////////////////////
-
-/*
-Dark Mode Color Palette (Discord-inspired):
-- Background: #36393f (main background)
-- Card/Container: #2f3136 (elevated surfaces)
-- Input Background: #40444b (input fields)
-- Text Primary: #dcddde (main text)
-- Text Secondary: #b9bbbe (secondary text)
-- Text Muted: #72767d (muted text)
-- Border: #202225 (borders/dividers)
-- Accent: #5865f2 (buttons/links)
-- Error: #ed4245 (error states)
-*/
+@use 'colors' as colors;
+@use 'constants' as constants;
+@import 'form_styles';
+@import 'dialog_styles';
+@import 'button_styles';
+@import 'reset';
 
 
 
 
+//SOME GLOBAL SYTLES
 
+
+//FONT STYLES
 .nepali-font {
   font-family: "Poppins", sans-serif !important;
   letter-spacing: 1px !important;
 }
 
-
-
-////////////This is reset.css
-html,
-body,
-div,
-span,
-applet,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-a,
-abbr,
-acronym,
-address,
-big,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-b,
-u,
-i,
-center,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-embed,
-figure,
-figcaption,
-footer,
-header,
-hgroup,
-menu,
-nav,
-output,
-ruby,
-section,
-summary,
-time,
-mark,
-audio,
-video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 100%;
-  font: inherit;
-  vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
-  display: block;
-}
-body {
-  line-height: 1;
-}
-ol,
-ul {
-  list-style: none;
-}
-blockquote,
-q {
-  quotes: none;
-}
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
-  content: "";
-  content: none;
-}
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
 
 html,
 body {
@@ -157,7 +25,5 @@ body {
   font-weight: 400;
   background-color: #36393f;
   color: #dcddde;
-  margin: 0;
-  padding: 0;
 }
 

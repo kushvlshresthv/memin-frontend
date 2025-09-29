@@ -1,4 +1,27 @@
-
 //COLORS
 $text-select-highlight: yellowgreen;
 $text-main-color: #b9bbbe;
+
+// Background colors
+$color-background-main: #36393f;
+$color-background-card: #2f3136;
+$color-background-input: #40444b;
+$color-background-input-hover: #484c52;
+
+// Text colors
+$color-text-primary: #dcddde;
+$color-text-secondary: #b9bbbe;
+$color-text-muted: #72767d;
+$color-text-error: #ed4245;
+
+// Border colors
+$color-border-primary: #202225;
+$color-border-focus: #5865f2;
+
+// Button colors
+$color-button-primary: #5865f2;
+$color-button-primary-hover: #4752c4;
+$color-button-primary-active: #3c45a5;
+$color-button-disabled-text: #72767d;
+
+//The naming format for new constants should be: $color-element

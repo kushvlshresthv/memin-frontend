@@ -1,5 +1,4 @@
-<dialog (click)="onDialogClick($event)" #new_project_dialogue>
-  <div class="dialog-wrapper">
+<dialog (click)="onDialogClick($event)" #new_project_dialogue class="main-dialog">
     <!-- Left Panel - Member Selection -->
     <div class="member-selection-panel">
       <div class="panel-header">
@@ -18,7 +17,7 @@
         <p class="panel-subtitle">Configure your committee information</p>
       </div>
 
-      <form [formGroup]="formData" class="committee-form">
+      <form [formGroup]="formData" class="actual-form">
         <div class="form-group">
           <label for="committee-name">Committee Name</label>
           <input
@@ -104,5 +103,4 @@
         </div>
       </form>
     </div>
-  </div>
 </dialog>
