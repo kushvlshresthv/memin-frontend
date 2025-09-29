@@ -1,19 +1,23 @@
+@use 'colors' as colors;
+
+
+
 .login-container {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 70vh;
   padding: 20px;
-  background-color: #36393f;
+  background-color: colors.$color-background-main;
 }
 
 .login-card {
-  background: #2f3136;
+  background: colors.$color-background-card;
   padding: 40px 30px;
   border-radius: 8px;
   width: 100%;
   max-width: 400px;
-  border: 1px solid #202225;
+  border: 1px solid colors.$color-border-primary;
 }
 
 .login-title {
@@ -22,7 +26,7 @@
   text-align: center;
   margin: 0 0 15px 0;
   letter-spacing: -0.5px;
-  color: #dcddde;
+  color: colors.$color-text-primary;
 }
 
 .login-sub-title {
@@ -48,78 +52,15 @@
 
 
 .form-input {
-  width: 100%;
   padding: 12px 20px;
-  border: 1px solid #202225;
-  border-radius: 6px;
-  font-size: 1rem;
-  background: #40444b;
-  color: #dcddde;
-  transition: all 0.15s ease;
   box-sizing: border-box;
-  font-weight: 300;
   letter-spacing: 0.8px;
-
-  // &::placeholder {
-  //   color: #72767d;
-  // }
-
-  &:focus {
-    outline: none;
-    border-color: #5865f2;
-  }
-
-  &:hover:not(:focus) {
-    border-color: #40444b;
-  }
-
-  &.error {
-    border-color: #ed4245;
-    background: #40444b;
-  }
-}
-
-.astrick {
-  padding-left: 4px;
-  color: red;
-  font-size: 0.9rem;
-  display: inline-block;
-  padding-bottom: 5px;
-}
-
-.error-message {
-  font-size: 1rem;
-  color: #ed4245;
-  margin: 0;
-  padding-left: 4px;
-  font-weight: 500;
-}
-
-.submit-btn {
-  width: 100%;
-  padding: 14px;
-  background: #5865f2;  //purple
-  color: #ffffff;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.15s ease;
   margin-top: 10px;
+}
 
-  &:hover:not(:disabled) {
-    background: #3c45a5;
-  }
 
-  &:active:not(:disabled) {
-    background: #3c45a5;  //dark purple
-  }
 
-  &:disabled {
-    background: #3c45a5;
-    cursor: not-allowed;
-    color: #72767d;
-  }
+.btn-primary {
+  margin-top: 10px;
 }
 

@@ -22,29 +22,29 @@
 .search-input {
   width: 100%;
   padding: 12px 16px;
-  background: #40444b;
-  border: 1px solid #202225;
+  background: colors.$color-background-input;
+  border: 1px solid colors.$color-border-primary;
   border-radius: 6px;
-  color: #dcddde;
+  color: colors.$color-text-primary;
   font-size: 14px;
   box-sizing: border-box;
   transition: all 0.2s ease;
   margin-bottom: 16px;
 
   &::placeholder {
-    color: #72767d;
+    color: colors.$color-text-muted;
   }
 
   &:focus {
     outline: none;
-    border-color: #5865f2;
-    background: #484c52;
+    border-color: colors.$color-border-focus;
+    background: colors.$color-background-input-hover;
     box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.1);
   }
 
   &:hover:not(:focus) {
-    border-color: #40444b;
-    background: #484c52;
+    border-color: colors.$color-background-input;
+    background: colors.$color-background-input-hover;
   }
 }
 
@@ -59,7 +59,7 @@
     letter-spacing: 0.5px;
     margin: 0 0 12px 0;
     padding-bottom: 8px;
-    border-bottom: 1px solid #202225;
+    border-bottom: 1px solid colors.$color-border-primary;
   }
 }
 
@@ -99,12 +99,12 @@
   .section-title {
     font-size: 12px;
     font-weight: 600;
-    color: #b9bbbe;
+    color: colors.$color-text-secondary;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin: 0 0 12px 0;
     padding-bottom: 8px;
-    border-bottom: 1px solid #202225;
+    border-bottom: 1px solid colors.$color-border-primary;
   }
 }
 
@@ -122,12 +122,12 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #202225;
+    background: colors.$color-border-primary;
     border-radius: 3px;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: #40444b;
+    background: colors.$color-background-input;
   }
 }
 
@@ -145,7 +145,7 @@
   }
 
   .member-name {
-    color: #b9bbbe;
+    color: colors.$color-text-secondary;
     font-size: 1rem;
     flex: 1;
   }
@@ -153,10 +153,10 @@
 
 .role-select {
   padding: 8px 14px;
-  background: #40444b;
-  border: 1px solid #202225;
+  background: colors.$color-background-input;
+  border: 1px solid colors.$color-border-primary;
   border-radius: 4px;
-  color: #dcddde;
+  color: colors.$color-text-primary;
   font-size: constants.$font-normal;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -164,17 +164,17 @@
 
   &:focus {
     outline: none;
-    border-color: #5865f2;
-    background: #484c52;
+    border-color: colors.$color-border-focus;
+    background: colors.$color-background-input-hover;
   }
 
   &:hover:not(:focus) {
-    background: #484c52;
+    background: colors.$color-background-input-hover;
   }
 
   option {
-    background: #40444b;
-    color: #dcddde;
+    background: colors.$color-background-input;
+    color: colors.$color-text-primary;
   }
 }
 
@@ -182,7 +182,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #72767d;
+  color: colors.$color-button-disabled-text;
   font-size: 1rem;
   font-style: italic;
   padding: 40px 0px;
