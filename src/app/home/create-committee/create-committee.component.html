@@ -27,6 +27,7 @@
             placeholder="Enter committee name"
             formControlName="name"
             class="form-input"
+            [appRecognizeNepaliText]="name.value"
           />
           @if (name.touched && name.dirty) {
             @if (name.errors?.["required"]) {
@@ -43,6 +44,7 @@
             formControlName="description"
             class="form-textarea"
             rows="4"
+            [appRecognizeNepaliText]="name.value"
           ></textarea>
         </div>
 

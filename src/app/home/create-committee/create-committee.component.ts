@@ -15,17 +15,20 @@ import { SearchBarComponent } from '../../search-bar/search-bar.component';
 import { SelectMemberForCommitteeComponent } from './select-member-for-committee/select-member-for-committee.component';
 import { MemberSelectionService } from './member-selection.service';
 import { MemberSearchResult } from '../../models/models';
+import { RecognizeNepaliTextDirective } from '../../utils/recognize-nepali-text.directive';
 
 @Component({
   selector: 'app-create-committee',
   standalone: true,
-  imports: [ReactiveFormsModule, SelectMemberForCommitteeComponent],
+  imports: [ReactiveFormsModule, SelectMemberForCommitteeComponent, RecognizeNepaliTextDirective],
   templateUrl: './create-committee.component.html',
   styleUrl: './create-committee.component.scss',
 })
 export class CreateCommitteeComponent {
   diag = viewChild<ElementRef<HTMLDialogElement>>('new_project_dialogue');
+
   memberSelectionService = inject(MemberSelectionService);
+
   name = new FormControl();
   description = new FormControl();
   coordinator = new FormControl<MemberSearchResult>(

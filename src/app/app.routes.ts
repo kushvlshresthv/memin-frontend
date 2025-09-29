@@ -6,6 +6,7 @@ import { isAuthenticated } from './app.guards';
 import { CommitteeSummariesComponent } from './home/committee-summaries/committee-summaries.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { CreateCommitteeComponent } from './home/create-committee/create-committee.component';
+import { CreateMemberComponent } from './home/create-member/create-member.component';
 
 export const routes: Routes = [
   {
@@ -30,6 +31,10 @@ export const routes: Routes = [
       {
         path: 'create-committee',
         component: CreateCommitteeComponent,
+      },
+      {
+        path: 'create-member',
+        component: CreateMemberComponent,
       },
       {
         path: '**',
