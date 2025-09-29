@@ -1,4 +1,4 @@
-<dialog (click)="onDialogClick($event)" #new_project_dialogue class="main-dialog">
+<dialog appSafeCloseDialog [formGroup] = "formData" #new_project_dialogue class="main-dialog">
     <!-- Left Panel - Member Selection -->
     <div class="member-selection-panel">
       <div class="panel-header">

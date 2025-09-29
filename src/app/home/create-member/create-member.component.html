@@ -1,4 +1,4 @@
-<dialog class="main-dialog" (click)="onDialogClick($event)" #create_member_dialog>
+<dialog class="main-dialog"  appSafeCloseDialog [formGroup] = "formData" #create_member_dialog>
     <div class="member-details-panel">
       <div class="panel-header">
         <h2>Create New Member</h2>

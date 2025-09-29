@@ -1,19 +1,27 @@
-import { Component, effect, ElementRef, viewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  effect,
+  ElementRef,
+  OnInit,
+  viewChild,
+} from '@angular/core';
 import {
   FormGroup,
   FormControl,
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { SafeCloseDialogDirective } from '../../utils/safe-close-dialog.directive';
 
 @Component({
   selector: 'app-create-member',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, SafeCloseDialogDirective],
   templateUrl: './create-member.component.html',
   styleUrl: './create-member.component.scss',
 })
-export class CreateMemberComponent {
+export class CreateMemberComponent implements AfterViewInit {
   diag = viewChild<ElementRef<HTMLDialogElement>>('create_member_dialog');
 
   firstName = new FormControl('', [
@@ -49,13 +57,21 @@ export class CreateMemberComponent {
     institution: this.institution,
   });
 
-  constructor() {
-    effect(() => {
+  ngAfterViewInit(): void {
+
+    // Show the dialog
+    if (this.diag() && !this.diag()!.nativeElement.open) {
       this.diag()!.nativeElement.showModal();
-    });
+    }
   }
+
+  //for development purposes only, keeps the dialog always open
+  // constructor() {
+  //   effect(() => {
+  //     this.diag()!.nativeElement.showModal();
+  //   });
+  // }
 
   onSubmit() {}
 
-  onDialogClick(event: any) {}
 }

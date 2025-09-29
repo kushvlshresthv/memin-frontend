@@ -16,11 +16,12 @@ import { SelectMemberForCommitteeComponent } from './select-member-for-committee
 import { MemberSelectionService } from './member-selection.service';
 import { MemberSearchResult } from '../../models/models';
 import { RecognizeNepaliTextDirective } from '../../utils/recognize-nepali-text.directive';
+import { SafeCloseDialogDirective } from '../../utils/safe-close-dialog.directive';
 
 @Component({
   selector: 'app-create-committee',
   standalone: true,
-  imports: [ReactiveFormsModule, SelectMemberForCommitteeComponent, RecognizeNepaliTextDirective],
+  imports: [ReactiveFormsModule, SelectMemberForCommitteeComponent, RecognizeNepaliTextDirective, SafeCloseDialogDirective],
   templateUrl: './create-committee.component.html',
   styleUrl: './create-committee.component.scss',
 })
