@@ -14,8 +14,8 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import Fuse from 'fuse.js';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { MatTabLabelWrapper } from '@angular/material/tabs';
-import { MemberSelectionService } from '../member-selection.service';
 import id from '@angular/common/locales/id';
+import { MemberSelectionService } from './select-member-for-committee.service';
 
 @Component({
   selector: 'app-select-member-for-committee',
@@ -34,7 +34,7 @@ export class SelectMemberForCommitteeComponent {
     searchBarInput: new FormControl(''),
   });
 
-  memberRolesMap = new Map<number, FormControl<string>>();
+  memberAndFormControlMap = new Map<number, FormControl<string>>();
 
   ngOnInit(): void {
     this.setupObservableForSearchBarInputChange();
@@ -44,9 +44,9 @@ export class SelectMemberForCommitteeComponent {
   setupObservableForMemberLoadComplete() {
     this.memberSelectionService.loadingUsers$.subscribe((unselectedMembers) => {
       unselectedMembers.forEach((member) => {
-        this.memberRolesMap.set(
+        this.memberAndFormControlMap.set(
           member.memberId,
-          new FormControl('', { nonNullable: true }),
+          new FormControl('Add', { nonNullable: true }),
         );
       });
     });
@@ -59,11 +59,11 @@ export class SelectMemberForCommitteeComponent {
         .subscribe((value) => {
           console.log('searching');
           if (value === '') {
-            this.memberSelectionService.setSearched(
+            this.memberSelectionService.setDisplayed(
               this.memberSelectionService.unselected(),
             );
           } else {
-            this.memberSelectionService.setSearched(
+            this.memberSelectionService.setDisplayed(
               this.memberSelectionService.fuzzySearchUnselectedMembers(
                 value as string,
               ),
@@ -80,8 +80,8 @@ export class SelectMemberForCommitteeComponent {
     this.memberSelectionService.removeMemberFromUnselectedMembers(
       selectedMember,
     );
-    this.memberSelectionService.removeMemberFromSearchedMembers(selectedMember);
-    const role = this.memberRolesMap.get(selectedMember.memberId)!.value;
+    this.memberSelectionService.removeMemberFromDisplayedMembers(selectedMember);
+    const role = this.memberAndFormControlMap.get(selectedMember.memberId)!.value;
     this.memberSelectionService.addMemberToSelectedMembersWithRoles(
       selectedMember,
       role,
@@ -89,9 +89,16 @@ export class SelectMemberForCommitteeComponent {
   }
 
   onRoleChange(member: MemberSearchResult): void {
+    if(this.memberAndFormControlMap.get(member.memberId)!.value === 'remove') {
+      this.memberSelectionService.addMemberToUnselectedMembers(member);
+      this.memberSelectionService.addMemberToDisplayedMembers(member);
+      this.memberSelectionService.removeMemberFromSelectedMembersWithRoles(member);
+      this.memberAndFormControlMap.get(member.memberId)!.setValue('Add');
+    }
+
     this.memberSelectionService.updateRoleOfSelectedMember(
       member,
-      this.memberRolesMap.get(member.memberId)!.value,
+      this.memberAndFormControlMap.get(member.memberId)!.value,
     );
   }
 }

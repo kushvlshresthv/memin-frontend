@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { MemberService } from '../../members-service.service';
-import { MemberSearchResult } from '../../models/models';
 import Fuse from 'fuse.js';
 import { query } from '@angular/animations';
 import { FormControl } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import fuse from 'fuse.js';
 import rn from '@angular/common/locales/rn';
+import { MemberService } from '../../../members-service.service';
+import { MemberSearchResult } from '../../../models/models';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +17,7 @@ export class MemberSelectionService {
   httpClient = inject(HttpClient);
 
   private unselectedMembers: MemberSearchResult[] = [];
-  private searchedMembers: MemberSearchResult[] = [];
+  private displayedMembers: MemberSearchResult[] = [];
   private selectedMembersWithRoles: {
     member: MemberSearchResult;
     role: string;
@@ -31,7 +31,7 @@ export class MemberSelectionService {
     this.memberService.loadAllMembers().subscribe({
       next: (response) => {
         this.unselectedMembers = response;
-        this.searchedMembers = response;
+        this.displayedMembers = response;
         this.usersSubject.next(this.unselectedMembers);
       },
       error: (error) => {
@@ -46,9 +46,18 @@ export class MemberSelectionService {
     );
   }
 
-  removeMemberFromSearchedMembers(memberToRemove: MemberSearchResult) {
-    this.searchedMembers = this.searchedMembers.filter(
+  removeMemberFromDisplayedMembers(memberToRemove: MemberSearchResult) {
+    this.displayedMembers = this.displayedMembers.filter(
       (member) => member.memberId != memberToRemove.memberId,
+    );
+  }
+
+  removeMemberFromSelectedMembersWithRoles(
+    memberToRemove: MemberSearchResult,
+  ) {
+    this.selectedMembersWithRoles = this.selectedMembersWithRoles.filter(
+      (memberWithRole) =>
+        memberWithRole.member.memberId != memberToRemove.memberId,
     );
   }
 
@@ -56,8 +65,8 @@ export class MemberSelectionService {
     this.unselectedMembers = [...this.unselectedMembers, memberToAdd];
   }
 
-  addMemberToSearchedMembers(memberToAdd: MemberSearchResult) {
-    this.searchedMembers = [...this.searchedMembers, memberToAdd];
+  addMemberToDisplayedMembers(memberToAdd: MemberSearchResult) {
+    this.displayedMembers = [...this.displayedMembers, memberToAdd];
   }
 
   addMemberToSelectedMembersWithRoles(
@@ -90,8 +99,8 @@ export class MemberSelectionService {
     member2: MemberSearchResult,
   ) => member1.firstName.localeCompare(member2.firstName);
 
-  searched() {
-    return this.searchedMembers.sort(this.memberSortingFunction);
+  displayed() {
+    return this.displayedMembers.sort(this.memberSortingFunction);
   }
 
   selectedWithRoles() {
@@ -104,8 +113,8 @@ export class MemberSelectionService {
     );
   }
 
-  setSearched(newSearchedMembers: MemberSearchResult[]) {
-    this.searchedMembers = newSearchedMembers;
+  setDisplayed(newDisplayedMembers: MemberSearchResult[]) {
+    this.displayedMembers = newDisplayedMembers;
   }
 
   fuzzySearchUnselectedMembers(query: string): MemberSearchResult[] {

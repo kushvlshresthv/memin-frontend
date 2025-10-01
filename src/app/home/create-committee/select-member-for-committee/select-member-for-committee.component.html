@@ -22,11 +22,11 @@
             </span>
           </div>
           <select
-            [formControl]="memberRolesMap.get(selectedMember.memberId)!"
+            [formControl]="memberAndFormControlMap.get(selectedMember.memberId)!"
             (change)="onRoleChange(selectedMember)"
             class="role-select"
           >
-            <option value="" disabled>Select Role</option>
+            <option value="remove">Remove</option>
             <option value="member">Member</option>
             <option value="treasurer">Treasurer</option>
           </select>
@@ -37,25 +37,26 @@
     }
 
     <!-- Unselected Members Section -->
-    @if (memberSelectionService.searched().length > 0) {
+    @if (memberSelectionService.displayed().length > 0) {
     <div class="unselected-members-section">
       <h3 class="section-title">Unselected Members</h3>
     </div>
     }
 
     <div class="available-members">
-      @for (searchedMember of memberSelectionService.searched(); track
-      searchedMember.memberId) {
+      @for (displayedMember of memberSelectionService.displayed(); track
+      displayedMember.memberId) {
       <div class="available-member-item">
         <span class="member-name">
-          {{ searchedMember.firstName + " " + searchedMember.lastName }}
+          {{ displayedMember.firstName + " " + displayedMember.lastName }}
         </span>
         <select
-          [formControl]="memberRolesMap.get(searchedMember.memberId)!"
-          (change)="onRoleSelect(searchedMember)"
+          [formControl]="memberAndFormControlMap.get(displayedMember.memberId)!"
+          (change)="onRoleSelect(displayedMember)"
           class="role-select compact"
         >
-          <option value="" selected>Add</option>
+          <option value="Add" >Add</option>
+          <option value="" disabled>Select Role</option>
           <option value="member">Member</option>
           <option value="treasurer">Treasurer</option>
         </select>

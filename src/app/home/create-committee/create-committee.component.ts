@@ -13,10 +13,10 @@ import {
 } from '@angular/forms';
 import { SearchBarComponent } from '../../search-bar/search-bar.component';
 import { SelectMemberForCommitteeComponent } from './select-member-for-committee/select-member-for-committee.component';
-import { MemberSelectionService } from './member-selection.service';
 import { MemberSearchResult } from '../../models/models';
 import { RecognizeNepaliTextDirective } from '../../utils/recognize-nepali-text.directive';
 import { SafeCloseDialogDirective } from '../../utils/safe-close-dialog.directive';
+import { MemberSelectionService } from './select-member-for-committee/select-member-for-committee.service';
 
 @Component({
   selector: 'app-create-committee',
@@ -32,14 +32,15 @@ export class CreateCommitteeComponent {
 
   name = new FormControl();
   description = new FormControl();
+  defaultOptionForCoordinator: MemberSearchResult = {
+    memberId: 0,
+    firstName: 'Select',
+    lastName: 'Coordinator',
+    post: '',
+    institution: '',
+  };
   coordinator = new FormControl<MemberSearchResult>(
-    {
-      memberId: 0,
-      firstName: '',
-      lastName: '',
-      post: '',
-      institution: '',
-    },
+    this.defaultOptionForCoordinator,
     {
       nonNullable: true,
     },
@@ -68,7 +69,7 @@ export class CreateCommitteeComponent {
       this.memberSelectionService.addMemberToUnselectedMembers(
         this.currentCoordinator,
       );
-      this.memberSelectionService.addMemberToSearchedMembers(
+      this.memberSelectionService.addMemberToDisplayedMembers(
         this.currentCoordinator,
       );
     }
@@ -76,7 +77,7 @@ export class CreateCommitteeComponent {
     this.memberSelectionService.removeMemberFromUnselectedMembers(
       newCoordinator,
     );
-    this.memberSelectionService.removeMemberFromSearchedMembers(newCoordinator);
+    this.memberSelectionService.removeMemberFromDisplayedMembers(newCoordinator);
     this.currentCoordinator = this.coordinator.value;
     console.log(this.memberSelectionService.unselected());
   }
