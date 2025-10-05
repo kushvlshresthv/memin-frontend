@@ -7,11 +7,13 @@ import { Router } from '@angular/router';
   standalone: true,
 })
 export class SafeCloseDialogDirective implements OnInit, OnDestroy {
+  //either provide a formGroup or both customSaveForm and customRestoreForm
   @Input(/*{required:true}*/) formGroup!: FormGroup;
-  constructor(private dialogElementRef: ElementRef<HTMLDialogElement>, private router: Router) {}
-
   @Input() customSaveForm!:()=> void;
   @Input() customRestoreForm!: ()=> void;
+
+  constructor(private dialogElementRef: ElementRef<HTMLDialogElement>, private router: Router) {}
+
 
 
   @HostListener('document:keydown.escape', ['$event'])
@@ -40,13 +42,31 @@ export class SafeCloseDialogDirective implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    const hasFormGroup = !!this.formGroup;
+    const hasCustomFns = !!this.customSaveForm && !!this.customRestoreForm;
+
+    //has either formGroup or both custom functions
+    if (!(hasFormGroup || hasCustomFns)) {
+      throw new Error(
+        'You must provide either formGroup OR both customSaveForm and customRestoreForm.'
+      );
+    }
+
+    if (hasFormGroup && hasCustomFns) {
+      throw new Error(
+        'You cannot provide both formGroup and customSaveForm/customRestoreForm at the same time.'
+      );
+    }
+
+
+
     // if a custom restore form method is available use that
     if(this.customRestoreForm) {
       this.customRestoreForm();
       return;
     }
 
-    //restore form normally
+    //restore form normally ie restores the FormGroup
     const savedData = localStorage.getItem('savedForm');
     if (savedData) {
       console.log("Found the saved Data");
@@ -61,6 +81,7 @@ export class SafeCloseDialogDirective implements OnInit, OnDestroy {
   }
 
 
+  //saves the provided FormGroup
   saveFormData() {
     console.log(this.formGroup);
     if (!this.formGroup) return;

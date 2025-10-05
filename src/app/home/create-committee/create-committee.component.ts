@@ -14,10 +14,13 @@ import {
 } from '@angular/forms';
 import { SearchBarComponent } from '../../search-bar/search-bar.component';
 import { SelectMemberForCommitteeComponent } from './select-member-for-committee/select-member-for-committee.component';
-import { MemberSearchResult } from '../../models/models';
+import { CommitteeCreationDto, MemberSearchResult } from '../../models/models';
 import { RecognizeNepaliTextDirective } from '../../utils/recognize-nepali-text.directive';
 import { SafeCloseDialogDirective } from '../../utils/safe-close-dialog.directive';
 import { MemberSelectionService } from './select-member-for-committee/select-member-for-committee.service';
+import { HttpClient } from '@angular/common/http';
+import { BACKEND_URL } from '../../../global_constants';
+import { Response } from '../../response/response';
 
 @Component({
   selector: 'app-create-committee',
@@ -36,6 +39,7 @@ export class CreateCommitteeComponent implements OnDestroy {
   diag = viewChild<ElementRef<HTMLDialogElement>>('new_project_dialogue');
 
   memberSelectionService = inject(MemberSelectionService);
+  httpClient = inject(HttpClient);
 
   name = new FormControl();
   description = new FormControl();
@@ -52,7 +56,7 @@ export class CreateCommitteeComponent implements OnDestroy {
       nonNullable: true,
     },
   );
-  status = new FormControl('ACTIVE');
+  status = new FormControl<'ACTIVE'|'INACTIVE'>('ACTIVE', {nonNullable: true, validators: [Validators.required]});
   maxNoOfMeetings = new FormControl();
   formData = new FormGroup({
     name: this.name,
@@ -91,8 +95,36 @@ export class CreateCommitteeComponent implements OnDestroy {
     console.log(this.memberSelectionService.unselected());
   }
 
-  onDialogClick(event: any) {}
-  onSubmit() {}
+  onSubmit() {
+    const requestBody = new CommitteeCreationDto();
+    requestBody.name = this.name.value;
+    requestBody.description = this.description.value;
+    requestBody.coordinatorId = this.coordinator.value.memberId;
+    requestBody.status = this.status.value;
+    requestBody.maximumNumberOfMeetings = this.maxNoOfMeetings.value;
+    this.memberSelectionService.selectedWithRoles().forEach((memberWithRole) => {
+      requestBody.members.set(
+        memberWithRole.member.memberId,
+        memberWithRole.role,
+      );
+    });
+
+    this.httpClient.post<Response<any/*TODO*/>>(BACKEND_URL + '/api/createCommittee', requestBody, {
+      withCredentials: true,
+    }).subscribe({
+      next: (response) => {
+        console.log(response.message);
+        //clear the local storage since the committee is created successfully
+        localStorage.removeItem('createCommitteeForm');
+        localStorage.removeItem('selectedMembersWithRole');
+        this.diag()!.nativeElement.close('created');
+      },
+      error: (error) => {
+        console.log('TODO: show in popup' + error.error.message);
+        this.diag()!.nativeElement.close('error');
+      }
+    });
+  }
 
   /* used by the template to compare two coordinators in the select coordinator dropdown
 
@@ -107,7 +139,7 @@ export class CreateCommitteeComponent implements OnDestroy {
   }
 
   saveForm = () =>{
-    //save the form except for the coordinator
+    //save the form EXCEPT for the coordinator
     (this.formData as any).removeControl('coordinator');
     localStorage.setItem(
       'createCommitteeForm',

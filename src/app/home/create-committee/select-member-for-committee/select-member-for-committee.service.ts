@@ -118,6 +118,7 @@ export class MemberSelectionService implements OnDestroy {
     );
   }
 
+
   setDisplayed(newDisplayedMembers: MemberSearchResult[]) {
     this.displayedMembers = newDisplayedMembers;
   }
