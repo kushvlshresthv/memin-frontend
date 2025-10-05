@@ -109,7 +109,7 @@ export class CreateCommitteeComponent implements OnDestroy {
       );
     });
 
-    this.httpClient.post<Response<any/*TODO*/>>(BACKEND_URL + '/api/createCommittee', requestBody, {
+    this.httpClient.post<Response<string>>(BACKEND_URL + '/api/createCommittee', requestBody, {
       withCredentials: true,
     }).subscribe({
       next: (response) => {

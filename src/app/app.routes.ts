@@ -7,6 +7,7 @@ import { CommitteeSummariesComponent } from './home/committee-summaries/committe
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { CreateCommitteeComponent } from './home/create-committee/create-committee.component';
 import { CreateMemberComponent } from './home/create-member/create-member.component';
+import { DemoComponent } from './demo/demo.component';
 
 export const routes: Routes = [
   {
@@ -46,6 +47,10 @@ export const routes: Routes = [
   {
     path: 'search',
     component: SearchBarComponent,
+  },
+  {
+    path: 'demo',
+    component: DemoComponent,
   },
 
   {
