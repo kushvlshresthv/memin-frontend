@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -8,7 +8,6 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription, debounceTime } from 'rxjs';
-import { MemberService } from '../../../members-service.service';
 import { MemberSearchResult } from '../../../models/models';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import Fuse from 'fuse.js';
@@ -24,7 +23,7 @@ import { MemberSelectionService } from './select-member-for-committee.service';
   templateUrl: './select-member-for-committee.component.html',
   styleUrl: './select-member-for-committee.component.scss',
 })
-export class SelectMemberForCommitteeComponent {
+export class SelectMemberForCommitteeComponent implements OnInit {
   router = inject(Router);
   memberSelectionService = inject(MemberSelectionService);
 
@@ -39,15 +38,19 @@ export class SelectMemberForCommitteeComponent {
   ngOnInit(): void {
     this.setupObservableForSearchBarInputChange();
     this.setupObservableForMemberLoadComplete();
+    this.restoreSelectedMembersFromLocalStorage();
+
   }
 
   setupObservableForMemberLoadComplete() {
     this.memberSelectionService.loadingUsers$.subscribe((unselectedMembers) => {
       unselectedMembers.forEach((member) => {
+        if(!this.memberAndFormControlMap.has(member.memberId)){
         this.memberAndFormControlMap.set(
           member.memberId,
           new FormControl('Add', { nonNullable: true }),
         );
+        }
       });
     });
   }
@@ -74,6 +77,7 @@ export class SelectMemberForCommitteeComponent {
 
   ngOnDestroy(): void {
     this.searchInputFieldSubscription.unsubscribe();
+    console.log("DEBUG: select-member-for-committee component destroyed");
   }
 
   onRoleSelect(selectedMember: MemberSearchResult) {
@@ -100,5 +104,33 @@ export class SelectMemberForCommitteeComponent {
       member,
       this.memberAndFormControlMap.get(member.memberId)!.value,
     );
+  }
+
+
+  restoreSelectedMembersFromLocalStorage(): void {
+    //restore the selected members and remove them from the unselected list
+    const savedSelectedMembers = localStorage.getItem('selectedMembersWithRole');
+    if (savedSelectedMembers) {
+      try {
+
+        const selectedMembersWithRoles: {member: MemberSearchResult, role: string}[] =
+          JSON.parse(savedSelectedMembers);
+
+        //for the saved selected members:
+        //1. add them to the selected members list
+        //2. restore the form control value for their role
+        //3. remove them from the unselected members list and displayed members list
+
+        selectedMembersWithRoles.forEach((memberWithRole) => {
+            this.memberSelectionService.addMemberToSelectedMembersWithRoles(
+            memberWithRole.member, memberWithRole.role);
+            this.memberAndFormControlMap.set(memberWithRole.member.memberId, new FormControl(memberWithRole.role, { nonNullable: true }));
+            this.memberSelectionService.removeMemberFromUnselectedMembers(memberWithRole.member);
+            this.memberSelectionService.removeMemberFromDisplayedMembers(memberWithRole.member);
+          });
+      } catch (err) {
+        console.error('Error parsing saved selected members data:', err);
+      }
+    }
   }
 }

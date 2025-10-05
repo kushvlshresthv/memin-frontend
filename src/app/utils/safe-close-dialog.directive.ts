@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, ElementRef, HostBinding, HostListener,  Input,  OnInit,  ViewChild } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, HostBinding, HostListener,  Input,  OnDestroy,  OnInit,  ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -6,9 +6,13 @@ import { Router } from '@angular/router';
   selector: '[appSafeCloseDialog]',
   standalone: true,
 })
-export class SafeCloseDialogDirective implements AfterViewInit {
-  @Input({required:true}) formGroup!: FormGroup;
+export class SafeCloseDialogDirective implements OnInit, OnDestroy {
+  @Input(/*{required:true}*/) formGroup!: FormGroup;
   constructor(private dialogElementRef: ElementRef<HTMLDialogElement>, private router: Router) {}
+
+  @Input() customSaveForm!:()=> void;
+  @Input() customRestoreForm!: ()=> void;
+
 
   @HostListener('document:keydown.escape', ['$event'])
   onKeydown(event: KeyboardEvent) {
@@ -26,15 +30,27 @@ export class SafeCloseDialogDirective implements AfterViewInit {
 
   closeDialog() {
     const dialog = this.dialogElementRef?.nativeElement;
-    this.saveFormData();
+    if(this.customSaveForm) {
+      this.customSaveForm();
+    } else {
+      this.saveFormData();
+    }
     dialog.close();
     this.router.navigate(['./home/my-committees']);
   }
 
-  ngAfterViewInit(): void {
-    // Load saved form data from localStorage
-    const savedData = localStorage.getItem('createMemberForm');
+  ngOnInit(): void {
+    // if a custom restore form method is available use that
+    if(this.customRestoreForm) {
+      this.customRestoreForm();
+      return;
+    }
+
+    //restore form normally
+    const savedData = localStorage.getItem('savedForm');
     if (savedData) {
+      console.log("Found the saved Data");
+      console.log(savedData);
       try {
         const parsedData = JSON.parse(savedData);
         this.formGroup.patchValue(parsedData); // prefill the form
@@ -60,8 +76,14 @@ export class SafeCloseDialogDirective implements AfterViewInit {
       console.log('Form is empty. Not saving.');
       return;
     }
+    console.log("Saving");
+    console.log(formValue);
 
     // Save whatever data is entered, even if form is invalid
-    localStorage.setItem('createMemberForm', JSON.stringify(formValue));
+    localStorage.setItem('savedForm', JSON.stringify(formValue));
   };
+
+  ngOnDestroy() {
+    console.log("DEBUG:  safe-close-dialog destroyed");
+  }
 }

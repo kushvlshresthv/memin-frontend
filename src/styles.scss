@@ -23,7 +23,31 @@ html,
 body {
   font-family: Roboto, sans-serif;
   font-weight: 400;
+
   background-color: #36393f;
   color: #dcddde;
+  scrollbar-gutter: stable;  //reserves space for scrollbar even when not visible to prevent layout shift
 }
 
+
+
+
+/* Global scrollbar styling */
+* {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: colors.$color-background-card;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: colors.$color-border-primary;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: colors.$color-background-input;
+  }
+}

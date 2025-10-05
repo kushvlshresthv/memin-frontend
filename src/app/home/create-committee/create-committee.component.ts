@@ -3,6 +3,7 @@ import {
   effect,
   ElementRef,
   inject,
+  OnDestroy,
   viewChild,
 } from '@angular/core';
 import {
@@ -21,11 +22,17 @@ import { MemberSelectionService } from './select-member-for-committee/select-mem
 @Component({
   selector: 'app-create-committee',
   standalone: true,
-  imports: [ReactiveFormsModule, SelectMemberForCommitteeComponent, RecognizeNepaliTextDirective, SafeCloseDialogDirective],
+  imports: [
+    ReactiveFormsModule,
+    SelectMemberForCommitteeComponent,
+    RecognizeNepaliTextDirective,
+    SafeCloseDialogDirective,
+  ],
   templateUrl: './create-committee.component.html',
   styleUrl: './create-committee.component.scss',
+  providers: [MemberSelectionService],
 })
-export class CreateCommitteeComponent {
+export class CreateCommitteeComponent implements OnDestroy {
   diag = viewChild<ElementRef<HTMLDialogElement>>('new_project_dialogue');
 
   memberSelectionService = inject(MemberSelectionService);
@@ -34,8 +41,8 @@ export class CreateCommitteeComponent {
   description = new FormControl();
   defaultOptionForCoordinator: MemberSearchResult = {
     memberId: 0,
-    firstName: 'Select',
-    lastName: 'Coordinator',
+    firstName: '',
+    lastName: '',
     post: '',
     institution: '',
   };
@@ -77,11 +84,58 @@ export class CreateCommitteeComponent {
     this.memberSelectionService.removeMemberFromUnselectedMembers(
       newCoordinator,
     );
-    this.memberSelectionService.removeMemberFromDisplayedMembers(newCoordinator);
+    this.memberSelectionService.removeMemberFromDisplayedMembers(
+      newCoordinator,
+    );
     this.currentCoordinator = this.coordinator.value;
     console.log(this.memberSelectionService.unselected());
   }
 
   onDialogClick(event: any) {}
   onSubmit() {}
+
+  /* used by the template to compare two coordinators in the select coordinator dropdown
+
+   *  without this function, angular will compare the two objects by reference which will not work as expected in the case:
+   *  when the Safe Close Dialog Directive saves and tries to restore the coordinator
+   *  while restoring, a new object is created with the same values but different reference
+   *  hence angular will not be able to select the correct option in the dropdown and will have blank value
+
+   */
+  compareCoordinators(o1: any, o2: any): boolean {
+    return o1 && o2 ? o1.memberId === o2.memberId : o1 === o2;
+  }
+
+  saveForm = () =>{
+    //save the form except for the coordinator
+    (this.formData as any).removeControl('coordinator');
+    localStorage.setItem(
+      'createCommitteeForm',
+      JSON.stringify(this.formData.getRawValue()),
+    );
+
+
+    //save the selected members
+    localStorage.setItem(
+      'selectedMembersWithRole',
+      JSON.stringify(this.memberSelectionService.selectedWithRoles()),
+    );
+  }
+
+  restoreForm = () =>  {
+    //restore the form except for the coordinator
+    const savedForm = localStorage.getItem('createCommitteeForm');
+    if (savedForm) {
+      try {
+        const parsedData = JSON.parse(savedForm);
+        this.formData.patchValue(parsedData);
+      } catch (err) {
+        console.error('Error parsing saved form data:', err);
+      }
+    }
+  }
+
+  ngOnDestroy() {
+    console.log('DEBUG: create-committee component destroyed');
+  }
 }

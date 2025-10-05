@@ -1,19 +1,17 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, OnDestroy, OnInit } from '@angular/core';
 import Fuse from 'fuse.js';
 import { query } from '@angular/animations';
 import { FormControl } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import fuse from 'fuse.js';
 import rn from '@angular/common/locales/rn';
-import { MemberService } from '../../../members-service.service';
 import { MemberSearchResult } from '../../../models/models';
+import { LoadMemberService } from '../../../load-member.service';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class MemberSelectionService {
-  memberService = inject(MemberService);
+@Injectable()
+export class MemberSelectionService implements OnDestroy {
+  memberLoadService = inject(LoadMemberService);
   httpClient = inject(HttpClient);
 
   private unselectedMembers: MemberSearchResult[] = [];
@@ -28,10 +26,17 @@ export class MemberSelectionService {
   public loadingUsers$ = this.usersSubject.asObservable();
 
   constructor() {
-    this.memberService.loadAllMembers().subscribe({
+    this.memberLoadService.loadAllMembers().subscribe({
       next: (response) => {
         this.unselectedMembers = response;
-        this.displayedMembers = response;
+
+        //if selected members are already there (from local storage), remove them from unselected members
+        if(this.selectedMembersWithRoles.length > 0) {
+          this.selectedMembersWithRoles.forEach((selectedMemberWithRole) => {
+            this.removeMemberFromUnselectedMembers(selectedMemberWithRole.member);
+          });
+        }
+        this.displayedMembers = this.unselectedMembers;
         this.usersSubject.next(this.unselectedMembers);
       },
       error: (error) => {
@@ -126,5 +131,9 @@ export class MemberSelectionService {
       .search(query)
       .map((result) => result.item)
       .sort(this.memberSortingFunction);
+  }
+
+  ngOnDestroy(): void {
+    console.log('DEBUG: MemberSelectionService destroyed');
   }
 }

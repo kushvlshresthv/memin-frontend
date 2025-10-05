@@ -8,7 +8,7 @@ import { map, Subscription } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class MemberService implements OnDestroy {
+export class LoadMemberService implements OnDestroy {
   constructor(private httpClient: HttpClient) {}
 
   subscription!: Subscription;

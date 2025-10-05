@@ -9,7 +9,7 @@ import { FormControlName } from '@angular/forms';
 import Fuse from 'fuse.js';
 import { query } from '@angular/animations';
 import { debounceTime, Subscription } from 'rxjs';
-import { MemberService } from '../members-service.service';
+import { LoadMemberService } from '../load-member.service';
 
 @Component({
   selector: 'app-search-bar',
@@ -19,7 +19,7 @@ import { MemberService } from '../members-service.service';
   styleUrl: './search-bar.component.scss',
 })
 export class SearchBarComponent implements OnInit, OnDestroy {
-  memberService = inject(MemberService);
+  loadMemberService = inject(LoadMemberService);
   allMembers!: MemberSearchResult[];
   searchInputFieldSubscription!: Subscription;
   searchResults!: MemberSearchResult[];
@@ -44,7 +44,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
           }
         });
 
-    this.memberService.loadAllMembers().subscribe({
+    this.loadMemberService.loadAllMembers().subscribe({
       next: (response) => {
         this.allMembers = response;
         this.searchResults = response;

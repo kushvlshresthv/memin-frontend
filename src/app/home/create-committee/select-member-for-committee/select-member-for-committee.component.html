@@ -13,8 +13,9 @@
     <div class="selected-members-section">
       <h3 class="section-title">Selected Members</h3>
       <div class="selected-members-list">
-        @for (selectedMember of memberSelectionService.selected(); track
-        selectedMember.memberId) {
+        @for (selectedMemberWithRole of memberSelectionService.selectedWithRoles(); track
+        selectedMemberWithRole.member.memberId) {
+          @let selectedMember = selectedMemberWithRole.member;
         <div class="selected-member-item">
           <div class="member-info">
             <span class="selected-name">

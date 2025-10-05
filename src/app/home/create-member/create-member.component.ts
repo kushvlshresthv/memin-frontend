@@ -65,13 +65,6 @@ export class CreateMemberComponent implements AfterViewInit {
     }
   }
 
-  //for development purposes only, keeps the dialog always open
-  // constructor() {
-  //   effect(() => {
-  //     this.diag()!.nativeElement.showModal();
-  //   });
-  // }
 
-  onSubmit() {}
-
+  onSubmit() {};
 }
