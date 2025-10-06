@@ -32,9 +32,11 @@
           class="form-input"
           [appRecognizeNepaliText]="name.value"
         />
-        @if (name.touched && name.dirty) { @if (name.errors?.["required"]) {
-        <p class="field-error">Committee name is required</p>
-        } }
+        @if (name.touched && name.dirty) {
+          @if (name.errors?.["required"]) {
+            <p class="field-error">Committee name is required</p>
+          }
+        }
       </div>
 
       <div class="form-group">
@@ -73,19 +75,24 @@
             [compareWith]="compareCoordinators"
           >
             <option [ngValue]="defaultOptionForCoordinator" disabled>
-                Select Coordinator
+              Select Coordinator
             </option>
             @if (currentCoordinator != undefined) {
-            <option [ngValue]="currentCoordinator">
-              {{
-                currentCoordinator.firstName + " " + currentCoordinator.lastName
-              }}
-            </option>
-            } @for ( member of memberSelectionService.unselected(); track
-            member.memberId ) {
-            <option [ngValue]="member">
-              {{ member.firstName + " " + member.lastName }}
-            </option>
+              <option [ngValue]="currentCoordinator">
+                {{
+                  currentCoordinator.firstName +
+                    " " +
+                    currentCoordinator.lastName
+                }}
+              </option>
+            }
+            @for (
+              member of memberSelectionService.unselected();
+              track member.memberId
+            ) {
+              <option [ngValue]="member">
+                {{ member.firstName + " " + member.lastName }}
+              </option>
             }
           </select>
         </div>
@@ -95,7 +102,7 @@
         <button
           type="submit"
           [disabled]="formData.invalid"
-          (click)="onSubmit()"
+          (click)="onSubmit($event)"
           class="btn btn-primary"
         >
           Create Committee

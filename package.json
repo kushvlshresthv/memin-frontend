@@ -20,9 +20,6 @@
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
     "fuse.js": "7.1.0",
-    "ngx-quill": "^26.0.10",
-    "quill": "^2.0.3",
-    "quill-better-table": "^1.2.10",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.10"

@@ -112,116 +112,17 @@
 //       // TODO: Send 'this.editedHtmlContent' back to your server
 //     }
 //   }
-// }
 
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { CommonModule } from '@angular/common'; // Required for basic directives if needed
-import { QuillModule } from 'ngx-quill';
-import { FormsModule } from '@angular/forms';
-import Quill from 'quill';
-
-@Component({
-  selector: 'app-html-editor',
-  standalone: true,
-  imports: [CommonModule, QuillModule, FormsModule],
-  template: `
-    <h2>Server HTML Editor</h2>
-
-    <quill-editor
-      [(ngModel)]="rawHtmlContent"
-      [modules]="modules"
-      [style]="{ height: '300px' }"
-    >
-    </quill-editor>
-
-    <hr />
-    <h3>Edited Output:</h3>
-    <pre>{{ content }}</pre>
-  `,
-})
-export class DemoComponent {
-  content = '<h2>Hello World</h2><p>This came from the server.</p>';
-
-  rawHtmlContent: string = `
-    <style>
-    .editor-container {
-      border: 1px solid #ccc;
-      padding: 15px;
-      min-height: 100px;
-      margin-top: 10px;
-      background-color: #f9f9f9;
-    }
-    .editor-container:focus {
-      border-color: blue;
-      box-shadow: 0 0 5px rgba(0, 0, 255, 0.5);
-      outline: none; /* Remove default focus outline */
-    }
-    .my-table {
-      // border-collapse: collapse;
-      border: 1px solid black;
-      width: 100%;
-    }
-    .my-table th, .my-table td {
-      border: 1px solid #ddd;
-      padding: 12px;
-      text-align: left;
-    }
-    .highlight {
-      color: #e91e63; /* Pink */
-      font-weight: bold;
-    }
-
-    </style>
-    <table class="my-table">
-      <thead>
-        <tr>
-          <th>Product</th>
-          <th>Price</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><b>Premium Account</b></td>
-          <td><span class="highlight">$99.00</span></td>
-          <td>Active</td>
-        </tr>
-        <tr>
-          <td>Basic Tier</td>
-          <td>$19.00</td>
-          <td><span class="highlight-in-content">Pending</span></td>
-        </tr>
-      </tbody>
-    </table>
-    <p>This is a paragraph that you can edit. The <strong>bold</strong> and <em>italic</em> formatting will be preserved.</p>
-  `;
-
-  modules = {
-    table: true,
-    'better-table': {
-      operationMenu: {
-        items: {
-          unmergeCells: {
-            text: 'Unmerge cells',
-          },
-        },
-      },
-    },
-    toolbar: {
-      container: [
-        ['bold', 'italic', 'underline'],
-        [{ list: 'ordered' }, { list: 'bullet' }],
-        [{ header: [1, 2, 3, false] }],
-        [{ align: [] }],
-        ['insertTable'], // ✅ Correct button for quill-better-table
-      ],
-      handlers: {
-        insertTable() {
-          const quill = (this as any).quill;
-          quill.getModule('better-table').insertTable(3, 3);
-        },
-      },
-    },
-  };
-}
+// import { Component } from "@angular/core";
+// import { OpeningParagraphComponent } from "../home/create-committee/opening-paragraph/opening-paragraph.component";
+//
+//
+// // }
+// @Component ({
+//   selector: 'app-demo',
+//   standalone:true,
+//   imports: [OpeningParagraphComponent],
+//   templateUrl: './demo.component.html',
+//   styleUrl: './demo.component.scss'
+// })
+// export class DemoComponent {}

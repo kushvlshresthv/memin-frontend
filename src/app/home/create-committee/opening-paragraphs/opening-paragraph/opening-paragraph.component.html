@@ -1,0 +1,11 @@
+<div
+  #editableContent
+  [innerHTML]="safeHtml"
+  contenteditable="true"
+  class="editor-container"
+  (blur)="onContentChange()"
+  [appRecognizeNepaliText]="openingParagraph()"
+  >
+</div>
+
+

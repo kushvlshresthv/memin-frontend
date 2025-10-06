@@ -3,7 +3,9 @@ import {
   effect,
   ElementRef,
   inject,
+  input,
   OnDestroy,
+  signal,
   viewChild,
 } from '@angular/core';
 import {
@@ -21,6 +23,8 @@ import { MemberSelectionService } from './select-member-for-committee/select-mem
 import { HttpClient } from '@angular/common/http';
 import { BACKEND_URL } from '../../../global_constants';
 import { Response } from '../../response/response';
+import { OpeningParagraphsComponent } from './opening-paragraphs/opening-paragraphs.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-committee',
@@ -30,6 +34,7 @@ import { Response } from '../../response/response';
     SelectMemberForCommitteeComponent,
     RecognizeNepaliTextDirective,
     SafeCloseDialogDirective,
+    OpeningParagraphsComponent,
   ],
   templateUrl: './create-committee.component.html',
   styleUrl: './create-committee.component.scss',
@@ -37,9 +42,12 @@ import { Response } from '../../response/response';
 })
 export class CreateCommitteeComponent implements OnDestroy {
   diag = viewChild<ElementRef<HTMLDialogElement>>('new_project_dialogue');
+  openingParagraphs!: string[];
+
 
   memberSelectionService = inject(MemberSelectionService);
   httpClient = inject(HttpClient);
+  router = inject(Router);
 
   name = new FormControl();
   description = new FormControl();
@@ -95,7 +103,8 @@ export class CreateCommitteeComponent implements OnDestroy {
     console.log(this.memberSelectionService.unselected());
   }
 
-  onSubmit() {
+  onSubmit($event: Event) {
+    $event.preventDefault();
     const requestBody = new CommitteeCreationDto();
     requestBody.name = this.name.value;
     requestBody.description = this.description.value;
@@ -109,7 +118,7 @@ export class CreateCommitteeComponent implements OnDestroy {
       );
     });
 
-    this.httpClient.post<Response<string>>(BACKEND_URL + '/api/createCommittee', requestBody, {
+    this.httpClient.post<Response<string[]>>(BACKEND_URL + '/api/createCommittee', requestBody, {
       withCredentials: true,
     }).subscribe({
       next: (response) => {
@@ -117,11 +126,14 @@ export class CreateCommitteeComponent implements OnDestroy {
         //clear the local storage since the committee is created successfully
         localStorage.removeItem('createCommitteeForm');
         localStorage.removeItem('selectedMembersWithRole');
-        this.diag()!.nativeElement.close('created');
+        // this.diag()!.nativeElement.close('created');
+        this.router.navigate(['/home/my-committees']);
+        console.log("TODO: show in popup" + response.message);
       },
       error: (error) => {
         console.log('TODO: show in popup' + error.error.message);
-        this.diag()!.nativeElement.close('error');
+        // this.diag()!.nativeElement.close('error');
+        //TODO: show popup and redirect to my-committees
       }
     });
   }
