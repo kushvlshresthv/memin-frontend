@@ -1,6 +1,8 @@
 @use 'colors' as colors;
 
-
+:host {
+  flex-grow: 1;  //take the remaining space in the flex container
+}
 
 .login-container {
   display: flex;

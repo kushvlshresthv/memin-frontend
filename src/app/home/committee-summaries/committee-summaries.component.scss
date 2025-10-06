@@ -3,6 +3,9 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   align-content: center;
+  padding: 20px 20px;
+  gap: 20px;
+  scrollbar-gutter: stable;
 }
 
 .summaryCard {

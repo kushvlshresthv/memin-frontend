@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,4 +9,28 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss',
 })
-export class SidebarComponent {}
+export class SidebarComponent implements OnInit {
+  state: "main-menu" | "committee-menu" | "login" = "main-menu";
+  constructor(private router: Router) {
+
+  }
+
+  ngOnInit():void {
+    this.router.events.pipe(filter(
+      event => event instanceof NavigationEnd
+    )).subscribe((event: NavigationEnd) => {
+      if(event.urlAfterRedirects.startsWith('/committee-details')) {
+        this.state = "committee-menu";
+      }
+      else if(event.urlAfterRedirects === '/login') {
+        this.state = "login";
+      }
+      else if(event.urlAfterRedirects === '/' || event.urlAfterRedirects.startsWith('/home')) {
+        this.state = "main-menu";
+      }
+      else {
+        this.state = "main-menu";  //default
+      }
+    });
+  }
+}
