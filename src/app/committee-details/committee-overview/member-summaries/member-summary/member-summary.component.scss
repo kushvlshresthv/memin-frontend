@@ -1,0 +1,18 @@
+@import 'colors';
+@import 'constants';
+
+:host {
+  display:flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  border: 1px solid blue;
+  gap: 10px;
+}
+
+
+//STYLING SPECIFICATION:
+/*
+  make it nice, list the member name and the role in a minimalistic way, i have layed out the basic structure
+*/

@@ -4,11 +4,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { BACKEND_URL } from '../../../global_constants';
 import { CommitteeDetailsDto } from '../../models/models';
 import { Response } from '../../response/response';
+import { MemberSummariesComponent } from './member-summaries/member-summaries.component';
+import { MeetingSummariesComponent } from './meeting-summaries/meeting-summaries.component';
 
 @Component({
   selector: 'app-committee-overview',
   standalone: true,
-  imports: [],
+  imports: [MemberSummariesComponent, MeetingSummariesComponent],
   templateUrl: './committee-overview.component.html',
   styleUrl: './committee-overview.component.scss',
 })

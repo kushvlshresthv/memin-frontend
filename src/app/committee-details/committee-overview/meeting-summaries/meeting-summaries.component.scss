@@ -1,0 +1,9 @@
+:host {
+  padding: 20px;
+  border: 1px solid black;
+  display:flex;
+  align-items: flex-start;
+  gap: 20px;
+  overflow-y: auto;
+  scrollbar-gutter: stable;;
+}

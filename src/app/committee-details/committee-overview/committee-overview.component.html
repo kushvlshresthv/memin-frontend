@@ -18,7 +18,7 @@
 </div>
 
 <div class="pair">
-  <div class="members">Members</div>
-  <div class="meetings">Meetings</div>
+  <app-member-summaries [memberSummaries]="committeeDetails.members"></app-member-summaries>
+  <app-meeting-summaries [meetingSummaries]="committeeDetails.meetings"></app-meeting-summaries>
 </div>
 

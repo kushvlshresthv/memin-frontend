@@ -27,14 +27,6 @@ export class CommitteeDetailsDto{
 }
 
 export class MemberSummaryDto {
-    //   private final int memberId;
-    // private final String firstName;
-    // private final String lastName;
-    // private final String firstNameNepali;
-    // private final String lastNameNepali;
-    // private final String institution;
-    // private final String post;
-    // private String role ;
     memberId: number = 0;
     firstName: string = "";
     lastName: string = "";
