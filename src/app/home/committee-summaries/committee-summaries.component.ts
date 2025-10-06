@@ -4,11 +4,12 @@ import { BACKEND_URL } from '../../../global_constants';
 import { CommitteeSummary } from './committee-summary/committee-summary.model';
 import { Response } from '../../response/response';
 import { CommitteeSummaryComponent } from './committee-summary/committee-summary.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-committee-summaries',
   standalone: true,
-  imports: [CommitteeSummaryComponent],
+  imports: [CommitteeSummaryComponent, RouterLink],
   templateUrl: './committee-summaries.component.html',
   styleUrl: './committee-summaries.component.scss',
 })

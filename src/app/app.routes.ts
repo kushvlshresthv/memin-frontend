@@ -7,6 +7,8 @@ import { CommitteeSummariesComponent } from './home/committee-summaries/committe
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { CreateCommitteeComponent } from './home/create-committee/create-committee.component';
 import { CreateMemberComponent } from './home/create-member/create-member.component';
+import { CommitteeOverviewComponent } from './committee-details/committee-overview/committee-overview.component';
+import { CommitteeDetailsComponent } from './committee-details/committee-details.component';
 
 export const routes: Routes = [
   {
@@ -35,6 +37,23 @@ export const routes: Routes = [
       {
         path: 'create-member',
         component: CreateMemberComponent,
+      },
+      {
+        path: '**',
+        component: ErrorComponent,
+      },
+    ],
+  },
+
+
+  {
+    path: 'committee-details',
+    component: CommitteeDetailsComponent,
+    canMatch: [isAuthenticated],
+    children: [
+      {
+        path: 'committee-overview',
+        component: CommitteeOverviewComponent,
       },
       {
         path: '**',
