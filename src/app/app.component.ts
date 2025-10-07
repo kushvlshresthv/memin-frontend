@@ -3,7 +3,6 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { filter } from 'rxjs';
-import { DemoComponent } from './demo/demo.component';
 
 @Component({
   selector: 'app-root',

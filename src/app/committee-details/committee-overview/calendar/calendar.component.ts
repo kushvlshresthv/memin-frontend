@@ -14,10 +14,14 @@ export class CalendarComponent {
   currentYear = new Date().getFullYear();
   selectedYear = this.currentYear;
   months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-  years: number[] = [];
+  years!: Set<number>;
 
   ngOnInit() {
-    this.years = this.meetingDates().map((date) => new Date(date).getFullYear());
+    this.years = new Set(this.meetingDates().map((date) => new Date(date).getFullYear()));
+    //if there are no meeting dates
+    if(this.years.size == 0) {
+      this.years.add(this.currentYear);
+    }
   }
 
   getMonthName(month: number): string {

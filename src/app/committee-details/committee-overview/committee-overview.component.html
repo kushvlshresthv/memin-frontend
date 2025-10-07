@@ -1,13 +1,56 @@
 @if (dataLoaded) {
-  <div class="pair">
-    <div class="details">
-      <div class="committee-name" [appRecognizeNepaliText]="committeeDetails.name">{{ committeeDetails.name }}</div>
-      <div class="committee-description" [appRecognizeNepaliText] = "committeeDetails.description">
-        {{ committeeDetails.description }}
+  <div class="details-and-calendar">
+    <div class="committee-details">
+      <div class="committee-info">
+        <div
+          class="committee-name"
+          [appRecognizeNepaliText]="committeeDetails.name"
+        >
+          {{ committeeDetails.name }}
+        </div>
+        <div
+          class="committee-description"
+          [appRecognizeNepaliText]="committeeDetails.description"
+        >
+          {{ committeeDetails.description }}
+        </div>
+
+        <div class="detail-item">
+          <span class="label">Created Date</span>
+          <span class="value">{{ committeeDetails.createdDate }}</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="label">Coordinator</span>
+          <span class="value">{{ "John Doe" }}</span>
+        </div>
       </div>
-      <div class="detail-item">
-        <span class="label">Created Date:</span>
-        <span class="value">{{ committeeDetails.createdDate }}</span>
+
+      <div class="committee-statistics">
+        <div class="statistic-item">
+          <span class="label">Members</span>
+          <span class="value">{{ 4 }}</span>
+        </div>
+
+        <div class="statistic-item">
+          <span class="label">Meetings</span>
+          <span class="value">{{ 5 }}</span>
+        </div>
+
+        <div class="statistic-item">
+          <span class="label">Decisions</span>
+          <span class="value">{{ 21 }}</span>
+        </div>
+
+        <div class="statistic-item">
+          <span class="label">Last Meeting</span>
+          <span class="value">{{ "Dec 1, 2025" }}</span>
+        </div>
+
+        <div class="statistic-item">
+          <span class="label">First Meeting</span>
+          <span class="value">{{ "Jun 1, 2025" }}</span>
+        </div>
       </div>
     </div>
 
@@ -17,6 +60,6 @@
   <app-member-summaries
     [memberSummaries]="committeeDetails.members"
   ></app-member-summaries>
-
   <!-- <app-meeting-summaries [meetingSummaries]="committeeDetails.meetings"></app-meeting-summaries> -->
 }
+

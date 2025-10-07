@@ -1,4 +1,8 @@
 <h1 class="committee-members-summary-heading"> Committee Members </h1>
 @for(memberSummary of memberSummaries(); track memberSummary.memberId) {
   <app-member-summary [memberSummary]="memberSummary"></app-member-summary>
+} @empty {
+  <div class="empty-state">
+    <span>No members in the committee</span>
+  </div>
 }

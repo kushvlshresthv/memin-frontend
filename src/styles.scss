@@ -30,6 +30,17 @@ body {
 }
 
 
+//empty container
+.empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: colors.$color-button-disabled-text;
+  font-size: 1rem;
+  font-style: italic;
+  padding: 40px 0px;
+}
 
 
 /* Global scrollbar styling */

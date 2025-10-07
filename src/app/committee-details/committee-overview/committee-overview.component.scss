@@ -3,62 +3,132 @@
 
 :host {
   display: flex;
-  flex-direction: row;
-  gap: 16px;
-  height: 100%;
-  padding: 5px 16px;
+  gap: 24px;
+  padding: 14px 24px;
   background: colors.$color-background-main;
+  min-height: 100vh;
 }
 
-.pair {
-  display: flex;
-  flex-direction: column;
+.details-and-calendar {
+  display:flex;
   flex-grow: 1;
-  flex-shrink: 0;
+  flex-direction: column;
+  gap: 24px;
+  align-items: start;
 }
-.details {
+
+.committee-details {
+  display: flex;
+  align-items: stretch;  //so that both .info and .statistics is same height
+  width: 100%;
+  gap: 24px;
+  flex-grow: 1;
+}
+
+.committee-info {
   background: colors.$color-background-card;
   border: 1px solid colors.$color-border-primary;
   border-radius: 8px;
-  padding: 16px;
+  padding: 32px;
+  transition: all 0.2s ease;
+  flex-grow: 1;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
 
   .committee-name {
-    font-size: constants.$font-xxl;
+    font-size: 2rem;
     font-weight: constants.$font-weight-semibold;
     color: colors.$color-text-primary;
-    margin-bottom: 8px;
-    line-height: 1.2;
+    margin-bottom: 16px;
+    line-height: 1.3;
+    letter-spacing: -0.025em;
   }
 
   .committee-description {
-    font-size: constants.$font-medium;
+    font-size: constants.$font-large;
     font-weight: constants.$font-weight-normal;
     color: colors.$color-text-secondary;
-    margin-bottom: 12px;
-    line-height: 1.3;
+    margin-bottom: 32px;
+    line-height: 1.6;
+    max-width: 600px;
   }
 
   .detail-item {
     display: flex;
-    align-items: center;
-    padding: 4px 0;
+    align-items: baseline;
+    margin-bottom: 16px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
 
     .label {
       font-size: constants.$font-small;
-      font-weight: constants.$font-weight-medium;
+      font-weight: constants.$font-weight-semibold;
       color: colors.$color-text-muted;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      min-width: 100px;
-      margin-right: 12px;
+      letter-spacing: 0.8px;
+      min-width: 140px;
+      margin-right: 16px;
+      flex-shrink: 0;
     }
 
     .value {
       font-size: constants.$font-medium;
-      font-weight: constants.$font-weight-normal;
-      color: colors.$color-text-secondary;
-      line-height: 1.2;
+      font-weight: constants.$font-weight-medium;
+      color: colors.$color-text-primary;
+      line-height: 1.4;
     }
   }
 }
+
+.committee-statistics {
+  background: colors.$color-background-card;
+  border: 1px solid colors.$color-border-primary;
+  border-radius: 8px;
+  padding: 32px;
+  transition: all 0.2s ease;
+  min-width: 300px;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .statistic-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid colors.$color-border-primary;
+
+    &:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    &:first-child {
+      padding-top: 0;
+    }
+
+    .label {
+      font-size: constants.$font-small;
+      font-weight: constants.$font-weight-semibold;
+      color: colors.$color-text-muted;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .value {
+      font-size: constants.$font-large;
+      font-weight: constants.$font-weight-semibold;
+      color: colors.$color-text-primary;
+      text-align: right;
+    }
+  }
+}
+
 

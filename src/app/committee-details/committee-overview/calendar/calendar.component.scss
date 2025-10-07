@@ -1,62 +1,86 @@
 @use "colors" as colors;
 @use "constants" as constants;
-    .calendar-container {
-      padding: 1rem;
-    }
+:host {
+  width: 100%;
+}
 
-    .header {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
+select {
+  padding: 4px 8px;
+  background: colors.$color-background-main;
+  border-radius: 4px;
+  border: 1px solid colors.$color-border-primary;
+  color: colors.$color-text-primary;
+  font-size: 16px;
+  font-family: inherit;
+  transition: all 0.2s ease;
 
-    select {
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      background: #fff;
-    }
+  &::placeholder {
+    color: colors.$color-text-muted;
+  }
 
-    .calendar {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1rem;
-    }
+  &:focus {
+    outline: none;
+    border-color: colors.$color-border-focus;
+    background: colors.$color-background-input-hover;
+  }
 
-    .month {
-      border: 1px solid colors.$color-text-muted;
-      border-radius: 8px;
-      padding: 0.75rem;
-      text-align: center;
-      background: #fafafa;
-      background: colors.$color-background-main;
-      text-transform: uppercase;
-      font-size: constants.$font-small;
-      font-weight: constants.$font-weight-semibold;
-    }
+  &:hover:not(:focus) {
+    border-color: colors.$color-background-input;
+    background: colors.$color-background-input-hover;
+  }
+}
 
-    .days {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
-      margin-top: 0.5rem;
-    }
+.calendar-container {
+  padding: 1rem;
+}
 
-    .day {
-      padding: 4px 0;
-      border-radius: 4px;
-      font-size: constants.$font-small;
-      font-weight: constants.$font-weight-normal;
-    }
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
 
-    .day.meeting {
-      background-color: #4caf50;
-      color: white;
-      font-weight: bold;
-    }
 
-    .day.today {
-      border: 1px solid #4caf50;
-      font-weight: bold;
-    }
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.month {
+  border: 1px solid colors.$color-text-muted;
+  border-radius: 8px;
+  padding: 0.75rem;
+  text-align: center;
+  background: #fafafa;
+  background: colors.$color-background-main;
+  text-transform: uppercase;
+  font-size: constants.$font-small;
+  font-weight: constants.$font-weight-semibold;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-top: 0.5rem;
+}
+
+.day {
+  padding: 4px 0;
+  border-radius: 4px;
+  font-size: constants.$font-small;
+  font-weight: constants.$font-weight-normal;
+}
+
+.day.meeting {
+  background-color: #4caf50;
+  color: white;
+  font-weight: bold;
+}
+
+.day.today {
+  border: 1px solid #4caf50;
+  font-weight: bold;
+}
