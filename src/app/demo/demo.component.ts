@@ -126,3 +126,140 @@
 //   styleUrl: './demo.component.scss'
 // })
 // export class DemoComponent {}
+
+//CALENDAR
+
+// import { Component, Input } from '@angular/core';
+// import { NgFor, NgClass, NgIf } from '@angular/common';
+// import { FormsModule } from '@angular/forms';
+//
+// @Component({
+//   selector: 'app-demo',
+//   standalone: true,
+//   imports: [NgFor, NgClass, NgIf, FormsModule],
+//   template: `
+//     <div class="calendar-container">
+//       <div class="header">
+//         <label for="yearSelect">Select Year:</label>
+//         <select id="yearSelect" [(ngModel)]="selectedYear">
+//           <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+//         </select>
+//       </div>
+//
+//       <div class="calendar">
+//         <div class="month" *ngFor="let month of months">
+//           <h3>{{ getMonthName(month) }}</h3>
+//           <div class="days">
+//             <div
+//               class="day"
+//               *ngFor="let day of getDaysInMonth(selectedYear, month)"
+//               [ngClass]="{ meeting: isMeeting(day), today: isToday(day) }"
+//             >
+//               {{ day.getDate() }}
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   `,
+//   styles: [`
+//     .calendar-container {
+//       padding: 1rem;
+//       font-family: sans-serif;
+//     }
+//
+//     .header {
+//       display: flex;
+//       align-items: center;
+//       gap: 0.5rem;
+//       margin-bottom: 1rem;
+//     }
+//
+//     select {
+//       padding: 0.25rem 0.5rem;
+//       font-size: 14px;
+//       border-radius: 4px;
+//       border: 1px solid #ccc;
+//       background: #fff;
+//     }
+//
+//     .calendar {
+//       display: grid;
+//       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+//       gap: 1rem;
+//     }
+//
+//     .month {
+//       border: 1px solid #ccc;
+//       border-radius: 8px;
+//       padding: 0.75rem;
+//       text-align: center;
+//       background: #fafafa;
+//     }
+//
+//     .days {
+//       display: grid;
+//       grid-template-columns: repeat(7, 1fr);
+//       gap: 4px;
+//       margin-top: 0.5rem;
+//     }
+//
+//     .day {
+//       padding: 4px 0;
+//       border-radius: 4px;
+//       font-size: 12px;
+//     }
+//
+//     .day.meeting {
+//       background-color: #4caf50;
+//       color: white;
+//       font-weight: bold;
+//     }
+//
+//     .day.today {
+//       border: 1px solid #4caf50;
+//       font-weight: bold;
+//     }
+//   `]
+// })
+// export class DemoComponent {
+//   @Input() meetingDates: string[] = []; // Example: ['2025-03-14', '2024-05-02']
+//
+//   currentYear = new Date().getFullYear();
+//   selectedYear = this.currentYear;
+//   months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+//   years: number[] = [];
+//
+//   ngOnInit() {
+//     // Determine range of years based on meetings + current year
+//     const meetingYears = this.meetingDates
+//       .map(dateStr => new Date(dateStr).getFullYear());
+//     const minYear = Math.min(...meetingYears, this.currentYear - 2);
+//     const maxYear = Math.max(...meetingYears, this.currentYear + 2);
+//     this.years = Array.from({ length: maxYear - minYear + 1 }, (_, i) => minYear + i);
+//   }
+//
+//   getMonthName(month: number): string {
+//     return new Date(this.selectedYear, month).toLocaleString('default', { month: 'long' });
+//   }
+//
+//   getDaysInMonth(year: number, month: number): Date[] {
+//     const days: Date[] = [];
+//     const date = new Date(year, month, 1);
+//     while (date.getMonth() === month) {
+//       days.push(new Date(date));
+//       date.setDate(date.getDate() + 1);
+//     }
+//     return days;
+//   }
+//
+//   isMeeting(date: Date): boolean {
+//     return this.meetingDates.includes(date.toISOString().split('T')[0]);
+//   }
+//
+//   isToday(date: Date): boolean {
+//     const today = new Date();
+//     return date.toDateString() === today.toDateString();
+//   }
+// }
+//

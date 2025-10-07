@@ -19,7 +19,7 @@ export class CommitteeDetailsDto{
     id: number = 0;
     name: string = "";
     description: string = "";
-    createdDate: Date = new Date();
+    createdDate: string = "";
     status: 'ACTIVE' | 'INACTIVE' = 'ACTIVE';
     maxNoOfMeetings?: number = undefined;
     meetings: MeetingSummaryDto[] = [];
@@ -39,8 +39,8 @@ export class MemberSummaryDto {
 export class MeetingSummaryDto {
     id: number = 0;
     title: string = "";
-    heldDate: Date = new Date();
+    heldDate: string = "";
     heldTime: string = ""; //HH:mm:ss
     heldPlace: string = "";
-    createdDate: Date = new Date();
+    createdDate: string = "";
 }

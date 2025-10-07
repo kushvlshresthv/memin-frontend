@@ -6,16 +6,20 @@ import { CommitteeDetailsDto } from '../../models/models';
 import { Response } from '../../response/response';
 import { MemberSummariesComponent } from './member-summaries/member-summaries.component';
 import { MeetingSummariesComponent } from './meeting-summaries/meeting-summaries.component';
+import { CalendarComponent } from './calendar/calendar.component';
+import { RecognizeNepaliTextDirective } from '../../utils/recognize-nepali-text.directive';
 
 @Component({
   selector: 'app-committee-overview',
   standalone: true,
-  imports: [MemberSummariesComponent, MeetingSummariesComponent],
+  imports: [MemberSummariesComponent, MeetingSummariesComponent, CalendarComponent, RecognizeNepaliTextDirective],
   templateUrl: './committee-overview.component.html',
   styleUrl: './committee-overview.component.scss',
 })
 export class CommitteeOverviewComponent {
   committeeDetails!: CommitteeDetailsDto;
+  meetingDates!: string[];
+  dataLoaded = false;
 
   constructor(
     private router: Router,
@@ -31,7 +35,8 @@ export class CommitteeOverviewComponent {
         .subscribe({
           next: (response) => {
             this.committeeDetails = response.mainBody;
-            console.log(response);
+            this.meetingDates = response.mainBody.meetings.map(meeting => meeting.heldDate);
+            this.dataLoaded = true;
           },
           error: (response) => {
             console.log(response);

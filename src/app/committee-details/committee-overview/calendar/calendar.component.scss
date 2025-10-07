@@ -1,0 +1,62 @@
+@use "colors" as colors;
+@use "constants" as constants;
+    .calendar-container {
+      padding: 1rem;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    select {
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      background: #fff;
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+
+    .month {
+      border: 1px solid colors.$color-text-muted;
+      border-radius: 8px;
+      padding: 0.75rem;
+      text-align: center;
+      background: #fafafa;
+      background: colors.$color-background-main;
+      text-transform: uppercase;
+      font-size: constants.$font-small;
+      font-weight: constants.$font-weight-semibold;
+    }
+
+    .days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      margin-top: 0.5rem;
+    }
+
+    .day {
+      padding: 4px 0;
+      border-radius: 4px;
+      font-size: constants.$font-small;
+      font-weight: constants.$font-weight-normal;
+    }
+
+    .day.meeting {
+      background-color: #4caf50;
+      color: white;
+      font-weight: bold;
+    }
+
+    .day.today {
+      border: 1px solid #4caf50;
+      font-weight: bold;
+    }

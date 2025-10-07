@@ -1,3 +1,4 @@
+@use 'colors' as colors;
 :host {
   display: flex;
   justify-content: center;
@@ -10,6 +11,10 @@
   width: 100%;
   max-width: 450px;
   overflow: hidden;
+  &:hover {
+    background: #32353a;
+    transform: translateY(-2px);
+  }
 }
 
 .card-header {

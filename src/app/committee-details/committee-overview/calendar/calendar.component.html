@@ -1,0 +1,29 @@
+<div class="calendar-container">
+  <div class="header">
+    <label for="yearSelect">Select Year:</label>
+    <select id="yearSelect" [(ngModel)]="selectedYear">
+      @for (year of years; track $index) {
+        <option [value]="year">{{ year }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="calendar">
+    @for(month of months; track $index) {
+    <div class="month">
+      <h3>{{ getMonthName(month) }}</h3>
+      <div class="days">
+        @for(day of getDaysInMonth(selectedYear, month); track $index) {
+          <div
+            class="day"
+            [class.meeting]="isMeeting(day)"
+            [class.today] = "isToday(day)"
+          >
+            {{day.getDate()}}
+          </div>
+        }
+      </div>
+    </div>
+    }
+  </div>
+</div>
