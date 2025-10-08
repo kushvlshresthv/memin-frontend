@@ -1,5 +1,6 @@
 @use "colors" as colors;
 @use "constants" as constants;
+
 :host {
   width: 100%;
 }
@@ -36,9 +37,17 @@ select {
 
 .header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  padding: 0 10px;
   gap: 0.5rem;
   margin-bottom: 1rem;
+}
+
+.heading {
+  font-size: constants.$font-xxl;
+  font-weight: constants.$font-weight-semibold;
+  color: colors.$color-text-primary;
 }
 
 
@@ -46,10 +55,11 @@ select {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
+  padding: 10px 0;
 }
 
 .month {
-  border: 1px solid colors.$color-text-muted;
+  border: 1px solid #606671;
   border-radius: 8px;
   padding: 0.75rem;
   text-align: center;

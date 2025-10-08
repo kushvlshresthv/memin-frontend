@@ -4,7 +4,7 @@
 :host {
   display: flex;
   gap: 24px;
-  padding: 14px 24px;
+  padding: 14px 0px 14px 24px;
   background: colors.$color-background-main;
   min-height: 100vh;
 }
@@ -123,7 +123,7 @@
     }
 
     .value {
-      font-size: constants.$font-large;
+      font-size: constants.$font-medium;
       font-weight: constants.$font-weight-semibold;
       color: colors.$color-text-primary;
       text-align: right;

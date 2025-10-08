@@ -8,11 +8,12 @@ import { MemberSummariesComponent } from './member-summaries/member-summaries.co
 import { MeetingSummariesComponent } from './meeting-summaries/meeting-summaries.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { RecognizeNepaliTextDirective } from '../../utils/recognize-nepali-text.directive';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-committee-overview',
   standalone: true,
-  imports: [MemberSummariesComponent, MeetingSummariesComponent, CalendarComponent, RecognizeNepaliTextDirective],
+  imports: [MemberSummariesComponent, CalendarComponent, RecognizeNepaliTextDirective, DatePipe],
   templateUrl: './committee-overview.component.html',
   styleUrl: './committee-overview.component.scss',
 })
