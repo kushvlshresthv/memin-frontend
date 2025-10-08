@@ -12,6 +12,8 @@
 
   background: colors.$color-background-main;
   z-index: 9998; // make sure it's above everything but below the header
+
+  min-height: 100vh;
 }
 
 .sidebar {

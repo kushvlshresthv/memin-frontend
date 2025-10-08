@@ -1,5 +1,5 @@
-@use 'colors' as colors;
-@use 'constants' as constants;
+@use "colors" as colors;
+@use "constants" as constants;
 
 .committee {
   flex-grow: 1;
@@ -8,16 +8,14 @@
 }
 
 app-member-summaries {
-
   position: fixed;
-  top: constants.$header-height;       // distance from top of viewport
-  right: 0;      // distance from right of viewport
+  top: constants.$header-height; // distance from top of viewport
+  right: 0; // distance from right of viewport
 
   background: colors.$color-background-main;
-z-index: 9998; // make sure it's above everything but below the header
+  z-index: 9998; // make sure it's above everything but below the header
   border-left: 1px solid colors.$color-border-primary;
-
   width: constants.$app-member-summaries-width;
+  height: calc(100vh - constants.$header-height);
   overflow-y: auto;
-  border: 1px solid red;
 }
