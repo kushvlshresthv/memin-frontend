@@ -1,18 +1,22 @@
+@use 'constants' as constants;
+
 .total-screen {
   display:flex;
   min-height: 90vh;
-  margin-top: 4px; //avoids the header's shadow overlap
+  margin-top: constants.$header-height;
 }
 
 app-sidebar {
-  width: 225px;
+  width: constants.$sidebar-width;
   flex-grow: 0;
   flex-shrink: 0;
   border-right: 1px solid #202225;
 }
-// router-outlet {
-//   flex-grow: 1;
-//   border-left: 1px solid #202225;
-//   border: 10px solid green;
-// }
+
+.main-content {
+  margin-left: constants.$sidebar-width;
+  flex-grow: 1;
+  padding-left: 25px;
+  padding-top: 16px;
+}
 

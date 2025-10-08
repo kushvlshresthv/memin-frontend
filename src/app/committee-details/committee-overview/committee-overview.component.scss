@@ -2,11 +2,7 @@
 @use "constants" as constants;
 
 :host {
-  display: flex;
-  gap: 24px;
-  padding: 14px 0px 14px 24px;
   background: colors.$color-background-main;
-  min-height: 100vh;
 }
 
 .details-and-calendar {

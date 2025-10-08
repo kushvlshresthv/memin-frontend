@@ -1,1 +1,8 @@
-<router-outlet></router-outlet>
+
+<div class="committee">
+  <router-outlet></router-outlet>
+</div>
+
+<app-member-summaries
+  [memberSummaries]="committeeMembers"
+></app-member-summaries>
