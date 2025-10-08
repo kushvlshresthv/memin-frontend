@@ -1,6 +1,10 @@
 import { Component, input } from '@angular/core';
-import { MeetingSummaryDto } from '../../../models/models';
+import { CommitteeDetailsDto, MeetingSummaryDto } from '../../../models/models';
 import { MeetingSummaryComponent } from './meeting-summary/meeting-summary.component';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Router, ActivatedRoute } from '@angular/router';
+import { BACKEND_URL } from '../../../../global_constants';
+import {Response} from "../../../response/response";
 
 @Component({
   selector: 'app-meeting-summaries',
@@ -10,5 +14,30 @@ import { MeetingSummaryComponent } from './meeting-summary/meeting-summary.compo
   styleUrl: './meeting-summaries.component.scss'
 })
 export class MeetingSummariesComponent {
-  meetingSummaries = input.required<MeetingSummaryDto[]>();
+  meetingSummaries!: MeetingSummaryDto[];
+  dataLoaded = false;
+
+  constructor(
+    private router: Router,
+    private httpClient: HttpClient,
+    private activatedRoute: ActivatedRoute,
+  ) {
+    this.activatedRoute.queryParams.subscribe((receivedParams) => {
+      const params = new HttpParams().set('committeeId', receivedParams['committeeId']);
+      this.httpClient
+        .get<
+          Response<CommitteeDetailsDto>
+        >(BACKEND_URL + '/api/getCommitteeDetails', { params: params, withCredentials: true })
+        .subscribe({
+          next: (response) => {
+            this.meetingSummaries = response.mainBody.meetings;
+            this.dataLoaded = true;
+          },
+          error: (response) => {
+            console.log(response);
+            //TODO: handle error with popup message
+          },
+        });
+    });
+  }
 }

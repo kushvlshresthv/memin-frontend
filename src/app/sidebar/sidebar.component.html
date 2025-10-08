@@ -36,10 +36,10 @@
         <a
           href="#"
           class="nav-item"
-          routerLink="home/committee-summary"
+          routerLink="home/archives"
           routerLinkActive="selected"
         >
-          <span class="nav-text">Committee Summary</span>
+          <span class="nav-text">View Archives</span>
         </a>
         <a
           href="#"
@@ -63,14 +63,26 @@
           class="nav-item"
           routerLink="committee-details/committee-overview"
           routerLinkActive="selected"
+          [queryParamsHandling]="'preserve'"
         >
           <span class="nav-text">Committee Overview</span>
         </a>
         <a
           href="#"
           class="nav-item"
+          routerLink="committee-details/view-minutes"
+          routerLinkActive="selected"
+          [queryParamsHandling]="'preserve'"
+        >
+          <span class="nav-text">View Minutes</span>
+        </a>
+
+        <a
+          href="#"
+          class="nav-item"
           routerLink="committee-details/add-member"
           routerLinkActive="selected"
+          [queryParamsHandling]="'preserve'"
         >
           <span class="nav-text">Edit Committee</span>
         </a>
@@ -79,6 +91,7 @@
           class="nav-item"
           routerLink="committee-details/committee-summary"
           routerLinkActive="selected"
+          [queryParamsHandling]="'preserve'"
         >
           <span class="nav-text">Committee Summary</span>
         </a>

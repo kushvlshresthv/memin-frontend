@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { Route, UrlSegment, Router, UrlTree } from '@angular/router';
+import { Route, UrlSegment, Router, UrlTree, ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot } from '@angular/router';
 import { BACKEND_URL } from '../global_constants';
 import { Response } from './response/response';
 import { catchError, map, Observable, of } from 'rxjs';
@@ -30,3 +30,12 @@ export function isAuthenticated(
       }),
     );
 }
+
+export const committeeDetailsGuard: CanActivateFn= (route:ActivatedRouteSnapshot, state: RouterStateSnapshot)=> {
+  const router = inject(Router);
+  const inboxId = route.queryParams['committeeId'];
+  if (inboxId) {
+    return true;
+  }
+  return router.parseUrl('/error'); //redirect
+};
