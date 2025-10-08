@@ -40,7 +40,7 @@ export class MeetingSummaryDto {
     id: number = 0;
     title: string = "";
     heldDate: string = "";
-    heldTime: string = ""; //HH:mm:ss
+    heldTime: number[] =[] ; //HH:mm:ss
     heldPlace: string = "";
     createdDate: string = "";
 }

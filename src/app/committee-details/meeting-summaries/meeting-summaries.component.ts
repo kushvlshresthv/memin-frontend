@@ -1,11 +1,10 @@
 import { Component, input } from '@angular/core';
-import { CommitteeDetailsDto, MeetingSummaryDto } from '../../../models/models';
+import { CommitteeDetailsDto, MeetingSummaryDto } from '../../models/models';
 import { MeetingSummaryComponent } from './meeting-summary/meeting-summary.component';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
-import { BACKEND_URL } from '../../../../global_constants';
-import {Response} from "../../../response/response";
-
+import { BACKEND_URL } from '../../../global_constants';
+import {Response} from "../../response/response";
 @Component({
   selector: 'app-meeting-summaries',
   standalone: true,

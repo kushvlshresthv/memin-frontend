@@ -5,7 +5,7 @@ import { BACKEND_URL } from '../../../global_constants';
 import { CommitteeDetailsDto } from '../../models/models';
 import { Response } from '../../response/response';
 import { MemberSummariesComponent } from './member-summaries/member-summaries.component';
-import { MeetingSummariesComponent } from './meeting-summaries/meeting-summaries.component';
+import { MeetingSummariesComponent } from '../meeting-summaries/meeting-summaries.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { RecognizeNepaliTextDirective } from '../../utils/recognize-nepali-text.directive';
 import { DatePipe } from '@angular/common';
