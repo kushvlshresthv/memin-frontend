@@ -1,2 +1,70 @@
+<div id="a4-box">
+  <div class="introduction justify-text">
+    <p class="introduction-body">
+      आज मिति <span>{{ minuteData().meetingHeldDateNepali }}</span> (<span>{{
+        minuteData().meetingHeldDate
+      }}</span
+      >),
+      <span>{{ minuteData().meetingHeldDay }}</span>
+      <span>{{ minuteData().partOfDay }}</span>
+      <span>{{ minuteData().meetingHeldTime }}</span> बजे,
+      <span>{{ minuteData().meetingHeldPlace }}</span> मा
+      <span>{{ minuteData().committeeDescription }}</span> का लागि गठित
+      <span>{{ minuteData().committeeName }}</span> समितिका संयोजक
+      <span>{{ minuteData().coordinatorFullName }}</span
+      >ज्यूको संयोजकत्वमा बैठक बसी देहाय बमोजिमका छलफल तथा निर्णय गरियो।
+    </p>
+  </div>
 
-<div [innerHTML]="htmlContent()"></div>`
+  <div class="memberships">
+    <h5 class="heading"><b>उपस्थितिः</b></h5>
+    <table border="2" cellspacing="0" cellpadding="5">
+      <thead>
+        <tr>
+          <th>क्र.सं.</th>
+          <th>नाम</th>
+          <th>पद</th>
+          <th>हस्ताक्षर</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (membership of minuteData().committeeMemberships; track membership;
+        let i = $index) {
+        <tr>
+          <td>i + 1</td>
+          <td>
+            {{ membership.fullName }}
+          </td>
+          <td>{{ membership.role }}</td>
+          <td></td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  @if (minuteData().agendas && minuteData().agendas.length > 0) {
+  <div class="agendas">
+    <h5 class="heading"><b>प्रस्तावहरु:</b></h5>
+    <ol class="agenda-lists" style="list-style-type: none; padding-left: 0">
+      @for (agenda of minuteData().agendas; track agenda; let i = $index) {
+      <li class="decision">
+        {{ i + 1 + ". " + agenda.agenda }}
+      </li>
+      }
+    </ol>
+  </div>
+  }
+
+  <div class="decisions">
+    <h5 class="heading"><b>निर्णयहरूः</b></h5>
+    <ol class="decision-lists" style="list-style-type: none; padding-left: 0">
+      @for (decision of minuteData().decisions; track decision; let i = $index)
+      {
+      <li class="decision">
+        {{ i + 1 + ". " + decision.decision }}
+      </li>
+      }
+    </ol>
+  </div>
+</div>

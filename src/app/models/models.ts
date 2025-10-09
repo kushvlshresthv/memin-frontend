@@ -63,3 +63,32 @@ export class MemberOfCommitteeDto {
     name: string = "";
     role: string = "";
 }
+
+export class MinuteDataDto {
+  meetingHeldDateNepali: string = "";
+  meetingHeldDate: string = "";
+  meetingHeldDay: string = "";
+  partOfDay: string = "";
+  meetingHeldTime: string = "";
+  meetingHeldPlace: string = "";
+  committeeName: string = "";
+  committeeDescription: string = "";
+  coordinatorFullName: string = "";
+  decisions: DecisionDto[] = [];
+  agendas: AgendaDto[] = [];
+  committeeMemberships: CommitteeMembershipDto[] = [];
+}
+
+export class DecisionDto {
+  decisionId: number = 0;
+  decision: string = "";
+}
+export class AgendaDto {
+  agendaId: number = 0;
+  agenda: string = ""
+}
+
+export class CommitteeMembershipDto {
+    fullName: string = "";
+    role: string = "";
+}

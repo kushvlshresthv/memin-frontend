@@ -6,6 +6,8 @@ import { MinuteEditComponent } from './minute-edit/minute-edit.component';
 import { BACKEND_URL } from '../../../../global_constants';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { MinuteDataDto } from '../../../models/models';
+import { Response } from '../../../response/response';
 
 @Component({
   selector: 'app-minute',
@@ -15,7 +17,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   styleUrl: './minute.component.scss',
 })
 export class MinuteComponent {
-  htmlContent!: SafeHtml;
+  minuteData!: MinuteDataDto;
 
   constructor(
     private httpClient: HttpClient,
@@ -29,15 +31,13 @@ export class MinuteComponent {
       );
       params = params.set('committeeId', receivedParams['committeeId']);
       this.httpClient
-        .get<string>(BACKEND_URL + '/api/previewMeetingMinute', {
-          responseType: 'text' as 'json',
+        .get<Response<MinuteDataDto>>(BACKEND_URL + '/api/getDataForNepaliMinute', {
           params: params,
           withCredentials: true,
         })
         .subscribe({
           next: (response) => {
-            this.htmlContent = this.sanitizer.bypassSecurityTrustHtml(response);
-            console.log(this.htmlContent);
+            this.minuteData = response.mainBody;
           },
           error: (response) => {
             console.log(response);
@@ -46,4 +46,3 @@ export class MinuteComponent {
     });
   }
 }
-// httpClient.get(BACKEND_URL + '/api/previewMeetingMinute')
