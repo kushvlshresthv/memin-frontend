@@ -1,5 +1,5 @@
 <h1 class="committee-members-summary-heading"> Committee Members </h1>
-@for(memberOfCommittee of membersOfCommittee(); track memberOfCommittee) {
+@for(memberOfCommittee of membersOfCommittee(); track memberOfCommittee.id) {
   <app-member-summary [memberOfCommittee]="memberOfCommittee"></app-member-summary>
 } @empty {
   <div class="empty-state">

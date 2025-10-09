@@ -2,10 +2,13 @@
 @if(dataLoaded) {
 <div class="meeting-summaries">
   @for(meetingSummary of meetingSummaries; track meetingSummary.id) {
-  <app-meeting-summary [meetingSummary]="meetingSummary" class="meeting-card">
+  <app-meeting-summary [meetingSummary]="meetingSummary" routerLink="./minute" [queryParams] = "{meetingId: meetingSummary.id}" class="meeting-card"
+      [queryParamsHandling]="'merge'"
+  >
   </app-meeting-summary>
   } @empty {
   <p class="empty-state">No meeting summaries available.</p>
   }
 </div>
 }
+<router-outlet></router-outlet>
