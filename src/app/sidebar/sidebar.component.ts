@@ -19,7 +19,7 @@ export class SidebarComponent implements OnInit {
     this.router.events.pipe(filter(
       event => event instanceof NavigationEnd
     )).subscribe((event: NavigationEnd) => {
-      if(event.urlAfterRedirects.startsWith('/committee-details')) {
+      if(event.urlAfterRedirects.startsWith('/committee')) {
         this.state = "committee-menu";
       }
       else if(event.urlAfterRedirects === '/login') {

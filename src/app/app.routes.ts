@@ -48,18 +48,18 @@ export const routes: Routes = [
 
 
   {
-    path: 'committee-details',
+    path: 'committee',
     component: CommitteeDetailsComponent,
     canMatch: [isAuthenticated],
     canActivate: [committeeDetailsGuard],
     children: [
       {
-        path: 'committee-overview',
+        path: 'overview',
         component: CommitteeOverviewComponent,
       },
 
       {
-        path: 'view-minutes',
+        path: 'view-meetings',
         component: MeetingSummariesComponent,
       },
 
