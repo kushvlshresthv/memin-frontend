@@ -31,10 +31,22 @@ export function isAuthenticated(
     );
 }
 
-export const committeeDetailsGuard: CanActivateFn= (route:ActivatedRouteSnapshot, state: RouterStateSnapshot)=> {
+export const committeeRouteGuard: CanActivateFn= (route:ActivatedRouteSnapshot, state: RouterStateSnapshot)=> {
   const router = inject(Router);
-  const inboxId = route.queryParams['committeeId'];
-  if (inboxId) {
+  const committeeId = route.queryParams['committeeId'];
+  if (committeeId) {
+    return true;
+  }
+  return router.parseUrl('/error'); //redirect
+};
+
+
+//ensures route has a meetingId and committeeId
+export const minuteGuard: CanActivateFn= (route:ActivatedRouteSnapshot, state: RouterStateSnapshot)=> {
+  const router = inject(Router);
+  const committeeId = route.queryParams['committeeId'];
+  const meetingId = route.queryParams['meetingId'];
+  if (committeeId && meetingId) {
     return true;
   }
   return router.parseUrl('/error'); //redirect

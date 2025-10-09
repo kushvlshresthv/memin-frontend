@@ -19,3 +19,7 @@ app-member-summaries {
   height: calc(100vh - constants.$header-height);
   overflow-y: auto;
 }
+
+.committee.members-not-shown {
+  margin-right: 0; // no space on the right when the members are not shown
+}

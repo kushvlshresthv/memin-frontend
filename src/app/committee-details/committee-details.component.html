@@ -1,11 +1,13 @@
 
 @if(dataLoaded) {
-  <div class="committee">
+  <div class="committee" [class.members-not-shown]="!showCommitteeMembers">
     <router-outlet></router-outlet>
   </div>
 
+@if(showCommitteeMembers) {
   <app-member-summaries
     [membersOfCommittee]="membersOfCommittee"
   ></app-member-summaries>
+}
 }
 <!-- //else, show the loader -->

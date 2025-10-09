@@ -3,7 +3,7 @@
     <app-committee-summary
       [committeeSummary]="summary"
       class="summaryCard"
-      routerLink= "/committee/overview"
+      routerLink= "/committee-details/overview"
       [queryParams] = "{ committeeId: summary.id }"
     ></app-committee-summary>
   } @empty {

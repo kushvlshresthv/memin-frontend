@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { ErrorComponent } from './error/error.component';
 import { HomeComponent } from './home/home.component';
-import { committeeDetailsGuard, isAuthenticated } from './app.guards';
+import { committeeRouteGuard, isAuthenticated } from './app.guards';
 import { CommitteeSummariesComponent } from './home/committee-summaries/committee-summaries.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { CreateCommitteeComponent } from './home/create-committee/create-committee.component';
@@ -49,25 +49,24 @@ export const routes: Routes = [
 
 
   {
-    path: 'committee',
+    path: 'committee-details',
     component: CommitteeDetailsComponent,
     canMatch: [isAuthenticated],
-    canActivate: [committeeDetailsGuard],
+    canActivate: [committeeRouteGuard],
     children: [
       {
         path: 'overview',
         component: CommitteeOverviewComponent,
       },
+      {
+        path: 'meetings/minute',
+        component: MinuteComponent,
+      },
+
 
       {
         path: 'meetings',
         component: MeetingSummariesComponent,
-        children: [
-          {
-            path: 'minute',
-            component: MinuteComponent,
-          }
-        ]
       },
 
       {
