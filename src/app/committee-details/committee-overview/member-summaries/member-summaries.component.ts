@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { MemberSummaryDto } from '../../../models/models';
+import { MemberOfCommitteeDto, MemberSummaryDto } from '../../../models/models';
 import { MemberSummaryComponent } from './member-summary/member-summary.component';
 
 @Component({
@@ -10,5 +10,5 @@ import { MemberSummaryComponent } from './member-summary/member-summary.componen
   styleUrl: './member-summaries.component.scss'
 })
 export class MemberSummariesComponent {
-  memberSummaries = input.required<MemberSummaryDto[]>();
+  membersOfCommittee = input.required<MemberOfCommitteeDto[]>();
 }

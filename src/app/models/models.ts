@@ -44,3 +44,22 @@ export class MeetingSummaryDto {
     heldPlace: string = "";
     createdDate: string = "";
 }
+
+export class CommitteeOverviewDto {
+    name: string = "";
+    description: string = "";
+    createdDate: string = "";
+    memberCount: number = 0;
+    meetingCount: number = 0;
+    decisionCount: number = 0;
+    coordinatorName: string = "";
+    firstMeetingDate: string = "";
+    lastMeetingDate: string = "";
+    meetingDates: string[] = [];
+}
+
+export class MemberOfCommitteeDto {
+    id: number =0;
+    name: string = "";
+    role: string = "";
+}

@@ -1,8 +1,11 @@
 
-<div class="committee">
-  <router-outlet></router-outlet>
-</div>
+@if(dataLoaded) {
+  <div class="committee">
+    <router-outlet></router-outlet>
+  </div>
 
-<app-member-summaries
-  [memberSummaries]="committeeMembers"
-></app-member-summaries>
+  <app-member-summaries
+    [membersOfCommittee]="membersOfCommittee"
+  ></app-member-summaries>
+}
+<!-- //else, show the loader -->

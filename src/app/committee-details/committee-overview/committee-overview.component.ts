@@ -2,7 +2,7 @@ import { HttpParams, HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BACKEND_URL } from '../../../global_constants';
-import { CommitteeDetailsDto } from '../../models/models';
+import { CommitteeDetailsDto, CommitteeOverviewDto } from '../../models/models';
 import { Response } from '../../response/response';
 import { MemberSummariesComponent } from './member-summaries/member-summaries.component';
 import { MeetingSummariesComponent } from '../meeting-summaries/meeting-summaries.component';
@@ -18,8 +18,7 @@ import { DatePipe } from '@angular/common';
   styleUrl: './committee-overview.component.scss',
 })
 export class CommitteeOverviewComponent {
-  committeeDetails!: CommitteeDetailsDto;
-  meetingDates!: string[];
+  committeeOverview!: CommitteeOverviewDto;
   dataLoaded = false;
 
   constructor(
@@ -31,12 +30,11 @@ export class CommitteeOverviewComponent {
       const params = new HttpParams().set('committeeId', receivedParams['committeeId']);
       this.httpClient
         .get<
-          Response<CommitteeDetailsDto>
-        >(BACKEND_URL + '/api/getCommitteeDetails', { params: params, withCredentials: true })
+          Response<CommitteeOverviewDto>
+        >(BACKEND_URL + '/api/getCommitteeOverview', { params: params, withCredentials: true })
         .subscribe({
           next: (response) => {
-            this.committeeDetails = response.mainBody;
-            this.meetingDates = response.mainBody.meetings.map(meeting => meeting.heldDate);
+            this.committeeOverview = response.mainBody;
             this.dataLoaded = true;
           },
           error: (response) => {
