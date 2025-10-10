@@ -2,27 +2,23 @@
   <div class="details-and-calendar">
     <div class="committee-details">
       <div class="committee-info">
-        <div
-          class="committee-name"
-          [appRecognizeNepaliText]="committeeOverview.name"
-        >
+        <div class="committee-name">
           {{ committeeOverview.name }}
         </div>
-        <div
-          class="committee-description"
-          [appRecognizeNepaliText]="committeeOverview.description"
-        >
+        <div class="committee-description">
           {{ committeeOverview.description }}
         </div>
 
         <div class="detail-item">
           <span class="label">Created Date</span>
-          <span class="value">{{ committeeOverview.createdDate | date: 'd MMM, y'}}</span>
+          <span class="value">{{
+            committeeOverview.createdDate | date: "d MMM, y"
+          }}</span>
         </div>
 
         <div class="detail-item">
           <span class="label">Coordinator</span>
-          <span class="value">{{ committeeOverview.coordinatorName}}</span>
+          <span class="value">{{ committeeOverview.coordinatorName }}</span>
         </div>
       </div>
 
@@ -42,22 +38,24 @@
           <span class="value">{{ committeeOverview.decisionCount }}</span>
         </div>
 
-
-
         <div class="statistic-item">
           <span class="label">First Meeting</span>
-          <span class="value">{{ committeeOverview.firstMeetingDate | date:"d MMM, y" }}</span>
+          <span class="value">{{
+            committeeOverview.firstMeetingDate | date: "d MMM, y"
+          }}</span>
         </div>
 
         <div class="statistic-item">
           <span class="label">Last Meeting</span>
-          <span class="value">{{ committeeOverview.lastMeetingDate | date:"d MMM, y"}}</span>
+          <span class="value">{{
+            committeeOverview.lastMeetingDate | date: "d MMM, y"
+          }}</span>
         </div>
-
       </div>
     </div>
 
-    <app-calendar [meetingDates]="committeeOverview.meetingDates"></app-calendar>
+    <app-calendar
+      [meetingDates]="committeeOverview.meetingDates"
+    ></app-calendar>
   </div>
 }
-

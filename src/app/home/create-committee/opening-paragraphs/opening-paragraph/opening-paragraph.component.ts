@@ -1,11 +1,10 @@
 import { Component, ElementRef, input, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { RecognizeNepaliTextDirective } from '../../../../utils/recognize-nepali-text.directive';
 
 @Component({
   selector: 'app-opening-paragraph',
   standalone: true,
-  imports: [RecognizeNepaliTextDirective],
+  imports: [],
   templateUrl: './opening-paragraph.component.html',
   styleUrl: './opening-paragraph.component.scss'
 })

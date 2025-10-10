@@ -1,32 +1,51 @@
-
-@use 'colors' as colors;
-@use 'constants' as constants;
-@import 'form_styles';
-@import 'dialog_styles';
-@import 'button_styles';
-@import 'reset';
-
-
-
+@use "colors" as colors;
+@use "constants" as constants;
+@import "form_styles";
+@import "dialog_styles";
+@import "button_styles";
+@import "reset";
 
 //SOME GLOBAL SYTLES
 
-
-//FONT STYLES
-.nepali-font {
-  font-family: "Poppins", sans-serif !important;
-  letter-spacing: 1px !important;
+@font-face {
+  font-family: "NotoSansDevanagari";
+  src: url("assets/fonts/NotoSansDevanagari-VariableFont_wdth,wght.ttf")
+    format("truetype");
+  font-weight: 100 900; /* adjust if you know the weight range */
+  font-style: normal;
+  size-adjust: 120%; /* Makes Baloo 10% larger when used as fallback */
 }
 
+@font-face {
+  font-family: "Baloo";
+  src: url("assets/fonts/Baloo2-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900; /* adjust if you know the weight range */
+  font-style: normal;
+  size-adjust: 115%; /* Makes Baloo 10% larger when used as fallback */
+}
+
+@font-face {
+  font-family: "AnekDevanagari";
+  src: url("assets/fonts/AnekDevanagari-VariableFont_wdth,wght.ttf")
+    format("truetype");
+  font-weight: 100 900; /* adjust if you know the weight range */
+  font-style: normal;
+  size-adjust: 120%; /* Makes Baloo 10% larger when used as fallback */
+}
+
+@font-face {
+  font-family: 'Preeti';
+  src: url('assets/fonts/Preeti.TTF') format('truetype');
+  font-style: normal;
+}
 
 html,
 body {
-  font-family: Roboto, sans-serif;
+  font-family: Roboto, "Baloo", sans-serif;
   font-weight: 400;
-
   background-color: #36393f;
   color: #dcddde;
-  scrollbar-gutter: stable;  //reserves space for scrollbar even when not visible to prevent layout shift
+  scrollbar-gutter: stable; //reserves space for scrollbar even when not visible to prevent layout shift
 }
 
 
@@ -42,7 +61,6 @@ body {
   padding: 40px 0px;
   width: 100%;
 }
-
 
 /* Global scrollbar styling */
 * {

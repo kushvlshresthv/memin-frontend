@@ -17,7 +17,6 @@ import {
 import { SearchBarComponent } from '../../search-bar/search-bar.component';
 import { SelectMemberForCommitteeComponent } from './select-member-for-committee/select-member-for-committee.component';
 import { CommitteeCreationDto, MemberSearchResult } from '../../models/models';
-import { RecognizeNepaliTextDirective } from '../../utils/recognize-nepali-text.directive';
 import { SafeCloseDialogDirective } from '../../utils/safe-close-dialog.directive';
 import { MemberSelectionService } from './select-member-for-committee/select-member-for-committee.service';
 import { HttpClient } from '@angular/common/http';
@@ -32,7 +31,6 @@ import { Router } from '@angular/router';
   imports: [
     ReactiveFormsModule,
     SelectMemberForCommitteeComponent,
-    RecognizeNepaliTextDirective,
     SafeCloseDialogDirective,
     OpeningParagraphsComponent,
   ],
