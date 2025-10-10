@@ -13,6 +13,10 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { SafeCloseDialogDirective } from '../../utils/safe-close-dialog.directive';
+import { MemberCreationDto, MemberDetailsDto } from '../../models/models';
+import { HttpClient } from '@angular/common/http';
+import { BACKEND_URL } from '../../../global_constants';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-member',
@@ -23,6 +27,8 @@ import { SafeCloseDialogDirective } from '../../utils/safe-close-dialog.directiv
 })
 export class CreateMemberComponent implements AfterViewInit {
   diag = viewChild<ElementRef<HTMLDialogElement>>('create_member_dialog');
+
+  constructor(private httpClient: HttpClient, private router: Router) {}
 
   firstName = new FormControl('', [
     Validators.required,
@@ -58,13 +64,37 @@ export class CreateMemberComponent implements AfterViewInit {
   });
 
   ngAfterViewInit(): void {
-
     // Show the dialog
     if (this.diag() && !this.diag()!.nativeElement.open) {
       this.diag()!.nativeElement.showModal();
     }
   }
 
+  onSubmit($event: Event) {
+    console.log("onSubmitted called");
+    $event.preventDefault();
+    const requestBody = new MemberCreationDto();
+    requestBody.firstName = this.firstName.value!;
+    requestBody.lastName = this.lastName.value!;
+    requestBody.username = this.username.value!;
+    requestBody.post = this.post.value!;
+    requestBody.title = this.title.value!;
+    requestBody.email = this.email.value!;
+    requestBody.institution = this.institution.value!;
 
-  onSubmit() {};
+    this.httpClient
+      .post<Response>(BACKEND_URL + '/api/createMember', requestBody, {
+        withCredentials: true,
+      })
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+          //TODO: change this
+          localStorage.removeItem("savedForm")
+          this.router.navigate(['/home/my-committees']);
+        },
+        error: (error) => console.log(error.error.message),
+      });
+    this.diag()!.nativeElement.close();
+  }
 }

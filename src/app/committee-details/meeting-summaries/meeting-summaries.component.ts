@@ -25,11 +25,11 @@ export class MeetingSummariesComponent {
       const params = new HttpParams().set('committeeId', receivedParams['committeeId']);
       this.httpClient
         .get<
-          Response<CommitteeDetailsDto>
-        >(BACKEND_URL + '/api/getCommitteeDetails', { params: params, withCredentials: true })
+          Response<MeetingSummaryDto[]>
+        >(BACKEND_URL + '/api/getMeetingsOfCommittee', { params: params, withCredentials: true })
         .subscribe({
           next: (response) => {
-            this.meetingSummaries = response.mainBody.meetings;
+            this.meetingSummaries = response.mainBody;
             this.dataLoaded = true;
           },
           error: (response) => {

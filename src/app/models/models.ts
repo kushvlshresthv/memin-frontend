@@ -92,3 +92,24 @@ export class CommitteeMembershipDto {
     fullName: string = "";
     role: string = "";
 }
+
+
+export class MemberDetailsDto {
+  firstName: string = "";
+  lastName: string = ""
+  username: string = "";
+  institution: string = "";
+  title: string = "";
+  post: string = ""
+  email: string = "";
+}
+
+export class MemberCreationDto {
+    firstName: string = "";
+    lastName: string = "";
+    username: string ="";
+    institution: string = "";
+    title: string = "";
+    post: string = "";
+    email: string = "";
+}

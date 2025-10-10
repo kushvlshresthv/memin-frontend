@@ -3,6 +3,10 @@
 @use "constants" as constants;
 
 
+.main-dialog {
+  height: 73vh;
+}
+
 .member-details-panel {
   flex: 1;
   background: colors.$color-background-card;
