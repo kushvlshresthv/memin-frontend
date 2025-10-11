@@ -16,7 +16,7 @@ import { filter } from 'rxjs';
   styleUrl: './sidebar.component.scss',
 })
 export class SidebarComponent implements OnInit {
-  state: 'main-menu' | 'committee-menu' | 'login' = 'main-menu';
+  subheading: 'main-menu' | 'committee-menu' | 'login' = 'main-menu';
   constructor(private router: Router, private route: ActivatedRoute) {}
 
   // Method to get only the committeeId query parameter and ignoring other query parameters if any
@@ -31,17 +31,17 @@ export class SidebarComponent implements OnInit {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        if (event.urlAfterRedirects.startsWith('/committee')) {
-          this.state = 'committee-menu';
+        if (event.urlAfterRedirects.startsWith('/committee-details')) {
+          this.subheading = 'committee-menu';
         } else if (event.urlAfterRedirects === '/login') {
-          this.state = 'login';
+          this.subheading = 'login';
         } else if (
           event.urlAfterRedirects === '/' ||
           event.urlAfterRedirects.startsWith('/home')
         ) {
-          this.state = 'main-menu';
+          this.subheading = 'main-menu';
         } else {
-          this.state = 'main-menu'; //default
+          this.subheading = 'main-menu'; //default
         }
       });
   }

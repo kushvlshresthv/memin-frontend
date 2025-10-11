@@ -32,12 +32,11 @@ select {
 }
 
 .calendar-container {
-  padding-top: 1rem;
   background: colors.$color-background-secondary;
   // background: colors.$color-background-main;
-  padding: 20px;
   border-radius: 6px;
   border: 1px solid colors.$color-border-primary;
+  padding: 20px;
 }
 
 .header {

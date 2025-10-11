@@ -9,6 +9,15 @@
   border-radius: 8px;
   background: colors.$color-background-secondary;
   padding: 10px 20px 10px 20px;
+  padding: 20px;
+}
+
+
+.heading {
+  font-size: constants.$font-xxl;
+  font-weight: constants.$font-weight-semibold;
+  color: colors.$color-text-primary;
+  margin: 0;
 }
 
 .meeting-summaries {
@@ -37,16 +46,10 @@
 }
 
 .meeting-card {
-  width: 300px;
+  width: 316px;  //only for fullscreen, fixed width
   flex-shrink: 0;
 }
 
-.heading {
-  font-size: constants.$font-xxl;
-  font-weight: constants.$font-weight-semibold;
-  color: colors.$color-text-primary;
-  margin: 0;
-}
 
 .empty-state {
   color: colors.$color-text-muted;

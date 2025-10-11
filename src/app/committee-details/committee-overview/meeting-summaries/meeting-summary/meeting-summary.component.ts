@@ -1,6 +1,7 @@
 import { Component, input } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { MeetingSummaryDto } from '../../../models/models';
+import { MeetingSummaryDto } from '../../../../models/models';
+
 
 @Component({
   selector: 'app-meeting-summary',

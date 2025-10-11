@@ -6,9 +6,8 @@
 <!--     } -->
 <!--   </style> -->
 <!-- } @else { -->
-<div class="sidebar" [class]="state">
+<div class="sidebar">
   <nav class="sidebar-nav">
-    @if (state == "main-menu") {
     <a
       href="#"
       class="nav-item"
@@ -17,6 +16,49 @@
     >
       <span class="nav-text">My Committees</span>
     </a>
+
+    @if (subheading == "committee-menu") {
+      <div class="sub-menu">
+        <a
+          href="#"
+          class="nav-item"
+          routerLink="committee-details/overview"
+          routerLinkActive="selected"
+          [queryParams]="getCommitteeQueryParams()"
+        >
+          <span class="nav-text sub">Committee Overview</span>
+        </a>
+        <a
+          href="#"
+          class="nav-item"
+          routerLink="committee-details/meetings"
+          routerLinkActive="selected"
+          [queryParams]="getCommitteeQueryParams()"
+        >
+          <span class="nav-text sub">View Meetings</span>
+        </a>
+
+        <a
+          href="#"
+          class="nav-item"
+          routerLink="committee-details/edit"
+          routerLinkActive="selected"
+          [queryParams]="getCommitteeQueryParams()"
+        >
+          <span class="nav-text sub">Edit Committee</span>
+        </a>
+        <a
+          href="#"
+          class="nav-item"
+          routerLink="committee-details/summary"
+          routerLinkActive="selected"
+          [queryParams]="getCommitteeQueryParams()"
+        >
+          <span class="nav-text sub">Committee Summary</span>
+        </a>
+      </div>
+    }
+
     <a
       href="#"
       class="nav-item"
@@ -57,53 +99,5 @@
     >
       <span class="nav-text">Members List</span>
     </a>
-    } @else if (state == "committee-menu") {
-    <a
-      href="#"
-      class="nav-item"
-      routerLink="committee-details/overview"
-      routerLinkActive="selected"
-      [queryParams]="getCommitteeQueryParams()"
-    >
-      <span class="nav-text">Committee Overview</span>
-    </a>
-    <a
-      href="#"
-      class="nav-item"
-      routerLink="committee-details/meetings"
-      routerLinkActive="selected"
-      [queryParams]="getCommitteeQueryParams()"
-    >
-      <span class="nav-text">View Meetings</span>
-    </a>
-
-    <a
-      href="#"
-      class="nav-item"
-      routerLink="committee-details/edit"
-      routerLinkActive="selected"
-      [queryParams]="getCommitteeQueryParams()"
-    >
-      <span class="nav-text">Edit Committee</span>
-    </a>
-    <a
-      href="#"
-      class="nav-item"
-      routerLink="committee-details/summary"
-      routerLinkActive="selected"
-      [queryParams]="getCommitteeQueryParams()"
-    >
-      <span class="nav-text">Committee Summary</span>
-    </a>
-
-    <a
-      href="#"
-      class="nav-item"
-      routerLink="home/my-committees"
-      routerLinkActive="selected"
-    >
-      <span class="nav-text">Back to Home</span>
-    </a>
-    }
   </nav>
 </div>

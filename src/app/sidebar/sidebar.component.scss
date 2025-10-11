@@ -31,6 +31,11 @@
   letter-spacing: 0.5px;
 }
 
+.sub-menu {
+  margin-left: 20px;
+  border-left: 1px solid colors.$color-border-primary;
+}
+
 .sidebar-nav {
   flex: 1;
   display: flex;
@@ -63,9 +68,14 @@
 }
 
 
+
 .nav-text {
   font-size: 1rem;
   font-weight: 500;
+}
+
+.nav-text.sub {
+  font-size: 0.9rem;
 }
 
 .selected {

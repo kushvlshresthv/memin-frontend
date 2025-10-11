@@ -10,7 +10,7 @@
   background: colors.$color-background-card;
   border-radius: 8px;
   border: 1px solid colors.$color-border-primary;
-  width: 100%;
+  flex-grow: 1;
   max-width: 300px;
   overflow: hidden;
   transition: all 0.2s ease;

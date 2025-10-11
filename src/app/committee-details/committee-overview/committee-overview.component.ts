@@ -7,7 +7,7 @@ import { Response } from '../../response/response';
 import { CalendarComponent } from './calendar/calendar.component';
 import { DatePipe } from '@angular/common';
 import { MemberSummariesComponent } from './member-summaries/member-summaries.component';
-import { MeetingSummariesComponent } from '../meeting-summaries/meeting-summaries.component';
+import { MeetingSummariesComponent } from './meeting-summaries/meeting-summaries.component';
 
 @Component({
   selector: 'app-committee-overview',
