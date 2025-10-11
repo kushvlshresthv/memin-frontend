@@ -13,31 +13,6 @@ import {Response} from "../../response/response";
   styleUrl: './meeting-summaries.component.scss'
 })
 export class MeetingSummariesComponent {
-  meetingSummaries!: MeetingSummaryDto[];
-  dataLoaded = false;
-
-  constructor(
-    private router: Router,
-    private httpClient: HttpClient,
-    private activatedRoute: ActivatedRoute,
-  ) {
-    this.activatedRoute.queryParams.subscribe((receivedParams) => {
-      const params = new HttpParams().set('committeeId', receivedParams['committeeId']);
-      this.httpClient
-        .get<
-          Response<MeetingSummaryDto[]>
-        >(BACKEND_URL + '/api/getMeetingsOfCommittee', { params: params, withCredentials: true })
-        .subscribe({
-          next: (response) => {
-            this.meetingSummaries = response.mainBody;
-            this.dataLoaded = true;
-          },
-          error: (response) => {
-            console.log(response);
-            //TODO: handle error with popup message
-          },
-        });
-    });
-  }
+  meetingSummaries = input.required<MeetingSummaryDto[]>();
 }
 

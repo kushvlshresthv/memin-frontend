@@ -9,8 +9,6 @@ import { CreateCommitteeComponent } from './home/create-committee/create-committ
 import { CreateMemberComponent } from './home/create-member/create-member.component';
 import { CommitteeOverviewComponent } from './committee-details/committee-overview/committee-overview.component';
 import { CommitteeDetailsComponent } from './committee-details/committee-details.component';
-import { MeetingSummariesComponent } from './committee-details/meeting-summaries/meeting-summaries.component';
-import { MinuteComponent } from './committee-details/meeting-summaries/minute/minute.component';
 
 export const routes: Routes = [
   {
@@ -58,16 +56,17 @@ export const routes: Routes = [
         path: 'overview',
         component: CommitteeOverviewComponent,
       },
-      {
-        path: 'meetings/minute',
-        component: MinuteComponent,
-      },
-
-
-      {
-        path: 'meetings',
-        component: MeetingSummariesComponent,
-      },
+      // {
+      //   //this is above meetings so that meetings/minute is rendered directly in the /committee-details instead of inside the /meetings
+      //   path: 'meetings/minute',
+      //   component: MinuteComponent,
+      // },
+      //
+      //
+      // {
+      //   path: 'meetings',
+      //   component: MeetingSummariesComponent,
+      // },
 
       {
         path: '**',
