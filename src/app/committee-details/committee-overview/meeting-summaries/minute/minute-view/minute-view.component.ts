@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
-import { MinuteDataDto } from '../../../../models/models';
+import { MinuteDataDto } from '../../../../../models/models';
 
 @Component({
   selector: 'app-minute-view',

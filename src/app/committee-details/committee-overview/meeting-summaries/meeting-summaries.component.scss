@@ -8,8 +8,8 @@
   gap: 20px;
   border-radius: 8px;
   background: colors.$color-background-secondary;
-  padding: 10px 20px 10px 20px;
   padding: 20px;
+  width: 96%;  //idk 96% works, 100% makes it overflow
 }
 
 
@@ -21,8 +21,12 @@
 }
 
 .meeting-summaries {
-  display: flex;
-  flex-wrap: wrap;
+  // display: flex;
+  // flex-wrap: wrap;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
   justify-content: flex-start;
   gap: 20px;
   width: 100%;
@@ -45,10 +49,6 @@
   }
 }
 
-.meeting-card {
-  width: 316px;  //only for fullscreen, fixed width
-  flex-shrink: 0;
-}
 
 
 .empty-state {

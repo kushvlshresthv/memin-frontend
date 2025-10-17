@@ -16,6 +16,7 @@ export class AppComponent {
 
   isLoginPage: boolean = false;
 
+
   //don't render the sidebar if the current route is the login page
   constructor(private router: Router) {
     this.router.events.pipe(
@@ -23,5 +24,6 @@ export class AppComponent {
     ).subscribe((event: NavigationEnd) => {
       this.isLoginPage = event.urlAfterRedirects === '/login';
     });
+
   }
 }

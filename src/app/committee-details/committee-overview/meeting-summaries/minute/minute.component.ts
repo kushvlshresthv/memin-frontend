@@ -3,11 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { MinuteViewComponent } from './minute-view/minute-view.component';
 import { MinuteEditComponent } from './minute-edit/minute-edit.component';
-import { BACKEND_URL } from '../../../../global_constants';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { MinuteDataDto } from '../../../models/models';
-import { Response } from '../../../response/response';
+import { BACKEND_URL } from '../../../../../global_constants';
+import { MinuteDataDto } from '../../../../models/models';
+import { Response } from '../../../../response/response';
 
 @Component({
   selector: 'app-minute',
