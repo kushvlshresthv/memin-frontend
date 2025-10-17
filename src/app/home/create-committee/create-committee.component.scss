@@ -1,4 +1,5 @@
 @use 'colors' as colors;
+@use 'constants' as constants;
 
 dialog {
   max-width: 1200px;
@@ -102,5 +103,44 @@ dialog {
     color: colors.$color-text-primary;
   }
 }
+
+.language-radio-group {
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  margin-top: 3px;
+}
+
+.language-radio-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: colors.$color-text-primary;
+  text-transform: none;
+  font-size: constants.$font-normal;
+}
+
+
+.language-radio-item input[type='radio'] {
+  appearance: none; // removes default browser style
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid colors.$color-border-primary;
+  border-radius: 50%;
+  background-color: grey;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.language-radio-item input[type='radio']:checked {
+  background-color: colors.$color-button-primary;
+}
+
+.language-radio-item input[type='radio']:hover {
+  border-color: #666;
+}
+
 
 

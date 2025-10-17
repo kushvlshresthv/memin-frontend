@@ -24,6 +24,5 @@ export class AppComponent {
     ).subscribe((event: NavigationEnd) => {
       this.isLoginPage = event.urlAfterRedirects === '/login';
     });
-
   }
 }

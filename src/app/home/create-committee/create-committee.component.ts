@@ -22,7 +22,6 @@ import { MemberSelectionService } from './select-member-for-committee/select-mem
 import { HttpClient } from '@angular/common/http';
 import { BACKEND_URL } from '../../../global_constants';
 import { Response } from '../../response/response';
-import { OpeningParagraphsComponent } from './opening-paragraphs/opening-paragraphs.component';
 import { Router } from '@angular/router';
 
 @Component({
@@ -32,7 +31,6 @@ import { Router } from '@angular/router';
     ReactiveFormsModule,
     SelectMemberForCommitteeComponent,
     SafeCloseDialogDirective,
-    OpeningParagraphsComponent,
   ],
   templateUrl: './create-committee.component.html',
   styleUrl: './create-committee.component.scss',
@@ -64,12 +62,14 @@ export class CreateCommitteeComponent implements OnDestroy {
   );
   status = new FormControl<'ACTIVE'|'INACTIVE'>('ACTIVE', {nonNullable: true, validators: [Validators.required]});
   maxNoOfMeetings = new FormControl();
+  minuteLanguage = new FormControl<string | null>(null);
   formData = new FormGroup({
     name: this.name,
     description: this.description,
     coordinator: this.coordinator,
     status: this.status,
     maxNoOfMeetings: this.maxNoOfMeetings,
+    minuteLanguage: this.minuteLanguage,
   });
 
   constructor() {
