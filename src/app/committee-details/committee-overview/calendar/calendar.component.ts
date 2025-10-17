@@ -14,12 +14,19 @@ export class CalendarComponent {
   currentYear = new Date().getFullYear();
   selectedYear = this.currentYear;
   months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-  years!: Set<number>;
+  years: Set<number> = new Set();
 
   ngOnInit() {
-    this.years = new Set(this.meetingDates().map((date) => new Date(date).getFullYear()));
-    //if there are no meeting dates
-    if(this.years.size == 0) {
+    //if at least one meeting date is present
+    if (
+      this.meetingDates() != null &&
+      this.meetingDates() != undefined &&
+      this.meetingDates().length > 0
+    ) {
+      this.years = new Set(
+        this.meetingDates().map((date) => new Date(date).getFullYear()),
+      );
+    } else {
       this.years.add(this.currentYear);
     }
   }
@@ -41,12 +48,15 @@ export class CalendarComponent {
   }
 
   isMeeting(date: Date): boolean {
+    if(this.meetingDates() == null || this.meetingDates() == undefined || this.meetingDates().length <= 0){
+      return false;
+    }
     return this.meetingDates().some(
       (d) => new Date(d).toDateString() === date.toDateString(),
     );
   }
 
-  isToday(date: Date) : boolean {
+  isToday(date: Date): boolean {
     return date.toDateString() === new Date().toDateString();
   }
 }
