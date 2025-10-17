@@ -13,6 +13,7 @@ export class CommitteeCreationDto {
   maximumNumberOfMeetings?: number = undefined;
   members: Map<number, string> = new Map<number, string>();
   coordinatorId: number = 0;
+  minuteLanguage: string = "";
 }
 
 export class CommitteeDetailsDto{

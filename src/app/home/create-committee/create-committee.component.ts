@@ -62,7 +62,7 @@ export class CreateCommitteeComponent implements OnDestroy {
   );
   status = new FormControl<'ACTIVE'|'INACTIVE'>('ACTIVE', {nonNullable: true, validators: [Validators.required]});
   maxNoOfMeetings = new FormControl();
-  minuteLanguage = new FormControl<string | null>(null);
+  minuteLanguage = new FormControl<"NEPALI" | "ENGLISH" | null>(null);
   formData = new FormGroup({
     name: this.name,
     description: this.description,
@@ -109,6 +109,8 @@ export class CreateCommitteeComponent implements OnDestroy {
     requestBody.coordinatorId = this.coordinator.value.memberId;
     requestBody.status = this.status.value;
     requestBody.maximumNumberOfMeetings = this.maxNoOfMeetings.value;
+    requestBody.minuteLanguage = this.minuteLanguage.value!;
+
     this.memberSelectionService.selectedWithRoles().forEach((memberWithRole) => {
       requestBody.members.set(
         memberWithRole.member.memberId,
@@ -116,21 +118,20 @@ export class CreateCommitteeComponent implements OnDestroy {
       );
     });
 
+    console.log(requestBody);
+
     this.httpClient.post<Response<string[]>>(BACKEND_URL + '/api/createCommittee', requestBody, {
       withCredentials: true,
     }).subscribe({
       next: (response) => {
         console.log(response.message);
-        //clear the local storage since the committee is created successfully
         localStorage.removeItem('createCommitteeForm');
         localStorage.removeItem('selectedMembersWithRole');
-        // this.diag()!.nativeElement.close('created');
         this.router.navigate(['/home/my-committees']);
         console.log("TODO: show in popup" + response.message);
       },
       error: (error) => {
         console.log('TODO: show in popup' + error.error.message);
-        // this.diag()!.nativeElement.close('error');
         //TODO: show popup and redirect to my-committees
       }
     });
