@@ -7,14 +7,6 @@
 
 //SOME GLOBAL SYTLES
 
-@font-face {
-  font-family: "NotoSansDevanagari";
-  src: url("assets/fonts/NotoSansDevanagari-VariableFont_wdth,wght.ttf")
-    format("truetype");
-  font-weight: 100 900; /* adjust if you know the weight range */
-  font-style: normal;
-  size-adjust: 120%; /* Makes Baloo 10% larger when used as fallback */
-}
 
 @font-face {
   font-family: "Baloo";
@@ -24,20 +16,15 @@
   size-adjust: 115%; /* Makes Baloo 10% larger when used as fallback */
 }
 
-@font-face {
-  font-family: "AnekDevanagari";
-  src: url("assets/fonts/AnekDevanagari-VariableFont_wdth,wght.ttf")
-    format("truetype");
-  font-weight: 100 900; /* adjust if you know the weight range */
-  font-style: normal;
-  size-adjust: 120%; /* Makes Baloo 10% larger when used as fallback */
-}
 
 @font-face {
-  font-family: 'Preeti';
-  src: url('assets/fonts/Preeti.TTF') format('truetype');
+  font-family: "Annapurna";
+  src: url("assets/fonts/AnnapurnaSIL-Regular.ttf") format("truetype");
   font-style: normal;
+  size-adjust: 115%;
 }
+
+
 
 html,
 body {

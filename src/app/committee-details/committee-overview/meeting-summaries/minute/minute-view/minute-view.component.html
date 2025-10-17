@@ -2,11 +2,11 @@
   <div class="introduction justify-text">
     <p class="introduction-body">
       आज मिति <span>{{ minuteData().meetingHeldDateNepali }}</span> (<span>{{
-        minuteData().meetingHeldDate
+        minuteData().meetingHeldDate | date: "yyyy/MM/dd"
       }}</span
       >),
-      <span>{{ minuteData().meetingHeldDay }}</span>
-      <span>{{ minuteData().partOfDay }}</span>
+      <span>{{ minuteData().meetingHeldDay + " " }}</span>
+      <span>{{ minuteData().partOfDay + " " }}</span>
       <span>{{ minuteData().meetingHeldTime }}</span> बजे,
       <span>{{ minuteData().meetingHeldPlace }}</span> मा
       <span>{{ minuteData().committeeDescription }}</span> का लागि गठित
@@ -31,7 +31,7 @@
         @for (membership of minuteData().committeeMemberships; track membership;
         let i = $index) {
         <tr>
-          <td>i + 1</td>
+          <td>{{i + 1}}</td>
           <td>
             {{ membership.fullName }}
           </td>
