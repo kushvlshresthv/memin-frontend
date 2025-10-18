@@ -1,9 +1,11 @@
+@use 'constants' as constants;
+
 #a4-box {
     font-family: Roboto, "Annapurna", sans-serif;
     line-height: 1.8rem;
     background: white;
     color: black;
-    width: 210mm;
+    width: constants.$minute-width;
     height: 297mm;
     margin: 0 auto;
     /*background: white;*/

@@ -3,8 +3,7 @@
 
 .committee {
   flex-grow: 1;
-  margin-right: constants.$app-member-summaries-width; // leave space for the member summaries panel
-  padding-right: 50px;
+margin-right: calc(#{constants.$app-member-summaries-width} + 50px); // leave space for the member summaries panel
 }
 
 app-member-summaries {

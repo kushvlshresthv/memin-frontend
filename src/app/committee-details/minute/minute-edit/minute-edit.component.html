@@ -1,9 +1,61 @@
-<input [(ngModel)]="minuteData().committeeName" placeholder="Committee Name" />
-<textarea [(ngModel)]="minuteData().committeeDescription" placeholder="Minute Content"></textarea>
-<input type="date" [(ngModel)]="minuteData().meetingHeldDate" placeholder="Meeting Date" />
-
-@for(decision of minuteData().decisions; track decision.decisionId) {
-  <div class="decision-item">
-    <input [(ngModel)]="decision.decision" placeholder="Decision Title" />
+<div class="minute-edit-container">
+  <div class="panel-header">
+    <h2>Edit Minute</h2>
+    <p class="panel-subtitle">Update meeting minute details and decisions</p>
   </div>
-}
+
+  <form class="actual-form">
+    <div class="form-group">
+      <label for="committee-name">Committee Name</label>
+      <input
+        id="committee-name"
+        type="text"
+        [(ngModel)]="minuteData().committeeName"
+        placeholder="Enter committee name"
+        class="form-input"
+        name="committeeName"
+      />
+    </div>
+
+
+    <div class="form-group">
+      <label for="minute-content">Committee Description</label>
+      <textarea
+        id="minute-content"
+        [(ngModel)]="minuteData().committeeDescription"
+        placeholder="Enter meeting minute details and discussion"
+        class="form-textarea"
+        name="committeeDescription"
+        rows="6"
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="meeting-date">Meeting Date</label>
+      <input
+        id="meeting-date"
+        type="date"
+        [(ngModel)]="minuteData().meetingHeldDate"
+        class="form-input"
+        name="meetingHeldDate"
+      />
+    </div>
+
+
+    <div class="form-group">
+      <label>Decisions</label>
+      <div class="decisions-list">
+        @for(decision of minuteData().decisions; track decision.decisionId) {
+          <div class="decision-item">
+            <input
+              [(ngModel)]="decision.decision"
+              placeholder="Enter decision title"
+              class="form-input"
+              [name]="'decision-' + decision.decisionId"
+            />
+          </div>
+        }
+      </div>
+    </div>
+  </form>
+</div>
