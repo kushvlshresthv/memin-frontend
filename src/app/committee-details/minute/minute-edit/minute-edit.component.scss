@@ -12,7 +12,7 @@
 
   position: fixed;
   height: 90vh;
-  z-value: 9999;
+  z-index: 9998;
 }
 
 
@@ -26,6 +26,11 @@
   }
 }
 
+.plus-button {
+  padding: 7px !important;
+  line-height: 0.3 !important;
+}
+
 .minute-edit-container {
   display: flex;
   flex-direction: column;
@@ -37,6 +42,19 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.actual-form {
+  padding: 15px;
+}
+.form-element-pair {
+  display:flex;
+  gap:10px;
+  justify-content: space-between;
+
+  .form-group {
+    width: 50%;
+  }
 }
 
 .form-input,
@@ -69,7 +87,6 @@
 
 .form-textarea {
   resize: vertical;
-  min-height: 120px;
   line-height: 1.5;
 
   &::-webkit-scrollbar {
@@ -116,4 +133,6 @@
 #committee-description {
   overflow-y: auto;
   resize: none;
+  height: 70px;
 }
+

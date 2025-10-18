@@ -2,9 +2,9 @@
   <div class="panel-header">
     <div class="pair">
       <h2>Edit Minute</h2>
-        @if(minuteDataService.hasDataChanged()) {
-          <button class="btn btn-primary">Save</button>
-        }
+      @if (minuteDataService.hasDataChanged()) {
+        <button class="btn btn-primary">Save</button>
+      }
     </div>
     <p class="panel-subtitle">Update meeting minute details and decisions</p>
   </div>
@@ -19,9 +19,9 @@
         placeholder="Enter committee name"
         class="form-input"
         name="committeeName"
+        autocomplete="off"
       />
     </div>
-
 
     <div class="form-group">
       <label for="committee-description">Committee Description</label>
@@ -34,40 +34,62 @@
       ></textarea>
     </div>
 
+    <div class="form-element-pair">
+      <div class="form-group">
+        <label for="meeting-date">Meeting Date</label>
+        <input
+          id="meeting-date"
+          type="date"
+          [(ngModel)]="minuteData().meetingHeldDate"
+          class="form-input"
+          name="meetingHeldDate"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="meeting-held-place">Meeting Place</label>
+        <input
+          id="meeting-held-place"
+          type="text"
+          [(ngModel)]="minuteData().meetingHeldPlace"
+          placeholder="Enter meeting held place"
+          class="form-input"
+          name="meetingHeldPlace"
+          autocomplete="off"
+        />
+      </div>
+    </div>
+
+
     <div class="form-group">
-      <label for="meeting-date">Meeting Date</label>
+      <label for="meeting-held-time">Meeting Time</label>
       <input
-        id="meeting-date"
-        type="date"
-        [(ngModel)]="minuteData().meetingHeldDate"
+        id="meeting-held-time"
+        type="time"
+        [(ngModel)]="minuteData().meetingHeldTime"
+        placeholder="Meeting time"
         class="form-input"
-        name="meetingHeldDate"
+        name="meetingHeldTime"
+        autocomplete="off"
       />
     </div>
 
-    <div class="form-group">
-      <label for="meeting-held-place">Committee Name</label>
-      <input
-        id="meeting-held-place"
-        type="text"
-        [(ngModel)]="minuteData().meetingHeldPlace"
-        placeholder="Enter meeting held place"
-        class="form-input"
-        name="meetingHeldPlace"
-      />
-    </div>
-
 
     <div class="form-group">
-      <label>Agendas</label>
+      <div class="pair">
+        <label>Agendas</label>
+        <button class="btn btn-primary plus-button" (click)="createEmptyAgenda()"> + </button>
+      </div>
       <div class="decisions-list">
-        @for(agenda of minuteData().agendas; track agenda.agendaId) {
+        @for (agenda of minuteData().agendas; track agenda.agendaId) {
           <div class="decision-item">
             <input
               [(ngModel)]="agenda.agenda"
-              placeholder="Enter decision title"
+              placeholder="Double click to delete"
               class="form-input"
               [name]="'agenda-' + agenda.agendaId"
+              autocomplete="off"
+              (dblclick)="deleteAgenda(agenda.agendaId)"
             />
           </div>
         }
@@ -75,15 +97,20 @@
     </div>
 
     <div class="form-group">
-      <label>Decisions</label>
+      <div class="pair">
+        <label>Decisions</label>
+        <button class="btn btn-primary plus-button" (click)="createEmptyDecision()"> + </button>
+        </div>
       <div class="decisions-list">
-        @for(decision of minuteData().decisions; track decision.decisionId) {
+        @for (decision of minuteData().decisions; track decision.decisionId) {
           <div class="decision-item">
             <input
               [(ngModel)]="decision.decision"
-              placeholder="Enter decision title"
+              placeholder="Enter decision"
               class="form-input"
               [name]="'decision-' + decision.decisionId"
+              autocomplete="off"
+              (dblclick)="deleteDecision(decision.decisionId)"
             />
           </div>
         }
