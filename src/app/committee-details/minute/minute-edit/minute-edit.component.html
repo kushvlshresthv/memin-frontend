@@ -1,1 +1,9 @@
-<p>minute-edit works!</p>
+<input [(ngModel)]="minuteData().committeeName" placeholder="Committee Name" />
+<textarea [(ngModel)]="minuteData().committeeDescription" placeholder="Minute Content"></textarea>
+<input type="date" [(ngModel)]="minuteData().meetingHeldDate" placeholder="Meeting Date" />
+
+@for(decision of minuteData().decisions; track decision.decisionId) {
+  <div class="decision-item">
+    <input [(ngModel)]="decision.decision" placeholder="Decision Title" />
+  </div>
+}

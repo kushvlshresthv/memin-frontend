@@ -1,4 +1,6 @@
 :host {
   flex-grow: 1;
   border: 1px solid yellow;
+  display: flex;
+  flex-direction: column;
 }

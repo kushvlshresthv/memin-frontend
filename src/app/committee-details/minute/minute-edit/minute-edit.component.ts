@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
+import { MinuteDataService } from '../minute-data.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-minute-edit',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './minute-edit.component.html',
   styleUrl: './minute-edit.component.scss'
 })
 export class MinuteEditComponent {
-
+  minuteData = inject(MinuteDataService).getMinuteData();
 }
