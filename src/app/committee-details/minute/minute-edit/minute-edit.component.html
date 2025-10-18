@@ -1,6 +1,11 @@
 <div class="minute-edit-container">
   <div class="panel-header">
-    <h2>Edit Minute</h2>
+    <div class="pair">
+      <h2>Edit Minute</h2>
+        @if(minuteDataService.hasDataChanged()) {
+          <button class="btn btn-primary">Save</button>
+        }
+    </div>
     <p class="panel-subtitle">Update meeting minute details and decisions</p>
   </div>
 

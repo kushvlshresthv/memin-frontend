@@ -10,5 +10,6 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './minute-edit.component.scss'
 })
 export class MinuteEditComponent {
-  minuteData = inject(MinuteDataService).getMinuteData();
+  minuteDataService = inject(MinuteDataService);
+  minuteData = this.minuteDataService.getMinuteData();
 }

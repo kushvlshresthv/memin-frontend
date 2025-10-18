@@ -9,6 +9,9 @@ import { Response } from '../../response/response';
 @Injectable()
 export class MinuteDataService {
   private minuteData = signal<MinuteDataDto>(new MinuteDataDto());
+
+  private originalData:string = "";
+
   constructor(
     private httpClient: HttpClient,
     private activatedRoute: ActivatedRoute,
@@ -26,8 +29,8 @@ export class MinuteDataService {
         })
         .subscribe({
           next: (response) => {
-            console.log(response.mainBody);
             this.minuteData.set(response.mainBody);
+            this.originalData = JSON.stringify(response.mainBody);
           },
           error: (response) => {
             console.log(response);
@@ -38,5 +41,12 @@ export class MinuteDataService {
 
   getMinuteData(): Signal<MinuteDataDto> {
     return this.minuteData;
+  }
+
+  hasDataChanged(): boolean {
+    if(JSON.stringify(this.minuteData()) !== this.originalData) {
+      return true;
+    }
+    return false;
   }
 }

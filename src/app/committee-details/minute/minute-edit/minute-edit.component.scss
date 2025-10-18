@@ -15,6 +15,17 @@
   z-value: 9999;
 }
 
+
+
+.pair {
+  display: flex;
+  justify-content: space-between;
+
+  .btn {
+    padding: 5px 10px;
+  }
+}
+
 .minute-edit-container {
   display: flex;
   flex-direction: column;
