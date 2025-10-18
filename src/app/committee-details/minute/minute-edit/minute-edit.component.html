@@ -19,14 +19,13 @@
 
 
     <div class="form-group">
-      <label for="minute-content">Committee Description</label>
+      <label for="committee-description">Committee Description</label>
       <textarea
-        id="minute-content"
+        id="committee-description"
         [(ngModel)]="minuteData().committeeDescription"
-        placeholder="Enter meeting minute details and discussion"
+        placeholder="Enter committee description/aim "
         class="form-textarea"
         name="committeeDescription"
-        rows="6"
       ></textarea>
     </div>
 
@@ -41,6 +40,34 @@
       />
     </div>
 
+    <div class="form-group">
+      <label for="meeting-held-place">Committee Name</label>
+      <input
+        id="meeting-held-place"
+        type="text"
+        [(ngModel)]="minuteData().meetingHeldPlace"
+        placeholder="Enter meeting held place"
+        class="form-input"
+        name="meetingHeldPlace"
+      />
+    </div>
+
+
+    <div class="form-group">
+      <label>Agendas</label>
+      <div class="decisions-list">
+        @for(agenda of minuteData().agendas; track agenda.agendaId) {
+          <div class="decision-item">
+            <input
+              [(ngModel)]="agenda.agenda"
+              placeholder="Enter decision title"
+              class="form-input"
+              [name]="'agenda-' + agenda.agendaId"
+            />
+          </div>
+        }
+      </div>
+    </div>
 
     <div class="form-group">
       <label>Decisions</label>
