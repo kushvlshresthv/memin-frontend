@@ -31,7 +31,7 @@ export class MinuteComponent {
       );
       params = params.set('committeeId', receivedParams['committeeId']);
       this.httpClient
-        .get<Response<MinuteDataDto>>(BACKEND_URL + '/api/getDataForNepaliMinute', {
+        .get<Response<MinuteDataDto>>(BACKEND_URL + '/api/getDataForMinute', {
           params: params,
           withCredentials: true,
         })

@@ -66,6 +66,7 @@ export class MemberOfCommitteeDto {
 }
 
 export class MinuteDataDto {
+  minuteLanguage: string = "";
   meetingHeldDateNepali: string = "";
   meetingHeldDate: string = "";
   meetingHeldDay: string = "";

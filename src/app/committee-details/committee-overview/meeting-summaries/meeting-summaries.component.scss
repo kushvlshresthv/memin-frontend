@@ -22,13 +22,17 @@
 }
 
 .meeting-summaries {
+  display: flex;
+  width: 100%;
+}
+
+.meeting-summaries.has-summaries {
   // display: flex;
   // flex-wrap: wrap;
 
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
 
-  justify-content: flex-start;
   gap: 20px;
   width: 100%;
 
@@ -58,5 +62,6 @@
   text-align: center;
   padding: 40px 20px;
   width: 100%;
+  flex-grow:1;
 }
 

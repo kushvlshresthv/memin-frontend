@@ -2,11 +2,12 @@ import { Component, input } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { MinuteDataDto } from '../../../../../models/models';
 import { DatePipe } from '@angular/common';
+import { MinuteNepali1Component } from './minute-nepali-1/minute-nepali-1.component';
 
 @Component({
   selector: 'app-minute-view',
   standalone: true,
-  imports: [DatePipe],
+  imports: [DatePipe, MinuteNepali1Component],
   templateUrl: './minute-view.component.html',
   styleUrl: './minute-view.component.scss'
 })
