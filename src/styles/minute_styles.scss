@@ -16,6 +16,15 @@ p, li, td, th {
     line-height: 1.6;
 }
 
+ol {
+  list-style-position: outside; /* number stays outside */
+}
+
+li {
+  text-indent: -1.5em; /* pulls first line back */
+  padding-left: 1.5em; /* pushes the text block forward */
+}
+
 
 table {
     width: 100%;
