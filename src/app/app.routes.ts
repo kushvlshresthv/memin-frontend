@@ -9,7 +9,7 @@ import { CreateCommitteeComponent } from './home/create-committee/create-committ
 import { CreateMemberComponent } from './home/create-member/create-member.component';
 import { CommitteeOverviewComponent } from './committee-details/committee-overview/committee-overview.component';
 import { CommitteeDetailsComponent } from './committee-details/committee-details.component';
-import { MinuteComponent } from './committee-details/committee-overview/meeting-summaries/minute/minute.component';
+import { MinuteComponent } from './committee-details/minute/minute.component';
 
 export const routes: Routes = [
   {
