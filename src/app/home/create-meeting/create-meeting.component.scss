@@ -23,6 +23,20 @@ dialog {
   overflow: hidden;
 }
 
+//position: relative, and absolute was used to properly position the 'save' button
+.panel-header {
+  position: relative;
+}
+
+
+.save-button {
+  position: absolute;
+  right: 25px;
+  top:25px;
+  font-size: 14px;
+  padding: 8px 16px;
+}
+
 
 
 .form-group {
@@ -36,10 +50,6 @@ dialog {
   }
 }
 
-.form-row {
-  display: flex;
-  gap: 16px;
-}
 
 
 .form-element-pair {
@@ -50,11 +60,13 @@ dialog {
   .form-group {
     width: 50%;
   }
+
+  .btn {
+    padding: 5px 10px;
+  }
 }
 
-.form-input,
-.form-textarea,
-.form-select {
+.form-input {
   padding: 12px 16px;
   background: colors.$color-background-input;
   border: 1px solid colors.$color-border-primary;
@@ -80,58 +92,18 @@ dialog {
   }
 }
 
-.form-textarea {
-  resize: vertical;
-  min-height: 100px;
-  line-height: 1.5;
-}
 
-.form-select {
-  cursor: pointer;
-
-  option {
-    background: colors.$color-background-input;
-    color: colors.$color-text-primary;
-  }
-}
-
-.language-radio-group {
-  display: flex;
-  gap: 50px;
-  align-items: center;
-  margin-top: 3px;
-}
-
-.language-radio-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  color: colors.$color-text-primary;
-  text-transform: none;
-  font-size: constants.$font-normal;
+//so that the + and the lable are aligned vertically
+.form-element-pair > label {
+  padding-top: 8px;
 }
 
 
-.language-radio-item input[type='radio'] {
-  appearance: none; // removes default browser style
-  -webkit-appearance: none;
-  width: 16px;
-  height: 16px;
-  border: 2px solid colors.$color-border-primary;
-  border-radius: 50%;
-  background-color: grey;
-  cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s;
+.decision-item>textarea, .agenda-item>textarea {
+  box-sizing: border-box !important;
+  width: 100%;
 }
 
-.language-radio-item input[type='radio']:checked {
-  background-color: colors.$color-button-primary;
-}
-
-.language-radio-item input[type='radio']:hover {
-  border-color: #666;
-}
 
 
 

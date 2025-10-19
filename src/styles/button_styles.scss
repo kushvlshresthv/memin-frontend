@@ -42,7 +42,7 @@ DESCRIPTION:
 
   &:not(:disabled):hover {
     transform: translateY(-1px); //move 1px up
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    // box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 
   &:not(:disabled):active {

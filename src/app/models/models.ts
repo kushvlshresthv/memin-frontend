@@ -1,6 +1,5 @@
 export interface MemberSearchResult {
-  memberId: number;
-  firstName: string;
+  memberId: number; firstName: string;
   lastName: string;
   post: string;
   institution: string;
@@ -114,4 +113,14 @@ export class MemberCreationDto {
     title: string = "";
     post: string = "";
     email: string = "";
+}
+
+export class MeetingCreationDto {
+    title: string = "";
+    heldDate: string = "";
+    heldTime: string = ""
+    heldPlace: string = "";
+    inviteeIds: number[] = []
+    decisions: string[] = [];
+    agendas: string[] = [];
 }

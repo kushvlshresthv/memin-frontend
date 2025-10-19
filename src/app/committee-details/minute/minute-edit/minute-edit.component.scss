@@ -24,6 +24,11 @@
   .btn {
     padding: 5px 10px;
   }
+
+  //so that + button and lable are aligned vertically
+  label {
+    padding-top: 4px;
+  }
 }
 
 .plus-button {
