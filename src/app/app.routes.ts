@@ -10,6 +10,7 @@ import { CreateMemberComponent } from './home/create-member/create-member.compon
 import { CommitteeOverviewComponent } from './committee-details/committee-overview/committee-overview.component';
 import { CommitteeDetailsComponent } from './committee-details/committee-details.component';
 import { MinuteComponent } from './committee-details/minute/minute.component';
+import { CreateMeetingComponent } from './home/create-meeting/create-meeting.component';
 
 export const routes: Routes = [
   {
@@ -38,6 +39,10 @@ export const routes: Routes = [
       {
         path: 'create-member',
         component: CreateMemberComponent,
+      },
+      {
+        path: 'create-meeting',
+        component: CreateMeetingComponent,
       },
       {
         path: '**',

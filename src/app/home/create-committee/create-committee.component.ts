@@ -38,8 +38,6 @@ import { Router } from '@angular/router';
 })
 export class CreateCommitteeComponent implements OnDestroy {
   diag = viewChild<ElementRef<HTMLDialogElement>>('new_project_dialogue');
-  openingParagraphs!: string[];
-
 
   memberSelectionService = inject(MemberSelectionService);
   httpClient = inject(HttpClient);

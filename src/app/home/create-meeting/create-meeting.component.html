@@ -1,0 +1,83 @@
+<dialog appSafeCloseDialog #new_meeting_dialogue class="main-dialog" [formGroup]="formData">
+  <!-- Left Panel - Member Selection -->
+  <div class="invitee-selection-panel">
+    <div class="panel-header">
+      <h2>Select Members</h2>
+      <p class="panel-subtitle">Search invitees for the meeting</p>
+    </div>
+    <app-select-invitee-for-meeting></app-select-invitee-for-meeting>
+  </div>
+
+  <!-- Right Panel - Meeting Details -->
+  <div class="meeting-details-panel">
+    <div class="panel-header">
+      <h2>Meeting Details</h2>
+      <p class="panel-subtitle">Meeting meeting information</p>
+    </div>
+
+    <form [formGroup]="formData" class="actual-form">
+      <div class="form-group">
+        <label for="meeting-title">Meeting Title</label>
+        <input
+          id="meeting-title"
+          type="text"
+          placeholder="Enter meeting title"
+          formControlName="title"
+          class="form-input"
+        />
+        @if (title.touched && title.dirty) {
+          @if (title.errors?.["required"]) {
+            <p class="field-error">Meeting title is required</p>
+          }
+        }
+      </div>
+
+    <div class="form-element-pair">
+      <div class="form-group">
+        <label for="meeting-date">Meeting Date</label>
+        <input
+          id="meeting-date"
+          type="date"
+          class="form-input"
+          name="meetingHeldDate"
+        />
+      </div>
+
+        <div class="form-group">
+          <label for="meeting-held-time">Meeting Time</label>
+          <input
+            id="meeting-held-time"
+            type="time"
+            placeholder="Meeting time"
+            class="form-input"
+            name="meetingHeldTime"
+          />
+        </div>
+    </div>
+
+
+    <div class="form-group">
+      <label for="meeting-held-place">Meeting Place</label>
+      <input
+        id="meeting-held-place"
+        type="text"
+        placeholder="Enter meeting held place"
+        class="form-input"
+        name="meetingHeldPlace"
+        autocomplete="off"
+      />
+    </div>
+
+      <div class="form-actions">
+        <button
+          type="submit"
+          [disabled]="formData.invalid"
+          (click)="onSubmit($event)"
+          class="btn btn-primary"
+        >
+          Create Meeting
+        </button>
+      </div>
+    </form>
+  </div>
+</dialog>

@@ -17,6 +17,7 @@ import { MemberCreationDto, MemberDetailsDto } from '../../models/models';
 import { HttpClient } from '@angular/common/http';
 import { BACKEND_URL } from '../../../global_constants';
 import { Router } from '@angular/router';
+import { SelectInviteeForMeetingComponent } from '../create-meeting/select-invitee-for-meeting/select-invitee-for-meeting.component';
 
 @Component({
   selector: 'app-create-member',
