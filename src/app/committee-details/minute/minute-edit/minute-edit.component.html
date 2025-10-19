@@ -46,30 +46,30 @@
         />
       </div>
 
-      <div class="form-group">
-        <label for="meeting-held-place">Meeting Place</label>
-        <input
-          id="meeting-held-place"
-          type="text"
-          [(ngModel)]="minuteData().meetingHeldPlace"
-          placeholder="Enter meeting held place"
-          class="form-input"
-          name="meetingHeldPlace"
-          autocomplete="off"
-        />
-      </div>
+        <div class="form-group">
+          <label for="meeting-held-time">Meeting Time</label>
+          <input
+            id="meeting-held-time"
+            type="time"
+            [(ngModel)]="minuteData().meetingHeldTime"
+            placeholder="Meeting time"
+            class="form-input"
+            name="meetingHeldTime"
+            autocomplete="off"
+          />
+        </div>
     </div>
 
 
     <div class="form-group">
-      <label for="meeting-held-time">Meeting Time</label>
+      <label for="meeting-held-place">Meeting Place</label>
       <input
-        id="meeting-held-time"
-        type="time"
-        [(ngModel)]="minuteData().meetingHeldTime"
-        placeholder="Meeting time"
+        id="meeting-held-place"
+        type="text"
+        [(ngModel)]="minuteData().meetingHeldPlace"
+        placeholder="Enter meeting held place"
         class="form-input"
-        name="meetingHeldTime"
+        name="meetingHeldPlace"
         autocomplete="off"
       />
     </div>
