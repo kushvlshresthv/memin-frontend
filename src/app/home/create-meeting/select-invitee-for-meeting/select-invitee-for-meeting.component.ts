@@ -1,10 +1,10 @@
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, debounceTime, from } from 'rxjs';
-import { MemberSearchResult } from '../../../models/models';
+import { CommitteeOverviewDto, MemberSearchResult } from '../../../models/models';
 import { MemberSelectionService } from '../../create-committee/select-member-for-committee/select-member-for-committee.service';
 import { LoadMemberService } from '../../../load-member.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { BACKEND_URL } from '../../../../global_constants';
 import {Response} from "../../../response/response";
 import { Component, inject } from '@angular/core';
@@ -27,37 +27,26 @@ export class SelectInviteeForMeetingComponent {
     searchBarInput: new FormControl(''),
   });
 
-  memberAndFormControlMap = new Map<number, FormControl<string>>();
 
-  constructor(private router: Router, private httpClient: HttpClient) {
-    // httpClient.get<Response<MemberSearchResult>>(BACKEND_URL + '/getPossibleInvitees').subscribe(
-    //   {
-    //     next: (response) => {
-    //       const members = response.data;
-    //     }
-    // });
+  constructor(private router: Router, private httpClient: HttpClient, private activatedRoute: ActivatedRoute) {
 
-    this.possibleInvitees.push({
-      memberId: 1,
-      firstName: 'John',
-      lastName: 'Doe',
-      post: 'Professor',
-      institution: 'University A'
+
+    this.activatedRoute.queryParams.subscribe((receivedParams) => {
+      const params = new HttpParams().set('committeeId', 1/*receivedParams['committeeId']*/);
+      this.httpClient
+        .get<
+          Response<MemberSearchResult[]>
+        >(BACKEND_URL + '/api/getPossibleInvitees', { params: params, withCredentials: true })
+        .subscribe({
+          next: (response) => {
+            this.possibleInvitees = response.mainBody;
+          },
+          error: (response) => {
+            console.log(response);
+            //TODO: handle error with popup message
+          },
+        });
     });
-    this.possibleInvitees.push({
-      memberId: 2,
-      firstName: 'Jane',
-      lastName: 'Smith',
-      post: 'Researcher',
-      institution: 'Institute B'
-    })
-    this.possibleInvitees.push({
-      memberId: 3,
-      firstName: 'Alice',
-      lastName: 'Johnson',
-      post: 'Lecturer',
-      institution: 'College C'
-    })
   }
 
 

@@ -13,7 +13,7 @@ import { SafeCloseDialogDirective } from '../../utils/safe-close-dialog.directiv
 @Component({
   selector: 'app-create-meeting',
   standalone: true,
-  imports: [MinuteComponent, ReactiveFormsModule, SelectInviteeForMeetingComponent, SafeCloseDialogDirective],
+  imports: [ReactiveFormsModule, SelectInviteeForMeetingComponent, SafeCloseDialogDirective],
   templateUrl: './create-meeting.component.html',
   styleUrl: './create-meeting.component.scss',
   providers: []
