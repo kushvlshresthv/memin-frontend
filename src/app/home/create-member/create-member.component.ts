@@ -12,21 +12,22 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { SafeCloseDialogDirective } from '../../utils/safe-close-dialog.directive';
 import { MemberCreationDto, MemberDetailsDto } from '../../models/models';
 import { HttpClient } from '@angular/common/http';
 import { BACKEND_URL } from '../../../global_constants';
 import { Router } from '@angular/router';
 import { SelectInviteeForMeetingComponent } from '../create-meeting/select-invitee-for-meeting/select-invitee-for-meeting.component';
+import { SafeCloseDialogNewDirective } from '../../utils/safe-close-dialog-new.directive';
 
 @Component({
   selector: 'app-create-member',
   standalone: true,
-  imports: [ReactiveFormsModule, SafeCloseDialogDirective],
+  imports: [ReactiveFormsModule, SafeCloseDialogNewDirective],
   templateUrl: './create-member.component.html',
   styleUrl: './create-member.component.scss',
 })
 export class CreateMemberComponent implements AfterViewInit {
+  FORM_NAME = 'create_member_form';
   diag = viewChild<ElementRef<HTMLDialogElement>>('create_member_dialog');
 
   constructor(private httpClient: HttpClient, private router: Router) {}
@@ -91,7 +92,7 @@ export class CreateMemberComponent implements AfterViewInit {
         next: (response) => {
           console.log(response);
           //TODO: change this
-          localStorage.removeItem("savedForm")
+          localStorage.removeItem(this.FORM_NAME);
           this.router.navigate(['/home/my-committees']);
         },
         error: (error) => console.log(error.error.message),
