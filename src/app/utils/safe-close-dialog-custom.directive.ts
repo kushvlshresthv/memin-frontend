@@ -22,6 +22,7 @@ export class SafeCloseDialogCustom implements OnInit, OnDestroy {
   // Close when clicking outside the dialog content
   @HostListener('click', ['$event'])
   onDialogClick(event: MouseEvent) {
+    console.log("checking, standby");
     const dlg = this.dialogElementRef.nativeElement;
     if (event.target === dlg && dlg.open) {
         this.closeDialog();

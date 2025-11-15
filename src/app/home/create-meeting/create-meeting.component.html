@@ -1,8 +1,9 @@
 <dialog
-  [appSafeCloseDialog]="FORM_NAME"
+  appSafeCloseDialogCustom
+  [customSaveForm]="saveFormData"
+  [customRestoreForm]="restoreFormData"
   #new_meeting_dialogue
   class="main-dialog"
-  [formGroup]="formData"
 >
   <!-- Left Panel - Member Selection -->
   <div class="invitee-selection-panel">

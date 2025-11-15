@@ -17,12 +17,12 @@ import { HttpClient } from '@angular/common/http';
 import { BACKEND_URL } from '../../../global_constants';
 import { Router } from '@angular/router';
 import { SelectInviteeForMeetingComponent } from '../create-meeting/select-invitee-for-meeting/select-invitee-for-meeting.component';
-import { SafeCloseDialog } from '../../utils/safe-close-dialog.directive';
+import { SafeCloseDialogCustom } from '../../utils/safe-close-dialog-custom.directive';
 
 @Component({
   selector: 'app-create-member',
   standalone: true,
-  imports: [ReactiveFormsModule, SafeCloseDialog],
+  imports: [ReactiveFormsModule, SafeCloseDialogCustom],
   templateUrl: './create-member.component.html',
   styleUrl: './create-member.component.scss',
 })
@@ -98,5 +98,37 @@ export class CreateMemberComponent implements AfterViewInit {
         error: (error) => console.log(error.error.message),
       });
     this.diag()!.nativeElement.close();
+  }
+
+  saveFormData = () => {
+
+    const formValue = this.formData.getRawValue();
+
+    // Check if at least one field has some value
+    const hasData = Object.values(formValue).some(
+      (value) => value !== null && value !== undefined && value !== '',
+    );
+
+    if (!hasData) {
+      return;
+    }
+
+    localStorage.setItem(this.FORM_NAME, JSON.stringify(formValue));
+  };
+
+
+  restoreFormData = () => {
+    //restore form normally ie restores the FormGroup
+    const savedData = localStorage.getItem(this.FORM_NAME);
+    if (savedData) {
+      console.log("Found the saved Data");
+      console.log(savedData);
+      try {
+        const parsedData = JSON.parse(savedData);
+        this.formData.patchValue(parsedData); // prefill the form
+      } catch (err) {
+        console.error('Failed to parse saved form data', err);
+      }
+    }
   }
 }

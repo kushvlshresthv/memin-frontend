@@ -8,18 +8,17 @@ import { BACKEND_URL } from '../../../global_constants';
 import { MemberSearchResult, CommitteeCreationDto, MeetingCreationDto } from '../../models/models';
 import { MemberSelectionService } from '../create-committee/select-member-for-committee/select-member-for-committee.service';
 import { SelectInviteeForMeetingComponent } from './select-invitee-for-meeting/select-invitee-for-meeting.component';
-import { SafeCloseDialog } from '../../utils/safe-close-dialog.directive';
+import { SafeCloseDialogCustom } from '../../utils/safe-close-dialog-custom.directive';
 
 @Component({
   selector: 'app-create-meeting',
   standalone: true,
-  imports: [ReactiveFormsModule, SelectInviteeForMeetingComponent, SafeCloseDialog],
+  imports: [ReactiveFormsModule, SelectInviteeForMeetingComponent, SafeCloseDialogCustom],
   templateUrl: './create-meeting.component.html',
   styleUrl: './create-meeting.component.scss',
   providers: []
 })
 export class CreateMeetingComponent {
-
   FORM_NAME = 'create_meeting_form';
   diag = viewChild<ElementRef<HTMLDialogElement>>('new_meeting_dialogue');
 
@@ -80,6 +79,54 @@ export class CreateMeetingComponent {
     try {
       this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
     } catch (err) {}
+  }
+
+
+
+  saveFormData = () => {
+
+    const formValue = this.formData.getRawValue();
+
+    // Check if at least one field has some value
+    const hasData = Object.values(formValue).some(
+      (value) => value !== null && value !== undefined && value !== '',
+    );
+
+    if (!hasData) {
+      return;
+    }
+
+    localStorage.setItem(this.FORM_NAME, JSON.stringify(formValue));
+  };
+
+
+
+  restoreFormData =  ()=> {
+    //restore form normally ie restores the FormGroup
+    const savedData = localStorage.getItem(this.FORM_NAME);
+    if (savedData) {
+      console.log("Found the saved Data");
+      console.log(savedData);
+      try {
+        const parsedData = JSON.parse(savedData);
+        this.formData.patchValue(parsedData); // prefill the form
+
+        //the above patchValue does not restore the FormArrays, so manually restoring agendas and decisions
+        if(parsedData['agendas'] && parsedData['agendas'].length > 0 ) {
+          (parsedData['agendas'] as Array<string>).forEach((agenda) => {
+            (this.formData.controls["agendas"] as FormArray).push(new FormControl(agenda));
+          });
+        }
+
+        if(parsedData['decisions'] && parsedData['decisions'].length > 0 ) {
+          (parsedData['decisions'] as Array<string>).forEach((decision) => {
+            (this.formData.controls["decisions"] as FormArray).push(new FormControl(decision));
+          });
+        }
+      } catch (err) {
+        console.error('Failed to parse saved form data', err);
+      }
+    }
   }
 
   ngOnDestroy() {
