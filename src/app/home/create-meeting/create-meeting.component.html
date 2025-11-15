@@ -1,5 +1,5 @@
 <dialog
-  appSafeCloseDialog
+  [appSafeCloseDialog]="FORM_NAME"
   #new_meeting_dialogue
   class="main-dialog"
   [formGroup]="formData"
@@ -46,6 +46,7 @@
             type="date"
             class="form-input"
             name="meetingHeldDate"
+            formControlName="heldDate"
           />
         </div>
 
@@ -56,6 +57,7 @@
             type="time"
             placeholder="Meeting time"
             class="form-input"
+            formControlName="heldTime"
             name="meetingHeldTime"
           />
         </div>
@@ -70,6 +72,7 @@
           class="form-input"
           name="meetingHeldPlace"
           autocomplete="off"
+          formControlName="heldPlace"
         />
       </div>
 

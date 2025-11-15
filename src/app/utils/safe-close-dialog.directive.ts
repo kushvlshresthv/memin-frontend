@@ -1,20 +1,16 @@
-import { AfterViewInit, Directive, ElementRef, HostBinding, HostListener,  Input,  OnDestroy,  OnInit,  ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { AfterViewInit, Directive, ElementRef, HostBinding, HostListener,  input,  Input,  OnDestroy,  OnInit,  ViewChild } from '@angular/core';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Directive({
   selector: '[appSafeCloseDialog]',
   standalone: true,
 })
-export class SafeCloseDialogDirective implements OnInit, OnDestroy {
-  //either provide a formGroup or both customSaveForm and customRestoreForm
-  @Input(/*{required:true}*/) formGroup!: FormGroup;
-  @Input() customSaveForm!:()=> void;
-  @Input() customRestoreForm!: ()=> void;
+export class SafeCloseDialog implements OnDestroy {
+  formName = input.required<string>({alias: 'appSafeCloseDialog'});
+  @Input({required:true}) formGroup!: FormGroup;
 
   constructor(private dialogElementRef: ElementRef<HTMLDialogElement>, private router: Router) {}
-
-
 
   @HostListener('document:keydown.escape', ['$event'])
   onKeydown(event: KeyboardEvent) {
@@ -32,54 +28,39 @@ export class SafeCloseDialogDirective implements OnInit, OnDestroy {
 
   closeDialog() {
     const dialog = this.dialogElementRef?.nativeElement;
-    if(this.customSaveForm) {
-      this.customSaveForm();
-    } else {
-      this.saveFormData();
-    }
+    this.saveFormData();
     dialog.close();
+    console.log("navigating to home/my-committees");
     this.router.navigate(['./home/my-committees']);
   }
 
   ngOnInit(): void {
-    const hasFormGroup = !!this.formGroup;
-    const hasCustomFns = !!this.customSaveForm && !!this.customRestoreForm;
-
-    //has either formGroup or both custom functions
-    if (!(hasFormGroup || hasCustomFns)) {
-      throw new Error(
-        'You must provide either formGroup OR both customSaveForm and customRestoreForm.'
-      );
-    }
-
-    if (hasFormGroup && hasCustomFns) {
-      throw new Error(
-        'You cannot provide both formGroup and customSaveForm/customRestoreForm at the same time.'
-      );
-    }
-
-
-
-    // if a custom restore form method is available use that
-    if(this.customRestoreForm) {
-      this.customRestoreForm();
-      return;
-    }
-
     //restore form normally ie restores the FormGroup
-    const savedData = localStorage.getItem('savedForm');
+    const savedData = localStorage.getItem(this.formName());
     if (savedData) {
       console.log("Found the saved Data");
       console.log(savedData);
       try {
         const parsedData = JSON.parse(savedData);
         this.formGroup.patchValue(parsedData); // prefill the form
+
+        //the above patchValue does not restore the FormArrays, so manually restoring agendas and decisions
+        if(parsedData['agendas'] && parsedData['agendas'].length > 0 ) {
+          (parsedData['agendas'] as Array<string>).forEach((agenda) => {
+            (this.formGroup.controls["agendas"] as FormArray).push(new FormControl(agenda));
+          });
+        }
+
+        if(parsedData['decisions'] && parsedData['decisions'].length > 0 ) {
+          (parsedData['decisions'] as Array<string>).forEach((decision) => {
+            (this.formGroup.controls["decisions"] as FormArray).push(new FormControl(decision));
+          });
+        }
       } catch (err) {
         console.error('Failed to parse saved form data', err);
       }
     }
   }
-
 
   //saves the provided FormGroup
   saveFormData() {
@@ -101,7 +82,7 @@ export class SafeCloseDialogDirective implements OnInit, OnDestroy {
     console.log(formValue);
 
     // Save whatever data is entered, even if form is invalid
-    localStorage.setItem('savedForm', JSON.stringify(formValue));
+    localStorage.setItem(this.formName(), JSON.stringify(formValue));
   };
 
   ngOnDestroy() {

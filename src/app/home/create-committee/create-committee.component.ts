@@ -3,9 +3,7 @@ import {
   effect,
   ElementRef,
   inject,
-  input,
   OnDestroy,
-  signal,
   viewChild,
 } from '@angular/core';
 import {
@@ -17,12 +15,12 @@ import {
 import { SearchBarComponent } from '../../search-bar/search-bar.component';
 import { SelectMemberForCommitteeComponent } from './select-member-for-committee/select-member-for-committee.component';
 import { CommitteeCreationDto, MemberSearchResult } from '../../models/models';
-import { SafeCloseDialogDirective } from '../../utils/safe-close-dialog.directive';
 import { MemberSelectionService } from './select-member-for-committee/select-member-for-committee.service';
 import { HttpClient } from '@angular/common/http';
 import { BACKEND_URL } from '../../../global_constants';
 import { Response } from '../../response/response';
 import { Router } from '@angular/router';
+import { SafeCloseDialogCustom } from '../../utils/safe-close-dialog-custom.directive';
 
 @Component({
   selector: 'app-create-committee',
@@ -30,7 +28,7 @@ import { Router } from '@angular/router';
   imports: [
     ReactiveFormsModule,
     SelectMemberForCommitteeComponent,
-    SafeCloseDialogDirective,
+    SafeCloseDialogCustom,
   ],
   templateUrl: './create-committee.component.html',
   styleUrl: './create-committee.component.scss',

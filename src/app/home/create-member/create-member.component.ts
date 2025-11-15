@@ -17,12 +17,12 @@ import { HttpClient } from '@angular/common/http';
 import { BACKEND_URL } from '../../../global_constants';
 import { Router } from '@angular/router';
 import { SelectInviteeForMeetingComponent } from '../create-meeting/select-invitee-for-meeting/select-invitee-for-meeting.component';
-import { SafeCloseDialogNewDirective } from '../../utils/safe-close-dialog-new.directive';
+import { SafeCloseDialog } from '../../utils/safe-close-dialog.directive';
 
 @Component({
   selector: 'app-create-member',
   standalone: true,
-  imports: [ReactiveFormsModule, SafeCloseDialogNewDirective],
+  imports: [ReactiveFormsModule, SafeCloseDialog],
   templateUrl: './create-member.component.html',
   styleUrl: './create-member.component.scss',
 })

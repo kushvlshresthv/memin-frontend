@@ -59,7 +59,7 @@ export class SelectInviteeForMeetingComponent {
     //implement search
   }
 
-  ngOnDestroy(): void {
-    this.searchInputFieldSubscription.unsubscribe();
-  }
+  // ngOnDestroy(): void {
+  //   this.searchInputFieldSubscription.unsubscribe();
+  // }
 }
