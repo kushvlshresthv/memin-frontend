@@ -38,6 +38,7 @@ export class CreateMemberComponent implements AfterViewInit {
     Validators.maxLength(50),
   ]);
 
+
   lastName = new FormControl('', [
     Validators.required,
     Validators.minLength(2),
