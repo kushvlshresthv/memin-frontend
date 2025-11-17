@@ -108,11 +108,8 @@ export class MemberDetailsDto {
 export class MemberCreationDto {
     firstName: string = "";
     lastName: string = "";
-    username: string ="";
-    institution: string = "";
     title: string = "";
     post: string = "";
-    email: string = "";
 }
 
 export class MeetingCreationDto {

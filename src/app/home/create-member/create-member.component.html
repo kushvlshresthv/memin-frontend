@@ -9,7 +9,8 @@
     <div class="panel-header">
       <h2>Create New Member</h2>
       <p class="panel-subtitle">Add a new member to the system</p>
-      <button class="btn btn-primary save-button">Save</button>
+      <!-- TODO: only if form data is valid, enable the save button  -->
+      <button class="btn btn-primary save-button" (click) ="onSubmit($event)">Save</button>
     </div>
 
     <form [formGroup]="formData" class="actual-form">

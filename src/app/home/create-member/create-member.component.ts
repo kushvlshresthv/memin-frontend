@@ -59,11 +59,8 @@ export class CreateMemberComponent implements AfterViewInit {
   formData = new FormGroup({
     firstName: this.firstName,
     lastName: this.lastName,
-    username: this.username,
     post: this.post,
     title: this.title,
-    email: this.email,
-    institution: this.institution,
   });
 
   ngAfterViewInit(): void {
@@ -79,11 +76,8 @@ export class CreateMemberComponent implements AfterViewInit {
     const requestBody = new MemberCreationDto();
     requestBody.firstName = this.firstName.value!;
     requestBody.lastName = this.lastName.value!;
-    requestBody.username = this.username.value!;
     requestBody.post = this.post.value!;
     requestBody.title = this.title.value!;
-    requestBody.email = this.email.value!;
-    requestBody.institution = this.institution.value!;
 
     this.httpClient
       .post<Response>(BACKEND_URL + '/api/createMember', requestBody, {
@@ -92,7 +86,6 @@ export class CreateMemberComponent implements AfterViewInit {
       .subscribe({
         next: (response) => {
           console.log(response);
-          //TODO: change this
           localStorage.removeItem(this.FORM_NAME);
           this.router.navigate(['/home/my-committees']);
         },
@@ -132,4 +125,6 @@ export class CreateMemberComponent implements AfterViewInit {
       }
     }
   }
+
+
 }
