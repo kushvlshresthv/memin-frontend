@@ -5,10 +5,12 @@ import { HttpClient } from '@angular/common/http';
 import { FormControl, Validators, FormGroup, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BACKEND_URL } from '../../../global_constants';
-import { MemberSearchResult, CommitteeCreationDto, MeetingCreationDto } from '../../models/models';
+import { MemberSearchResult, CommitteeCreationDto, MeetingCreationDto, MeetingSummaryDto } from '../../models/models';
 import { MemberSelectionService } from '../create-committee/select-member-for-committee/select-member-for-committee.service';
 import { SelectInviteeForMeetingComponent } from './select-invitee-for-meeting/select-invitee-for-meeting.component';
 import { SafeCloseDialogCustom } from '../../utils/safe-close-dialog-custom.directive';
+import {Response} from '../../response/response'
+import { InviteeSelectionService } from './select-invitee-for-meeting/select-invitee-for-meeting.service';
 
 @Component({
   selector: 'app-create-meeting',
@@ -16,14 +18,12 @@ import { SafeCloseDialogCustom } from '../../utils/safe-close-dialog-custom.dire
   imports: [ReactiveFormsModule, SelectInviteeForMeetingComponent, SafeCloseDialogCustom],
   templateUrl: './create-meeting.component.html',
   styleUrl: './create-meeting.component.scss',
-  providers: []
+  providers: [InviteeSelectionService],
 })
 export class CreateMeetingComponent {
   FORM_NAME = 'create_meeting_form';
   diag = viewChild<ElementRef<HTMLDialogElement>>('new_meeting_dialogue');
-
-  meetingCreation = new MeetingCreationDto();
-
+  inviteeSelectionService = inject(InviteeSelectionService);
 
 
   title = new FormControl();
@@ -52,7 +52,37 @@ export class CreateMeetingComponent {
   }
 
   onSubmit($event: Event) {
+    $event.preventDefault();
+    const requestBody = new MeetingCreationDto();
+    requestBody.title = this.title.value;
+    requestBody.heldPlace = this.heldPlace.value;
+    requestBody.heldDate = this.heldDate.value;
+    requestBody.heldTime = this.heldTime.value;
+    requestBody.agendas = this.agendas.value;
+    requestBody.decisions = this.decisions.value;
 
+    //TODO: fix the below, as it is not always 1
+    requestBody.committeeId = 1; 
+
+    requestBody.inviteeIds = this.inviteeSelectionService.getSelectedInvitees().map(invitee=>invitee.memberId)
+
+    console.log(requestBody);
+
+    this.httpClient.post<Response<MeetingSummaryDto>>(BACKEND_URL+'/api/createMeeting', requestBody, {
+      withCredentials: true,
+    }).subscribe({
+      next: (response) => {
+	console.log(response.message);
+	localStorage.removeItem(this.FORM_NAME);
+	this.router.navigate(['/home/my-committees']);
+        console.log("TODO: show in popup" + response.message);
+      },
+
+      error: (error) => {
+        console.log('TODO: show in popup' + error.error.message);
+        //TODO: show popup and redirect to my-committees
+      }
+    });
   }
 
   public addDecision() {

@@ -114,6 +114,7 @@ export class MemberCreationDto {
 }
 
 export class MeetingCreationDto {
+    committeeId: number = 0; 
     title: string = "";
     heldDate: string = "";
     heldTime: string = ""
@@ -122,3 +123,4 @@ export class MeetingCreationDto {
     decisions: string[] = [];
     agendas: string[] = [];
 }
+

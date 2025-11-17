@@ -19,7 +19,7 @@
     <div class="panel-header">
       <h2>Meeting Details</h2>
       <p class="panel-subtitle">Meeting meeting information</p>
-      <button class="btn btn-primary save-button">Save</button>
+      <button class="btn btn-primary save-button" (click)="onSubmit($event)">Save</button>
     </div>
 
     <form [formGroup]="formData" #meetingCreationForm class="actual-form">
@@ -127,17 +127,6 @@
           }
         </div>
       </div>
-      <!---->
-      <!-- <div class="form-actions"> -->
-      <!--   <button -->
-      <!--     type="submit" -->
-      <!--     [disabled]="formData.invalid" -->
-      <!--     (click)="onSubmit($event)" -->
-      <!--     class="btn btn-primary" -->
-      <!--   > -->
-      <!--     Create Meeting -->
-      <!--   </button> -->
-      <!-- </div> -->
     </form>
   </div>
 </dialog>

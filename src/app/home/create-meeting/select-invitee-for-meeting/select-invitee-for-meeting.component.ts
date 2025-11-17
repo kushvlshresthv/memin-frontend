@@ -12,21 +12,19 @@ import { BACKEND_URL } from '../../../../global_constants';
 import { Response } from '../../../response/response';
 import { Component, inject } from '@angular/core';
 import Fuse from 'fuse.js';
+import { InviteeSelectionService } from './select-invitee-for-meeting.service';
 
 @Component({
   selector: 'app-select-invitee-for-meeting',
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './select-invitee-for-meeting.component.html',
-  styleUrl: './select-invitee-for-meeting.component.scss',
+  styleUrl: './select-invitee-for-meeting.component.scss'
 })
 export class SelectInviteeForMeetingComponent {
-  possibleInvitees: MemberSearchResult[] = [];
-  selectedInvitees: MemberSearchResult[] = [];
-  isUserSearching = false;
-  displayedMembers: MemberSearchResult[] = [];
 
   searchInputFieldSubscription!: Subscription;
+  inviteeSelectionService = inject(InviteeSelectionService);
 
   formData = new FormGroup({
     searchBarInput: new FormControl(''),
@@ -48,8 +46,8 @@ export class SelectInviteeForMeetingComponent {
         >(BACKEND_URL + '/api/getPossibleInvitees', { params: params, withCredentials: true })
         .subscribe({
           next: (response) => {
-            this.possibleInvitees = response.mainBody;
-            this.displayedMembers = this.possibleInvitees;
+	    this.inviteeSelectionService.setPossibleInvitees(response.mainBody);
+	    this.inviteeSelectionService.setDisplayedMembers(response.mainBody);
           },
           error: (response) => {
             console.log(response);
@@ -59,13 +57,8 @@ export class SelectInviteeForMeetingComponent {
     });
   }
 
-  onUnselectedMemberClick(selectedInvitee: MemberSearchResult) {
-    this.selectedInvitees.push(selectedInvitee);
-    this.possibleInvitees = this.possibleInvitees.filter(
-      (possibleInvitee) =>
-        possibleInvitee.memberId !== selectedInvitee.memberId,
-    );
-    this.displayedMembers = this.possibleInvitees;
+  onInviteeSelect(selectedInvitee: MemberSearchResult) {
+    this.inviteeSelectionService.onInviteeSelect(selectedInvitee);
   }
 
   ngOnInit(): void {
@@ -80,17 +73,16 @@ export class SelectInviteeForMeetingComponent {
         .subscribe((value) => {
           console.log('searching');
           if (value === '') {
-            this.displayedMembers = this.possibleInvitees;
+
+	    this.inviteeSelectionService.setDisplayedMembers(this.inviteeSelectionService.getPossibleInvitees());
           } else {
-            this.displayedMembers = this.fuzzySearchPossibleInvitees(
-              value as string,
-            );
+	    this.inviteeSelectionService.setDisplayedMembers(this.fuzzySearchPossibleInvitees(value as string));
           }
         });
   }
 
   fuzzySearchPossibleInvitees(query: string): MemberSearchResult[] {
-    const fuse = new Fuse(this.possibleInvitees, {
+    const fuse = new Fuse(this.inviteeSelectionService.getPossibleInvitees(), {
       keys: ['firstName', 'lastName'],
       threshold: 0.3, // lower = stricter match
     });
