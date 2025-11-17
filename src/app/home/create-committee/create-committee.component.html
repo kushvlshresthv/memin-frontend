@@ -11,7 +11,7 @@
     <div class="panel-header">
       <h2>Select Members</h2>
       <p class="panel-subtitle">Search and assign roles to committee members</p>
-      <button class="btn btn-primary save-button">Save</button>
+      <button class="btn btn-primary save-button" (click)="onSubmit($event)">Save</button>
     </div>
     <app-select-member-for-committee></app-select-member-for-committee>
   </div>

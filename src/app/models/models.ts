@@ -56,6 +56,7 @@ export class CommitteeOverviewDto {
     firstMeetingDate: string = "";
     lastMeetingDate: string = "";
     meetingDates: string[] = [];
+    language: string = "";
 }
 
 export class MemberOfCommitteeDto {
