@@ -42,6 +42,7 @@ export class SelectMemberForCommitteeComponent implements OnInit {
 
   }
 
+  //when the member is loaded by memberSelectionService initializethe form controls for each member in a map with memberId as key
   setupObservableForMemberLoadComplete() {
     this.memberSelectionService.loadingUsers$.subscribe((unselectedMembers) => {
       unselectedMembers.forEach((member) => {
@@ -55,6 +56,7 @@ export class SelectMemberForCommitteeComponent implements OnInit {
     });
   }
 
+  //when the search bar input changes filter the displayed members after a debounce time,
   setupObservableForSearchBarInputChange() {
     this.searchInputFieldSubscription =
       this.formData.controls.searchBarInput.valueChanges
