@@ -1,16 +1,16 @@
 import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpHeaders,
+    HttpClient,
+    HttpErrorResponse,
+    HttpHeaders,
 } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
-import { validateUsernameFormat } from './login.validators';
-import { BACKEND_URL } from '../../global_constants';
-import { Response } from '../response/response';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { catchError, of, Subscription } from 'rxjs';
+import { Response } from '../response/response';
+import { BACKEND_URL } from '../../global_constants';
+import { validateUsernameFormat } from './login.validators';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-login',
@@ -23,6 +23,7 @@ export class LoginComponent implements OnInit {
   router = inject(Router);
   httpClient = inject(HttpClient);
   subscription!: Subscription;
+
 
   formData = new FormGroup({
     username: new FormControl('', {

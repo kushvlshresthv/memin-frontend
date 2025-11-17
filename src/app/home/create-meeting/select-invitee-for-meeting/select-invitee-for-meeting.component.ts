@@ -49,6 +49,12 @@ export class SelectInviteeForMeetingComponent {
     });
   }
 
+  onUnselectedMemberClick(selectedInvitee: MemberSearchResult) {
+    this.selectedInvitees.push(selectedInvitee);
+    this.possibleInvitees = this.possibleInvitees.filter((possibleInvitee)=> possibleInvitee.memberId !== selectedInvitee.memberId)
+    console.log(this.possibleInvitees);
+  }
+
 
   ngOnInit(): void {
     this.setupObservableForSearchBarInputChange();

@@ -37,7 +37,7 @@
     <div class="available-invitees">
       @for (possibleInvitee of possibleInvitees; track
       possibleInvitee.memberId) {
-      <div class="available-invitee-item">
+      <div class="available-invitee-item" (click)="onUnselectedMemberClick(possibleInvitee)">
         <span class="member-name">
           {{ possibleInvitee.firstName + " " + possibleInvitee.lastName }}
         </span>
