@@ -60,7 +60,7 @@ ADDITIONAL
 
 
 form label {
-  font-size: constants.$font-medium;
+  font-size: constants.$font-small;
   font-weight: constants.$font-weight-medium;
   color: colors.$color-text-secondary;
   text-transform: uppercase;
@@ -74,7 +74,7 @@ form label {
   border: 1px solid colors.$color-border-primary;
   border-radius: 6px;
   color: colors.$color-text-primary;
-  font-size: constants.$font-large;
+  font-size: constants.$font-normal;
   font-family: inherit;
   transition: all 0.2s ease;
 
@@ -127,7 +127,7 @@ form label {
 
 .actual-form {
   flex: 1;
-  padding: 24px;
+  padding: 15px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;

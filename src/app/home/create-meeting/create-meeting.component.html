@@ -23,6 +23,7 @@
     </div>
 
     <form [formGroup]="formData" #meetingCreationForm class="actual-form">
+    <div class="form-element-pair">
       <div class="form-group">
         <label for="meeting-title">Meeting Title</label>
         <input
@@ -38,6 +39,20 @@
           }
         }
       </div>
+
+      <div class="form-group">
+        <label for="meeting-held-place">Meeting Place</label>
+        <input
+          id="meeting-held-place"
+          type="text"
+          placeholder="Enter meeting held place"
+          class="form-input"
+          name="meetingHeldPlace"
+          autocomplete="off"
+          formControlName="heldPlace"
+        />
+      </div>
+    </div>
 
       <div class="form-element-pair">
         <div class="form-group">
@@ -64,18 +79,6 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="meeting-held-place">Meeting Place</label>
-        <input
-          id="meeting-held-place"
-          type="text"
-          placeholder="Enter meeting held place"
-          class="form-input"
-          name="meetingHeldPlace"
-          autocomplete="off"
-          formControlName="heldPlace"
-        />
-      </div>
 
       <div class="form-group">
         <div class="form-element-pair">
