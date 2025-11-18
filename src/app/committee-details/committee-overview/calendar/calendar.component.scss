@@ -73,6 +73,11 @@ select {
   font-weight: constants.$font-weight-semibold;
 }
 
+.month-name {
+    font-size: constants.$font-small;
+    font-weight: constants.$font-weight-semibold;
+}
+
 .days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
