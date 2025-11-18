@@ -18,7 +18,7 @@ import {
   ReactiveFormsModule,
   FormArray,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { BACKEND_URL } from '../../../global_constants';
 import {
   MemberSearchResult,
@@ -40,6 +40,8 @@ import {
 import { MatOptionModule } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
 
+
+
 @Component({
   selector: 'app-create-meeting',
   standalone: true,
@@ -52,7 +54,9 @@ import { CommonModule } from '@angular/common';
     MatFormFieldModule,
     MatAutocompleteModule,
     MatOptionModule,
+    RouterLink,
   ],
+
 
   templateUrl: './create-meeting.component.html',
   styleUrl: './create-meeting.component.scss',
@@ -66,43 +70,7 @@ export class CreateMeetingComponent {
   selectedCommitteeMember = signal<string | null>(null);
   showDropdown = false;
 
-  // All available committee members
-  private allOptions = signal([
-    'Dr. Evelyn Reed',
-    'Prof. Marcus Chen',
-    'Dr. Sarah Williams',
-    'Mr. Thomas Davis',
-    'Ms. Jessica Brown',
-    'Dr. Kenneth Lee',
-    'Eng. Sofia Garcia',
-    'Admin. David Smith',
-  ]);
 
-  // Computed filtered options based on search input
-  filteredOptions = computed(() => {
-    const searchVal = this.committeeSearch.value?.toLowerCase() || '';
-    if (!searchVal) {
-      return this.allOptions();
-    }
-    return this.allOptions().filter((option) =>
-      option.toLowerCase().includes(searchVal)
-    );
-  });
-
-  // Handle option selection
-  selectOption(option: string): void {
-    this.committeeSearch.setValue(option);
-    this.selectedCommitteeMember.set(option);
-    this.showDropdown = false;
-    console.log('Committee member selected:', option);
-  }
-
-  // Handle blur with delay to allow click to register
-  onBlur(): void {
-    setTimeout(() => {
-      this.showDropdown = false;
-    }, 200);
-  }
 
   committeeSearch = new FormControl('');
   title = new FormControl();
@@ -127,6 +95,45 @@ export class CreateMeetingComponent {
     effect(() => {
       this.diag()!.nativeElement.showModal();
     });
+  }
+
+
+  // All available committee members
+  private allOptions = signal<string[]>([
+    // 'Dr. Evelyn Reed',
+    // 'Prof. Marcus Chen',
+    // 'Dr. Sarah Williams',
+    // 'Mr. Thomas Davis',
+    // 'Ms. Jessica Brown',
+    // 'Dr. Kenneth Lee',
+    // 'Eng. Sofia Garcia',
+    // 'Admin. David Smith',
+  ]);
+  // Computed filtered options based on search input
+  filteredOptions = computed(() => {
+    if(this.allOptions().length ==0) {
+      return [];
+    }
+    const searchVal = this.committeeSearch.value?.toLowerCase() || '';
+    if (!searchVal) {
+      return this.allOptions();
+    }
+    return this.allOptions().filter((option) =>
+      option.toLowerCase().includes(searchVal)
+    );
+  });
+
+  // Handle option selection
+  selectOption(option: string): void {
+    this.committeeSearch.setValue(option);
+    this.selectedCommitteeMember.set(option);
+    this.showDropdown = false;
+    console.log('Committee member selected:', option);
+    console.log("Option selected");
+  }
+
+  redirectToCreateCommittee() {
+    this.router.navigate(['/home/create-committee']);
   }
 
   onSubmit($event: Event) {

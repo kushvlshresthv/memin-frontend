@@ -29,6 +29,7 @@
   margin: 0 0 15px 0;
   letter-spacing: -0.5px;
   color: colors.$color-text-primary;
+  line-height: 1;
 }
 
 .login-sub-title {
@@ -38,6 +39,7 @@
   margin: 0 0 30px 0;
   letter-spacing: 0.5px;
   color: grey;
+  line-height: 1;
 }
 
 .login-form {
@@ -49,7 +51,11 @@
 .input-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 1px;
+}
+
+label {
+    line-height: 1;
 }
 
 

@@ -11,7 +11,9 @@
     <div class="panel-header">
       <h2>Select Members</h2>
       <p class="panel-subtitle">Search and assign roles to committee members</p>
-      <button class="btn btn-primary save-button" (click)="onSubmit($event)">Save</button>
+      <button class="btn btn-primary save-button" (click)="onSubmit($event)">
+        Save
+      </button>
     </div>
     <app-select-member-for-committee></app-select-member-for-committee>
   </div>
@@ -31,6 +33,7 @@
           placeholder="Enter committee name"
           formControlName="name"
           class="form-input"
+	  autocomplete="off"
         />
         @if (name.touched && name.dirty) {
           @if (name.errors?.["required"]) {
@@ -38,7 +41,6 @@
           }
         }
       </div>
-
 
       <div class="form-group">
         <label for="committee-description">Description</label>
@@ -98,24 +100,27 @@
         </div>
       </div>
 
-
       <div class="form-group">
         <label>Minute Language</label>
         <div class="language-radio-group">
           <label class="language-radio-item">
-            <input type="radio" value="ENGLISH" formControlName="minuteLanguage"/>
+            <input
+              type="radio"
+              value="ENGLISH"
+              formControlName="minuteLanguage"
+            />
             <span>English</span>
           </label>
           <label class="language-radio-item">
-            <input type="radio" value="NEPALI" formControlName="minuteLanguage"/>
+            <input
+              type="radio"
+              value="NEPALI"
+              formControlName="minuteLanguage"
+            />
             <span>Nepali</span>
           </label>
         </div>
       </div>
-
     </form>
   </div>
 </dialog>
-
-
-

@@ -46,16 +46,22 @@ dialog {
   }
 }
 
-/* Make the form field wider and cleaner */
-mat-form-field {
-  width: 100%;
-  margin: 8px 0;
-}
+// /* Make the form field wider and cleaner */
+// mat-form-field {
+//   width: 100%;
+//   margin: 8px 0;
+//   border: 1px solid red;
+// }
 
 /* Custom Dropdown Styles */
 .custom-dropdown {
+  box-sizing: border-box;
   position: relative;
   width: 100%;
+  input {
+    width: 100%;
+    box-sizing: border-box;
+  }
 }
 
 .dropdown-options {
@@ -66,7 +72,7 @@ mat-form-field {
   max-height: 300px;
   overflow-y: auto;
   background: colors.$color-background-input;
-  border: 1px solid colors.$color-border-focus;
+  border: 1px solid colors.$color-border-primary;
   border-radius: 6px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   z-index: 1000;
@@ -74,72 +80,71 @@ mat-form-field {
 }
 
 .dropdown-option {
-  padding: 12px 16px;
+  padding: 10px 16px;
   cursor: pointer;
   color: colors.$color-text-primary;
   transition: background 0.2s ease;
+  border: 1px solid colors.$color-border-primary;
 
   &:hover:not(.disabled) {
     background: colors.$color-background-input-hover;
   }
 
   &.disabled {
-    cursor: not-allowed;
     opacity: 0.6;
     color: colors.$color-text-muted;
   }
+
+  a {
+      color: white;
+  }
 }
 
-.selected-info {
-  font-size: 14px;
-  color: colors.$color-text-secondary;
-  margin-top: 8px;
-  padding-left: 4px;
-}
+// .selected-info {
+//   font-size: 14px;
+//   color: colors.$color-text-secondary;
+//   margin-top: 8px;
+//   padding-left: 4px;
+// }
 
-/* Customize the input field */
-mat-form-field .mat-mdc-text-field-wrapper {
-  border-radius: 8px !important;
-  height: 48px;
-}
+// /* Input text styling */
+// input[matInput] {
+//   font-size: 15px;
+//   padding: 4px 0 !important;
+//   border: 1px solid red;
+// }
 
-/* Input text styling */
-input[matInput] {
-  font-size: 15px;
-  padding: 4px 0 !important;
-}
+// /* Placeholder styling */
+// input[matInput]::placeholder {
+//   color: #757575;
+//   opacity: 1;
+// }
 
-/* Placeholder styling */
-input[matInput]::placeholder {
-  color: #757575;
-  opacity: 1;
-}
+// /* Label styling */
+// mat-label {
+//   font-size: 14px;
+//   font-weight: 500;
+//   color: #555;
+// }
 
-/* Label styling */
-mat-label {
-  font-size: 14px;
-  font-weight: 500;
-  color: #555;
-}
+// /* Autocomplete panel */
+// .mat-mdc-autocomplete-panel {
+//   border-radius: 10px !important;
+//   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+// }
 
-/* Autocomplete panel */
-.mat-mdc-autocomplete-panel {
-  border-radius: 10px !important;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
-}
+// /* Option styles */
+// mat-option {
+//   font-size: 15px;
+//   height: 40px !important;
+//   display: flex;
+//   align-items: center;
+// }
 
-/* Option styles */
-mat-option {
-  font-size: 15px;
-  height: 40px !important;
-  display: flex;
-  align-items: center;
-}
-
-/* Highlighted option */
-.mat-mdc-option-active {
-  background-color: #e8eaf6 !important; /* light indigo */
-}
+// /* Highlighted option */
+// .mat-mdc-option-active {
+//   background-color: #e8eaf6 !important; /* light indigo */
+// }
 
 .form-element-pair {
   display: flex;
