@@ -4,6 +4,7 @@ import {
   effect,
   ElementRef,
   inject,
+  OnInit,
   signal,
   ViewChild,
   viewChild,
@@ -39,6 +40,9 @@ import {
 } from '@angular/material/autocomplete';
 import { MatOptionModule } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
+import Fuse from 'fuse.js';
+import { debounceTime, Subscription } from 'rxjs';
+import id from '@angular/common/locales/id';
 
 
 
@@ -62,17 +66,14 @@ import { CommonModule } from '@angular/common';
   styleUrl: './create-meeting.component.scss',
   providers: [InviteeSelectionService],
 })
-export class CreateMeetingComponent {
+export class CreateMeetingComponent implements OnInit {
   FORM_NAME = 'create_meeting_form';
   diag = viewChild<ElementRef<HTMLDialogElement>>('new_meeting_dialogue');
   inviteeSelectionService = inject(InviteeSelectionService);
 
-  selectedCommitteeMember = signal<string | null>(null);
   showDropdown = false;
 
-
-
-  committeeSearch = new FormControl('');
+  committeeSearch = new FormControl<string>('');
   title = new FormControl();
   heldDate = new FormControl();
   heldTime = new FormControl();
@@ -89,47 +90,79 @@ export class CreateMeetingComponent {
     decisions: this.decisions,
   });
 
+  selectedCommitteeId!: number;
+  committeeSearchSubscription!: Subscription;
   @ViewChild('meetingCreationForm') private scrollContainer!: ElementRef;
+  committeeIdsAndNames: {committeeId: number, committeeName: string}[] = [];
+  displayedCommitteeIdsAndNames: {committeeId: number, committeeName: string}[] = []; 
+
+
 
   constructor(private httpClient: HttpClient, private router: Router) {
     effect(() => {
       this.diag()!.nativeElement.showModal();
     });
+
+
+
+    this.httpClient.get<Response<{committeeId: number, committeeName:string}[]>>(BACKEND_URL + "/api/getMyCommittees", {withCredentials:true}).subscribe({
+      next: (response)=>{
+	console.log(response.mainBody);
+	response.mainBody.forEach((committeeIdAndName)=> this.committeeIdsAndNames.push({
+	  committeeId: committeeIdAndName.committeeId,
+	  committeeName: committeeIdAndName.committeeName,
+	}));
+	this.displayedCommitteeIdsAndNames = this.committeeIdsAndNames;
+	console.log(this.displayedCommitteeIdsAndNames);
+      }
+    });
+  }
+  
+  ngOnInit(): void {
+    this.setupObservableForSearchBarInputChange();
   }
 
 
-  // All available committee members
-  private allOptions = signal<string[]>([
-    // 'Dr. Evelyn Reed',
-    // 'Prof. Marcus Chen',
-    // 'Dr. Sarah Williams',
-    // 'Mr. Thomas Davis',
-    // 'Ms. Jessica Brown',
-    // 'Dr. Kenneth Lee',
-    // 'Eng. Sofia Garcia',
-    // 'Admin. David Smith',
-  ]);
-  // Computed filtered options based on search input
-  filteredOptions = computed(() => {
-    if(this.allOptions().length ==0) {
-      return [];
-    }
-    const searchVal = this.committeeSearch.value?.toLowerCase() || '';
-    if (!searchVal) {
-      return this.allOptions();
-    }
-    return this.allOptions().filter((option) =>
-      option.toLowerCase().includes(searchVal)
-    );
-  });
+  setupObservableForSearchBarInputChange() {
+    this.committeeSearchSubscription = this.committeeSearch.valueChanges.pipe(debounceTime(250)).subscribe((value)=> {
+      console.log('searching');
+      if(value==='') {
+	this.displayedCommitteeIdsAndNames = this.committeeIdsAndNames;
+      } else {
+	this.displayedCommitteeIdsAndNames = this.fuzzySearchCommittee(value as string);
+      }
+      
+    });
+  }
+
+  
+  fuzzySearchCommittee(query: string): {committeeId: number, committeeName: string}[] {
+    const fuse = new Fuse(Array.from(this.committeeIdsAndNames.values()), {
+      keys: ['committeeName'],
+      threshold: 0.3, 
+    });
+    return fuse
+      .search(query)
+      .map((result)=> result.item)
+      .sort(this.memberSortingFunction);
+  }
+
+
+  private memberSortingFunction = (
+    committee1: {committeeId: number, committeeName:string},
+    committee2: {committeeId: number, committeeName:string},
+  ) => committee1.committeeName.localeCompare(committee2.committeeName);
+
+
+
+
 
   // Handle option selection
-  selectOption(option: string): void {
-    this.committeeSearch.setValue(option);
-    this.selectedCommitteeMember.set(option);
+  onCommitteeSelection(committeeIdAndName: {committeeId: number, committeeName: string}): void {
+    this.committeeSearch.setValue(committeeIdAndName.committeeName);
+    this.selectedCommitteeId = committeeIdAndName.committeeId;
     this.showDropdown = false;
-    console.log('Committee member selected:', option);
-    console.log("Option selected");
+    console.log('Committee member selected:', this.selectedCommitteeId);
   }
 
   redirectToCreateCommittee() {
@@ -139,6 +172,7 @@ export class CreateMeetingComponent {
   onSubmit($event: Event) {
     $event.preventDefault();
     const requestBody = new MeetingCreationDto();
+    requestBody.committeeId = this.selectedCommitteeId;
     requestBody.title = this.title.value;
     requestBody.heldPlace = this.heldPlace.value;
     requestBody.heldDate = this.heldDate.value;
@@ -146,8 +180,6 @@ export class CreateMeetingComponent {
     requestBody.agendas = this.agendas.value;
     requestBody.decisions = this.decisions.value;
 
-    //TODO: fix the below, as it is not always 1
-    requestBody.committeeId = 1;
 
     requestBody.inviteeIds = this.inviteeSelectionService
       .getSelectedInvitees()
@@ -252,5 +284,6 @@ export class CreateMeetingComponent {
 
   ngOnDestroy() {
     console.log('DEBUG: create-committee component destroyed');
+    this.committeeSearchSubscription.unsubscribe();
   }
 }

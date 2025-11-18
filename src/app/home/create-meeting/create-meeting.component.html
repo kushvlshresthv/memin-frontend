@@ -40,16 +40,16 @@
             (blur)="showDropdown = false"
             autocomplete="off"
           />
-          @if (showDropdown && filteredOptions().length > 0) {
+          @if (showDropdown && displayedCommitteeIdsAndNames.length > 0) {
             <div class="dropdown-options">
-              @for (option of filteredOptions(); track option) {
-                <div class="dropdown-option" (mousedown)="selectOption(option)">
-                  {{ option }}
+              @for (committeeIdAndName of displayedCommitteeIdsAndNames; track committeeIdAndName) {
+                <div class="dropdown-option" (mousedown)="onCommitteeSelection(committeeIdAndName)">
+                  {{ committeeIdAndName.committeeName }}
                 </div>
               }
             </div>
           }
-          @if (showDropdown && filteredOptions().length === 0) {
+          @if (showDropdown && displayedCommitteeIdsAndNames.length === 0) {
             <div class="dropdown-options">
               <div class="dropdown-option disabled" (mousedown)="redirectToCreateCommittee()">
                   No committees found. Create one from <a routerLink="../create-committee">here</a>.
