@@ -26,7 +26,8 @@ dialog {
 
 .save-button {
   position: absolute;
-  right: 25px;
+  //15px because the actual form has padding-right of 15px wrt dialog
+  right: 15px;
   top:25px;
   font-size: 14px;
   padding: 8px 16px;

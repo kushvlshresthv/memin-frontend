@@ -102,9 +102,14 @@ form label {
 
 //heading section of the form
 .panel-header {
-  padding: 24px;
+  padding: 10px;
   border-bottom: 1px solid #202225;
   background: colors.$color-background-input;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 2px;
+  padding: 20px 15px;
 
 
   h2 {
@@ -112,13 +117,14 @@ form label {
     font-weight: constants.$font-weight-semibold;
     color: colors.$color-text-primary;
     margin: 0 0 4px 0;
+    line-height:1; 
   }
 
   .panel-subtitle {
     font-size: constants.$font-medium;
     color: colors.$color-text-secondary;
     margin: 0;
-    line-height: 1.4;
+    line-height: 1.3;
   }
 }
 

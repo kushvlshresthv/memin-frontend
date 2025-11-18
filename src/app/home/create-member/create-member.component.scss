@@ -2,9 +2,8 @@
 @use "colors" as colors;
 @use "constants" as constants;
 
-
 .main-dialog {
-  height: 40vh;
+  height: 38vh;
   width: 600px;
 }
 
@@ -16,11 +15,9 @@
   overflow: hidden;
 }
 
-
 .form-input {
-    font-size: constants.$font-large;
+  font-size: constants.$font-large;
 }
-
 
 .form-group {
   display: flex;
@@ -32,19 +29,15 @@
   }
 }
 
-
 .form-row {
   display: flex;
   gap: 16px;
 }
 
-
 .save-button {
   position: absolute;
-  right: 25px;
-  top:25px;
+  right: 15px;
+  top: 25px;
   font-size: 14px;
-  padding: 8px 16px;
+  padding: 7px 12px;
 }
-
-
