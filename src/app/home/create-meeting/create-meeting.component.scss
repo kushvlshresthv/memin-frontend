@@ -1,10 +1,9 @@
-@use 'colors' as colors;
-@use 'constants' as constants;
+@use "colors" as colors;
+@use "constants" as constants;
 
 dialog {
   max-width: 1000px;
 }
-
 
 .invitee-selection-panel {
   flex: 1;
@@ -28,16 +27,13 @@ dialog {
   position: relative;
 }
 
-
 .save-button {
   position: absolute;
   right: 25px;
-  top:25px;
+  top: 25px;
   font-size: 14px;
   padding: 8px 16px;
 }
-
-
 
 .form-group {
   display: flex;
@@ -50,11 +46,104 @@ dialog {
   }
 }
 
+/* Make the form field wider and cleaner */
+mat-form-field {
+  width: 100%;
+  margin: 8px 0;
+}
 
+/* Custom Dropdown Styles */
+.custom-dropdown {
+  position: relative;
+  width: 100%;
+}
+
+.dropdown-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 300px;
+  overflow-y: auto;
+  background: colors.$color-background-input;
+  border: 1px solid colors.$color-border-focus;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  margin-top: 4px;
+}
+
+.dropdown-option {
+  padding: 12px 16px;
+  cursor: pointer;
+  color: colors.$color-text-primary;
+  transition: background 0.2s ease;
+
+  &:hover:not(.disabled) {
+    background: colors.$color-background-input-hover;
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    color: colors.$color-text-muted;
+  }
+}
+
+.selected-info {
+  font-size: 14px;
+  color: colors.$color-text-secondary;
+  margin-top: 8px;
+  padding-left: 4px;
+}
+
+/* Customize the input field */
+mat-form-field .mat-mdc-text-field-wrapper {
+  border-radius: 8px !important;
+  height: 48px;
+}
+
+/* Input text styling */
+input[matInput] {
+  font-size: 15px;
+  padding: 4px 0 !important;
+}
+
+/* Placeholder styling */
+input[matInput]::placeholder {
+  color: #757575;
+  opacity: 1;
+}
+
+/* Label styling */
+mat-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
+}
+
+/* Autocomplete panel */
+.mat-mdc-autocomplete-panel {
+  border-radius: 10px !important;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Option styles */
+mat-option {
+  font-size: 15px;
+  height: 40px !important;
+  display: flex;
+  align-items: center;
+}
+
+/* Highlighted option */
+.mat-mdc-option-active {
+  background-color: #e8eaf6 !important; /* light indigo */
+}
 
 .form-element-pair {
-  display:flex;
-  gap:10px;
+  display: flex;
+  gap: 10px;
   justify-content: space-between;
 
   .form-group {
@@ -92,18 +181,13 @@ dialog {
   }
 }
 
-
 //so that the + and the lable are aligned vertically
 .form-element-pair > label {
   padding-top: 8px;
 }
 
-
-.decision-item>textarea, .agenda-item>textarea {
+.decision-item > textarea,
+.agenda-item > textarea {
   box-sizing: border-box !important;
   width: 100%;
 }
-
-
-
-

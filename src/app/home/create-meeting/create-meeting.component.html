@@ -19,40 +19,76 @@
     <div class="panel-header">
       <h2>Meeting Details</h2>
       <p class="panel-subtitle">Meeting meeting information</p>
-      <button class="btn btn-primary save-button" (click)="onSubmit($event)">Save</button>
+      <button class="btn btn-primary save-button" (click)="onSubmit($event)">
+        Save
+      </button>
     </div>
 
     <form [formGroup]="formData" #meetingCreationForm class="actual-form">
-    <div class="form-element-pair">
+      <!-- Committee Member Dropdown with Search -->
       <div class="form-group">
-        <label for="meeting-title">Meeting Title</label>
-        <input
-          id="meeting-title"
-          type="text"
-          placeholder="Enter meeting title"
-          formControlName="title"
-          class="form-input"
-        />
-        @if (title.touched && title.dirty) {
-          @if (title.errors?.["required"]) {
-            <p class="field-error">Meeting title is required</p>
+        <label for="committee-search">Committee Member</label>
+        <div class="custom-dropdown">
+          <input
+            id="committee-search"
+            type="text"
+            class="form-input"
+            [formControl]="committeeSearch"
+            placeholder="Start typing to search..."
+            (focus)="showDropdown = true"
+            (blur)="onBlur()"
+          />
+          @if (showDropdown && filteredOptions().length > 0) {
+          <div class="dropdown-options">
+            @for (option of filteredOptions(); track option) {
+            <div class="dropdown-option" (mousedown)="selectOption(option)">
+              {{ option }}
+            </div>
+            }
+          </div>
+          } @if (showDropdown && filteredOptions().length === 0 &&
+          committeeSearch.value) {
+          <div class="dropdown-options">
+            <div class="dropdown-option disabled">
+              No results found for "{{ committeeSearch.value }}"
+            </div>
+          </div>
           }
+        </div>
+        @if (selectedCommitteeMember()) {
+        <p class="selected-info">Selected: {{ selectedCommitteeMember() }}</p>
         }
       </div>
+      <div class="form-element-pair">
+        \n
+        <div class="form-group">
+          <label for="meeting-title">Meeting Title</label>
+          <input
+            id="meeting-title"
+            type="text"
+            placeholder="Enter meeting title"
+            formControlName="title"
+            class="form-input"
+          />
+          @if (title.touched && title.dirty) { @if (title.errors?.["required"])
+          {
+          <p class="field-error">Meeting title is required</p>
+          } }
+        </div>
 
-      <div class="form-group">
-        <label for="meeting-held-place">Meeting Place</label>
-        <input
-          id="meeting-held-place"
-          type="text"
-          placeholder="Enter meeting held place"
-          class="form-input"
-          name="meetingHeldPlace"
-          autocomplete="off"
-          formControlName="heldPlace"
-        />
+        <div class="form-group">
+          <label for="meeting-held-place">Meeting Place</label>
+          <input
+            id="meeting-held-place"
+            type="text"
+            placeholder="Enter meeting held place"
+            class="form-input"
+            name="meetingHeldPlace"
+            autocomplete="off"
+            formControlName="heldPlace"
+          />
+        </div>
       </div>
-    </div>
 
       <div class="form-element-pair">
         <div class="form-group">
@@ -79,7 +115,6 @@
         </div>
       </div>
 
-
       <div class="form-group">
         <div class="form-element-pair">
           <label>Agendas</label>
@@ -89,15 +124,15 @@
         </div>
         <div class="agendas-list" formArrayName="agendas">
           @for (agenda of agendas.controls; track agenda; let $i = $index) {
-            <div class="agenda-item">
-              <textarea
-                placeholder="Double click to delete"
-                class="form-input"
-                autocomplete="off"
-                [formControlName]="$i"
-                (dblclick)="deleteAgenda($index)"
-              ></textarea>
-            </div>
+          <div class="agenda-item">
+            <textarea
+              placeholder="Double click to delete"
+              class="form-input"
+              autocomplete="off"
+              [formControlName]="$i"
+              (dblclick)="deleteAgenda($index)"
+            ></textarea>
+          </div>
           }
         </div>
       </div>
@@ -110,20 +145,17 @@
           </button>
         </div>
         <div class="decisions-list" formArrayName="decisions">
-          @for (
-            decision of decisions.controls;
-            track decision;
-            let $i = $index
+          @for ( decision of decisions.controls; track decision; let $i = $index
           ) {
-            <div class="decision-item">
-              <textarea
-                placeholder="Double click to delete"
-                class="form-input"
-                autocomplete="off"
-                [formControlName]="$i"
-                (dblclick)="deleteDecision($index)"
-              ></textarea>
-            </div>
+          <div class="decision-item">
+            <textarea
+              placeholder="Double click to delete"
+              class="form-input"
+              autocomplete="off"
+              [formControlName]="$i"
+              (dblclick)="deleteDecision($index)"
+            ></textarea>
+          </div>
           }
         </div>
       </div>
