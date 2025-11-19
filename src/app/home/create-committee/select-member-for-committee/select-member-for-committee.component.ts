@@ -1,19 +1,12 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormControl,
   ReactiveFormsModule,
-  FormArray,
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription, debounceTime } from 'rxjs';
 import { MemberSearchResult } from '../../../models/models';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import Fuse from 'fuse.js';
-import { MatOption, MatSelect } from '@angular/material/select';
-import { MatTabLabelWrapper } from '@angular/material/tabs';
-import id from '@angular/common/locales/id';
 import { MemberSelectionService } from './select-member-for-committee.service';
 
 @Component({
@@ -33,7 +26,7 @@ export class SelectMemberForCommitteeComponent implements OnInit {
     searchBarInput: new FormControl(''),
   });
 
-  memberAndFormControlMap = new Map<number, FormControl<string>>();
+  memberAndRoleFormControlMap = new Map<number, FormControl<string>>();
 
   ngOnInit(): void {
     this.setupObservableForSearchBarInputChange();
@@ -46,8 +39,8 @@ export class SelectMemberForCommitteeComponent implements OnInit {
   setupObservableForMemberLoadComplete() {
     this.memberSelectionService.loadingUsers$.subscribe((unselectedMembers) => {
       unselectedMembers.forEach((member) => {
-        if(!this.memberAndFormControlMap.has(member.memberId)){
-        this.memberAndFormControlMap.set(
+        if(!this.memberAndRoleFormControlMap.has(member.memberId)){
+        this.memberAndRoleFormControlMap.set(
           member.memberId,
           new FormControl('Add', { nonNullable: true }),
         );
@@ -83,28 +76,24 @@ export class SelectMemberForCommitteeComponent implements OnInit {
   }
 
   onRoleSelect(selectedMember: MemberSearchResult) {
-    this.memberSelectionService.removeMemberFromUnselectedMembers(
-      selectedMember,
-    );
-    this.memberSelectionService.removeMemberFromDisplayedMembers(selectedMember);
-    const role = this.memberAndFormControlMap.get(selectedMember.memberId)!.value;
-    this.memberSelectionService.addMemberToSelectedMembersWithRoles(
+    const role = this.memberAndRoleFormControlMap.get(selectedMember.memberId)!.value;
+    this.memberSelectionService.addMemberToSelectedMembersWithRolesAndSync(
       selectedMember,
       role,
     );
   }
 
   onRoleChange(member: MemberSearchResult): void {
-    if(this.memberAndFormControlMap.get(member.memberId)!.value === 'remove') {
+    if(this.memberAndRoleFormControlMap.get(member.memberId)!.value === 'remove') {
       this.memberSelectionService.addMemberToUnselectedMembers(member);
       this.memberSelectionService.addMemberToDisplayedMembers(member);
       this.memberSelectionService.removeMemberFromSelectedMembersWithRoles(member);
-      this.memberAndFormControlMap.get(member.memberId)!.setValue('Add');
+      this.memberAndRoleFormControlMap.get(member.memberId)!.setValue('Add');
     }
 
     this.memberSelectionService.updateRoleOfSelectedMember(
       member,
-      this.memberAndFormControlMap.get(member.memberId)!.value,
+      this.memberAndRoleFormControlMap.get(member.memberId)!.value,
     );
   }
 
@@ -124,11 +113,9 @@ export class SelectMemberForCommitteeComponent implements OnInit {
         //3. remove them from the unselected members list and displayed members list
 
         selectedMembersWithRoles.forEach((memberWithRole) => {
-            this.memberSelectionService.addMemberToSelectedMembersWithRoles(
+            this.memberSelectionService.addMemberToSelectedMembersWithRolesAndSync(
             memberWithRole.member, memberWithRole.role);
-            this.memberAndFormControlMap.set(memberWithRole.member.memberId, new FormControl(memberWithRole.role, { nonNullable: true }));
-            this.memberSelectionService.removeMemberFromUnselectedMembers(memberWithRole.member);
-            this.memberSelectionService.removeMemberFromDisplayedMembers(memberWithRole.member);
+            this.memberAndRoleFormControlMap.set(memberWithRole.member.memberId, new FormControl(memberWithRole.role, { nonNullable: true }));
           });
       } catch (err) {
         console.error('Error parsing saved selected members data:', err);

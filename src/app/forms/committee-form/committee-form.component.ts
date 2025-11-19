@@ -3,6 +3,8 @@ import {
   effect,
   ElementRef,
   inject,
+  input,
+  OnInit,
   output,
   viewChild,
 } from '@angular/core';
@@ -13,9 +15,17 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { MemberSelectionService } from '../../home/create-committee/select-member-for-committee/select-member-for-committee.service';
-import { MemberSearchResult, CommitteeCreationDto } from '../../models/models';
+import {
+  MemberSearchResult,
+  CommitteeCreationDto,
+  CommitteeDetailsForEditDto,
+} from '../../models/models';
 import { SelectMemberForCommitteeComponent } from '../../home/create-committee/select-member-for-committee/select-member-for-committee.component';
 import { SafeCloseDialogCustom } from '../../utils/safe-close-dialog-custom.directive';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
+import { BACKEND_URL } from '../../../global_constants';
+import { Response } from '../../response/response';
 
 @Component({
   selector: 'app-committee-form',
@@ -24,16 +34,16 @@ import { SafeCloseDialogCustom } from '../../utils/safe-close-dialog-custom.dire
     ReactiveFormsModule,
     SelectMemberForCommitteeComponent,
     SafeCloseDialogCustom,
-    CommitteeFormComponent,
   ],
   templateUrl: './committee-form.component.html',
   styleUrl: './committee-form.component.scss',
 })
-export class CommitteeFormComponent {
+export class CommitteeFormComponent implements OnInit {
   diag = viewChild<ElementRef<HTMLDialogElement>>('new_project_dialogue');
 
   memberSelectionService = inject(MemberSelectionService);
   formSaveEvent = output<CommitteeCreationDto>();
+  loadData = input<boolean>(false);
 
   name = new FormControl();
   description = new FormControl();
@@ -42,7 +52,6 @@ export class CommitteeFormComponent {
     firstName: '',
     lastName: '',
     post: '',
-    institution: '',
   };
   coordinator = new FormControl<MemberSearchResult>(
     this.defaultOptionForCoordinator,
@@ -65,10 +74,47 @@ export class CommitteeFormComponent {
     minuteLanguage: this.minuteLanguage,
   });
 
-  constructor() {
+  constructor(
+    private httpClient: HttpClient,
+    private activatedRoute: ActivatedRoute,
+  ) {
     effect(() => {
       this.diag()!.nativeElement.showModal();
     });
+  }
+
+  ngOnInit() {
+    if (this.loadData()) {
+      this.activatedRoute.queryParams.subscribe((receivedParams) => {
+        const params = new HttpParams().set(
+          'committeeId',
+          receivedParams['committeeId'],
+        );
+        this.httpClient
+          .get<
+            Response<CommitteeDetailsForEditDto>
+          >(BACKEND_URL + '/api/getCommitteeDetailsForEditPage', { params: params, withCredentials: true })
+          .subscribe({
+            next: (response) => {
+	      console.log(response);
+	      const committeeDetails = response.mainBody;
+	      this.name.setValue(committeeDetails.name);
+	      this.description.setValue(committeeDetails.description);
+	      this.status.setValue(committeeDetails.status);
+	      this.maxNoOfMeetings.setValue(committeeDetails.maxNoOfMeetings);
+	      this.minuteLanguage.setValue(committeeDetails.minuteLanguage);
+	      this.coordinator.setValue(committeeDetails.coordinator);
+	      //to synchronize coordinator selection
+	      this.onCoordinatorSelectionOrChange();
+
+	      committeeDetails.membersWithRoles.forEach(memberWithRole=> {
+		this.memberSelectionService.addMemberToSelectedMembersWithRolesAndSync(memberWithRole.member, memberWithRole.role);
+	      });
+	      
+            },
+          });
+      });
+    }
   }
 
   currentCoordinator!: MemberSearchResult;
@@ -137,6 +183,9 @@ export class CommitteeFormComponent {
   }
 
   saveForm = () => {
+    //only try to saveForm if loadData = false
+    if(this.loadData()) return;
+
     //save the form EXCEPT for the coordinator
     (this.formData as any).removeControl('coordinator');
     localStorage.setItem(
@@ -152,6 +201,11 @@ export class CommitteeFormComponent {
   };
 
   restoreForm = () => {
+    //only try to restore form if loadData = false
+    if(this.loadData()) return;
+    console.log("restoring form lets go");
+
+
     //restore the form except for the coordinator
     const savedForm = localStorage.getItem('createCommitteeForm');
     if (savedForm) {

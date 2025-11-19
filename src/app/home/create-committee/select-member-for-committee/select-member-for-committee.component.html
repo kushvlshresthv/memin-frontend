@@ -23,13 +23,16 @@
             </span>
           </div>
           <select
-            [formControl]="memberAndFormControlMap.get(selectedMember.memberId)!"
+            [formControl]="memberAndRoleFormControlMap.get(selectedMember.memberId)!"
             (change)="onRoleChange(selectedMember)"
             class="role-select"
           >
+	      <!-- this is done so that form control value syncs with the role in the select-member-for-committee-service while restoring form and loading form data for edit page -->
+	      {{memberAndRoleFormControlMap.get(selectedMember.memberId)!.setValue(selectedMemberWithRole.role)}}
             <option value="remove">Remove</option>
             <option value="member">Member</option>
             <option value="treasurer">Treasurer</option>
+	    <option [value]="memberAndRoleFormControlMap.get(selectedMember.memberId)!.value">{{memberAndRoleFormControlMap.get(selectedMember.memberId)!.value}}
           </select>
         </div>
         }
@@ -52,7 +55,7 @@
           {{ displayedMember.firstName + " " + displayedMember.lastName }}
         </span>
         <select
-          [formControl]="memberAndFormControlMap.get(displayedMember.memberId)!"
+          [formControl]="memberAndRoleFormControlMap.get(displayedMember.memberId)!"
           (change)="onRoleSelect(displayedMember)"
           class="role-select compact"
         >

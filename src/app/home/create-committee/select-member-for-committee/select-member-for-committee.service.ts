@@ -4,7 +4,6 @@ import Fuse from 'fuse.js';
 import { query } from '@angular/animations';
 import { FormControl } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
-import fuse from 'fuse.js';
 import rn from '@angular/common/locales/rn';
 import { MemberSearchResult } from '../../../models/models';
 import { LoadMemberService } from '../../../load-member.service';
@@ -74,10 +73,15 @@ export class MemberSelectionService implements OnDestroy {
     this.displayedMembers = [...this.displayedMembers, memberToAdd];
   }
 
-  addMemberToSelectedMembersWithRoles(
+
+
+  //by sync we mean to remove the selected member from unselected member and displayed member array
+  addMemberToSelectedMembersWithRolesAndSync(
     selectedMember: MemberSearchResult,
     role: string,
   ) {
+    this.removeMemberFromUnselectedMembers(selectedMember);
+    this.removeMemberFromDisplayedMembers(selectedMember);
     this.selectedMembersWithRoles.push({
       member: selectedMember,
       role: role,

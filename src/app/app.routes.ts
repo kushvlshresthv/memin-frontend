@@ -11,6 +11,7 @@ import { CommitteeOverviewComponent } from './committee-details/committee-overvi
 import { CommitteeDetailsComponent } from './committee-details/committee-details.component';
 import { MinuteComponent } from './committee-details/minute/minute.component';
 import { CreateMeetingComponent } from './home/create-meeting/create-meeting.component';
+import { EditCommitteeComponent } from './committee-details/edit-committee/edit-committee.component';
 
 export const routes: Routes = [
   {
@@ -65,6 +66,10 @@ export const routes: Routes = [
       {
         path: 'overview',
         component: CommitteeOverviewComponent,
+      },
+      {
+	path: 'edit',
+	component: EditCommitteeComponent,
       },
       // {
       //   //this is above meetings so that meetings/minute is rendered directly in the /committee-details instead of inside the /meetings
