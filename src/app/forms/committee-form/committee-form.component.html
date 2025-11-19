@@ -1,0 +1,126 @@
+<!-- Providing custom save and restore function to avoid saving the coordinator information -->
+<dialog
+  appSafeCloseDialogCustom
+  [customSaveForm]="saveForm"
+  [customRestoreForm]="restoreForm"
+  #new_project_dialogue
+  class="main-dialog"
+>
+  <!-- Left Panel - Member Selection -->
+  <div class="member-selection-panel">
+    <div class="panel-header">
+      <h2>Select Members</h2>
+      <p class="panel-subtitle">Search and assign roles to committee members</p>
+      <button class="btn btn-primary save-button" (click)="onSubmit($event)">
+        Save
+      </button>
+    </div>
+    <app-select-member-for-committee></app-select-member-for-committee>
+  </div>
+  <!-- Right Panel - Committee Details -->
+  <div class="committee-details-panel">
+    <div class="panel-header">
+      <h2>Committee Details</h2>
+      <p class="panel-subtitle">Configure your committee information</p>
+    </div>
+
+    <form [formGroup]="formData" class="actual-form">
+      <div class="form-group">
+        <label for="committee-name">Committee Name</label>
+        <input
+          id="committee-name"
+          type="text"
+          placeholder="Enter committee name"
+          formControlName="name"
+          class="form-input"
+	  autocomplete="off"
+        />
+        @if (name.touched && name.dirty) {
+          @if (name.errors?.["required"]) {
+            <p class="field-error">Committee name is required</p>
+          }
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="committee-description">Description</label>
+        <textarea
+          id="committee-description"
+          placeholder="Describe the committee's purpose and objectives"
+          formControlName="description"
+          class="form-textarea"
+          rows="4"
+        ></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group half-width">
+          <label for="committee-status">Status</label>
+          <select
+            id="committee-status"
+            name="projectType"
+            formControlName="status"
+            class="form-select"
+          >
+            <option value="ACTIVE">Active</option>
+            <option value="INACTIVE">Inactive</option>
+          </select>
+        </div>
+
+        <div class="form-group half-width">
+          <label for="committee-coordinator">Coordinator</label>
+          <select
+            id="committee-coordinator"
+            formControlName="coordinator"
+            (change)="onCoordinatorSelectionOrChange()"
+            class="form-select"
+            [compareWith]="compareCoordinators"
+          >
+            <option [ngValue]="defaultOptionForCoordinator" disabled>
+              Select Coordinator
+            </option>
+            @if (currentCoordinator != undefined) {
+              <option [ngValue]="currentCoordinator">
+                {{
+                  currentCoordinator.firstName +
+                    " " +
+                    currentCoordinator.lastName
+                }}
+              </option>
+            }
+            @for (
+              member of memberSelectionService.unselected();
+              track member.memberId
+            ) {
+              <option [ngValue]="member">
+                {{ member.firstName + " " + member.lastName }}
+              </option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Minute Language</label>
+        <div class="language-radio-group">
+          <label class="language-radio-item">
+            <input
+              type="radio"
+              value="ENGLISH"
+              formControlName="minuteLanguage"
+            />
+            <span>English</span>
+          </label>
+          <label class="language-radio-item">
+            <input
+              type="radio"
+              value="NEPALI"
+              formControlName="minuteLanguage"
+            />
+            <span>Nepali</span>
+          </label>
+        </div>
+      </div>
+    </form>
+  </div>
+</dialog>

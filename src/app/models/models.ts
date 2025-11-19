@@ -10,7 +10,7 @@ export class CommitteeCreationDto {
   description: string = "";
   status: 'ACTIVE' | 'INACTIVE' = 'ACTIVE';
   maximumNumberOfMeetings?: number = undefined;
-  members: Map<number, string> = new Map<number, string>();
+  members: { [key: number]: string } = {} ;    //sends the key and value as  a map to backend
   coordinatorId: number = 0;
   minuteLanguage: string = "";
 }
