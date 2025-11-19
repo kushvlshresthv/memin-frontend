@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -19,6 +19,7 @@ import { MemberSelectionService } from './select-member-for-committee.service';
 export class SelectMemberForCommitteeComponent implements OnInit {
   router = inject(Router);
   memberSelectionService = inject(MemberSelectionService);
+  loadData = input<boolean>(false);
 
   searchInputFieldSubscription!: Subscription;
 
@@ -32,7 +33,6 @@ export class SelectMemberForCommitteeComponent implements OnInit {
     this.setupObservableForSearchBarInputChange();
     this.setupObservableForMemberLoadComplete();
     this.restoreSelectedMembersFromLocalStorage();
-
   }
 
   //when the member is loaded by memberSelectionService initializethe form controls for each member in a map with memberId as key
@@ -99,6 +99,10 @@ export class SelectMemberForCommitteeComponent implements OnInit {
 
 
   restoreSelectedMembersFromLocalStorage(): void {
+    //if loadData = true, don't restore from local storage
+    if(this.loadData()) return;
+
+
     //restore the selected members and remove them from the unselected list
     const savedSelectedMembers = localStorage.getItem('selectedMembersWithRole');
     if (savedSelectedMembers) {

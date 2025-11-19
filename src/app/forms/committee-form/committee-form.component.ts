@@ -96,6 +96,7 @@ export class CommitteeFormComponent implements OnInit {
           >(BACKEND_URL + '/api/getCommitteeDetailsForEditPage', { params: params, withCredentials: true })
           .subscribe({
             next: (response) => {
+	      console.log("data loaded for edit page is: ");
 	      console.log(response);
 	      const committeeDetails = response.mainBody;
 	      this.name.setValue(committeeDetails.name);
@@ -137,7 +138,7 @@ export class CommitteeFormComponent implements OnInit {
       newCoordinator,
     );
     this.currentCoordinator = this.coordinator.value;
-    console.log(this.memberSelectionService.unselected());
+    console.log(this.memberSelectionService.selectedWithRoles());
   }
 
   onSubmit($event: Event) {
@@ -203,7 +204,6 @@ export class CommitteeFormComponent implements OnInit {
   restoreForm = () => {
     //only try to restore form if loadData = false
     if(this.loadData()) return;
-    console.log("restoring form lets go");
 
 
     //restore the form except for the coordinator
