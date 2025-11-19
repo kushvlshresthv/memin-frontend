@@ -31,6 +31,7 @@ export class MinuteDataService {
           next: (response) => {
             this.minuteData.set(response.mainBody);
             this.originalData = JSON.stringify(response.mainBody);
+	    console.log(response.mainBody);
           },
           error: (response) => {
             console.log(response);

@@ -45,7 +45,7 @@ export class MeetingSummaryDto {
     createdDate: string = "";
 }
 
-export class CommitteeOverviewDto {
+export class CommitteeOverviewDto  {
     name: string = "";
     description: string = "";
     createdDate: string = "";
