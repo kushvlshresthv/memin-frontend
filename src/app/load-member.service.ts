@@ -14,12 +14,15 @@ export class LoadMemberService implements OnDestroy {
   subscription!: Subscription;
 
   public loadAllMembers() {
+    console.log("DEBUG: trying to load all members")
     return this.httpClient
       .get<Response<MemberSearchResult[]>>(BACKEND_URL + '/api/getAllMembers', {
         withCredentials: true,
       })
       .pipe(
         map((response) => {
+	  console.log("loaded response yeah:");
+	  console.log(response.mainBody);
           return response.mainBody;
         }),
       );

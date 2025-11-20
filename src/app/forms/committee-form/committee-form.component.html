@@ -14,7 +14,7 @@
         Save
       </button>
     </div>
-    <app-select-member-for-committee [loadData]="loadData()"></app-select-member-for-committee>
+    <app-select-member-for-committee [memberAndRoleFormControlMap]="memberAndRoleFormControlMap()" [isEditPage]="isEditPage()"></app-select-member-for-committee>
   </div>
   <!-- Right Panel - Committee Details -->
   <div class="committee-details-panel">
@@ -23,7 +23,7 @@
       <p class="panel-subtitle">Configure your committee information</p>
     </div>
 
-    <form [formGroup]="formData" class="actual-form">
+    <form [formGroup]="formData()" class="actual-form">
       <div class="form-group">
         <label for="committee-name">Committee Name</label>
         <input
@@ -75,7 +75,7 @@
             class="form-select"
             [compareWith]="compareCoordinators"
           >
-            <option [ngValue]="defaultOptionForCoordinator" disabled>
+            <option [ngValue]="coordinator.value" disabled>
               Select Coordinator
             </option>
             @if (currentCoordinator != undefined) {

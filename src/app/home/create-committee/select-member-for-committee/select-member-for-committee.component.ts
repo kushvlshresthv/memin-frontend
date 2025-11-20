@@ -4,10 +4,10 @@ import {
   FormControl,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Subscription, debounceTime } from 'rxjs';
 import { MemberSearchResult } from '../../../models/models';
 import { MemberSelectionService } from './select-member-for-committee.service';
+import { LoadMemberService } from '../../../load-member.service';
 
 @Component({
   selector: 'app-select-member-for-committee',
@@ -17,9 +17,11 @@ import { MemberSelectionService } from './select-member-for-committee.service';
   styleUrl: './select-member-for-committee.component.scss',
 })
 export class SelectMemberForCommitteeComponent implements OnInit {
-  router = inject(Router);
   memberSelectionService = inject(MemberSelectionService);
-  loadData = input<boolean>(false);
+  memberLoadService = inject(LoadMemberService);
+
+
+  //this variable is needed to prevent the template from accessing a form control before initialization
 
   searchInputFieldSubscription!: Subscription;
 
@@ -27,27 +29,59 @@ export class SelectMemberForCommitteeComponent implements OnInit {
     searchBarInput: new FormControl(''),
   });
 
-  memberAndRoleFormControlMap = new Map<number, FormControl<string>>();
+  //inputs
+  memberAndRoleFormControlMap = input.required<Map<number, FormControl<string>>>();
+  isEditPage = input.required<boolean>();
+
 
   ngOnInit(): void {
     this.setupObservableForSearchBarInputChange();
-    this.setupObservableForMemberLoadComplete();
     this.restoreSelectedMembersFromLocalStorage();
   }
 
-  //when the member is loaded by memberSelectionService initializethe form controls for each member in a map with memberId as key
-  setupObservableForMemberLoadComplete() {
-    this.memberSelectionService.loadingUsers$.subscribe((unselectedMembers) => {
-      unselectedMembers.forEach((member) => {
-        if(!this.memberAndRoleFormControlMap.has(member.memberId)){
-        this.memberAndRoleFormControlMap.set(
-          member.memberId,
-          new FormControl('Add', { nonNullable: true }),
-        );
-        }
-      });
-    });
-  }
+  // //when the member is loaded by memberSelectionService initializethe form controls for each member in a map with memberId as key
+  // loadAllMembers() {
+  //   this.memberLoadService.loadAllMembers().subscribe({
+  //     next: (loadedMembers) => {
+  // 	this.memberSelectionService.setUnselected(loadedMembers);
+  // 	loadedMembers.forEach((member)=> {
+  // 	  this.memberAndRoleFormControlMap.set(
+  // 	    member.memberId,
+  // 	    new FormControl('Add', {nonNullable:true})
+  // 	  );
+  // 	});
+  // 	this.isLoadingMemberDataAndFormControlInitializationComplete = true;
+
+  //   if (this.loadDataForEditCommitteePage()) {
+  //     this.activatedRoute.queryParams.subscribe((receivedParams) => {
+  //       const params = new HttpParams().set(
+  //         'committeeId',
+  //         receivedParams['committeeId'],
+  //       );
+  //       // this.httpClient
+  //       //   .get<
+  //       //     Response<CommitteeDetailsForEditDto>
+  //       //   >(BACKEND_URL + '/api/getCommitteeDetailsForEditPage', { params: params, withCredentials: true })
+  //       //   .subscribe({
+  //       //     next: (response) => {
+  // 	//       // this.coordinator.setValue(committeeDetails.coordinator);
+  // 	//       //to synchronize coordinator selection
+  // 	//       // this.onCoordinatorSelectionOrChange();
+
+  // 	//       // committeeDetails.membersWithRoles.forEach(memberWithRole=> {
+  // 	// 	// this.memberSelectionService.addMemberToSelectedMembersWithRolesAndSync(memberWithRole.member, memberWithRole.role);
+  // 	//       });
+	      
+  //       //     },
+  //       //   });
+  //     });
+  //   }
+  //     },
+  //     error: (error) => {
+  // 	console.log("TODO: show in popup"+error);
+  //     }
+  //   })
+  // }
 
   //when the search bar input changes filter the displayed members after a debounce time,
   setupObservableForSearchBarInputChange() {
@@ -76,7 +110,7 @@ export class SelectMemberForCommitteeComponent implements OnInit {
   }
 
   onRoleSelect(selectedMember: MemberSearchResult) {
-    const role = this.memberAndRoleFormControlMap.get(selectedMember.memberId)!.value;
+    const role = this.memberAndRoleFormControlMap().get(selectedMember.memberId)!.value;
     this.memberSelectionService.addMemberToSelectedMembersWithRolesAndSync(
       selectedMember,
       role,
@@ -84,23 +118,23 @@ export class SelectMemberForCommitteeComponent implements OnInit {
   }
 
   onRoleChange(member: MemberSearchResult): void {
-    if(this.memberAndRoleFormControlMap.get(member.memberId)!.value === 'remove') {
+    if(this.memberAndRoleFormControlMap().get(member.memberId)!.value === 'remove') {
       this.memberSelectionService.addMemberToUnselectedMembers(member);
       this.memberSelectionService.addMemberToDisplayedMembers(member);
       this.memberSelectionService.removeMemberFromSelectedMembersWithRoles(member);
-      this.memberAndRoleFormControlMap.get(member.memberId)!.setValue('Add');
+      this.memberAndRoleFormControlMap().get(member.memberId)!.setValue('Add');
     }
 
     this.memberSelectionService.updateRoleOfSelectedMember(
       member,
-      this.memberAndRoleFormControlMap.get(member.memberId)!.value,
+      this.memberAndRoleFormControlMap().get(member.memberId)!.value,
     );
   }
 
 
   restoreSelectedMembersFromLocalStorage(): void {
-    //if loadData = true, don't restore from local storage
-    if(this.loadData()) return;
+    //if loadDataForEditCommitteePage = true, don't restore from local storage
+    if(this.isEditPage()) return;
 
 
     //restore the selected members and remove them from the unselected list
@@ -119,7 +153,6 @@ export class SelectMemberForCommitteeComponent implements OnInit {
         selectedMembersWithRoles.forEach((memberWithRole) => {
             this.memberSelectionService.addMemberToSelectedMembersWithRolesAndSync(
             memberWithRole.member, memberWithRole.role);
-            this.memberAndRoleFormControlMap.set(memberWithRole.member.memberId, new FormControl(memberWithRole.role, { nonNullable: true }));
           });
       } catch (err) {
         console.error('Error parsing saved selected members data:', err);

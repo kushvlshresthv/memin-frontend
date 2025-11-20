@@ -4,13 +4,11 @@ import {
   ElementRef,
   inject,
   input,
-  OnInit,
   output,
   viewChild,
 } from '@angular/core';
 import {
   FormControl,
-  Validators,
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms';
@@ -18,14 +16,9 @@ import { MemberSelectionService } from '../../home/create-committee/select-membe
 import {
   MemberSearchResult,
   CommitteeCreationDto,
-  CommitteeDetailsForEditDto,
 } from '../../models/models';
 import { SelectMemberForCommitteeComponent } from '../../home/create-committee/select-member-for-committee/select-member-for-committee.component';
 import { SafeCloseDialogCustom } from '../../utils/safe-close-dialog-custom.directive';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
-import { BACKEND_URL } from '../../../global_constants';
-import { Response } from '../../response/response';
 
 @Component({
   selector: 'app-committee-form',
@@ -38,85 +31,83 @@ import { Response } from '../../response/response';
   templateUrl: './committee-form.component.html',
   styleUrl: './committee-form.component.scss',
 })
-export class CommitteeFormComponent implements OnInit {
+export class CommitteeFormComponent {
   diag = viewChild<ElementRef<HTMLDialogElement>>('new_project_dialogue');
-
   memberSelectionService = inject(MemberSelectionService);
+
+  //inputs
+  formData = input.required<FormGroup<CommitteeFromComponentFormGroup>>();
+  isEditPage = input.required<boolean>();
+  memberAndRoleFormControlMap = input.required<Map<number, FormControl<string>>>();
+
+  //outputs
   formSaveEvent = output<CommitteeCreationDto>();
-  loadData = input<boolean>(false);
 
-  name = new FormControl();
-  description = new FormControl();
-  defaultOptionForCoordinator: MemberSearchResult = {
-    memberId: 0,
-    firstName: '',
-    lastName: '',
-    post: '',
-  };
-  coordinator = new FormControl<MemberSearchResult>(
-    this.defaultOptionForCoordinator,
-    {
-      nonNullable: true,
-    },
-  );
-  status = new FormControl<'ACTIVE' | 'INACTIVE'>('ACTIVE', {
-    nonNullable: true,
-    validators: [Validators.required],
-  });
-  maxNoOfMeetings = new FormControl();
-  minuteLanguage = new FormControl<'NEPALI' | 'ENGLISH' | null>(null);
-  formData = new FormGroup({
-    name: this.name,
-    description: this.description,
-    coordinator: this.coordinator,
-    status: this.status,
-    maxNoOfMeetings: this.maxNoOfMeetings,
-    minuteLanguage: this.minuteLanguage,
-  });
 
-  constructor(
-    private httpClient: HttpClient,
-    private activatedRoute: ActivatedRoute,
-  ) {
+  //setting aliases for this.formData().controls
+  name!: FormControl;
+  description!: FormControl;
+  coordinator!: FormControl;
+  status!: FormControl;
+  maxNoOfMeetings!: FormControl;
+  minuteLanguage!: FormControl
+
+  constructor() {
     effect(() => {
       this.diag()!.nativeElement.showModal();
     });
   }
 
   ngOnInit() {
-    if (this.loadData()) {
-      this.activatedRoute.queryParams.subscribe((receivedParams) => {
-        const params = new HttpParams().set(
-          'committeeId',
-          receivedParams['committeeId'],
-        );
-        this.httpClient
-          .get<
-            Response<CommitteeDetailsForEditDto>
-          >(BACKEND_URL + '/api/getCommitteeDetailsForEditPage', { params: params, withCredentials: true })
-          .subscribe({
-            next: (response) => {
-	      console.log("data loaded for edit page is: ");
-	      console.log(response);
-	      const committeeDetails = response.mainBody;
-	      this.name.setValue(committeeDetails.name);
-	      this.description.setValue(committeeDetails.description);
-	      this.status.setValue(committeeDetails.status);
-	      this.maxNoOfMeetings.setValue(committeeDetails.maxNoOfMeetings);
-	      this.minuteLanguage.setValue(committeeDetails.minuteLanguage);
-	      this.coordinator.setValue(committeeDetails.coordinator);
-	      //to synchronize coordinator selection
-	      this.onCoordinatorSelectionOrChange();
-
-	      committeeDetails.membersWithRoles.forEach(memberWithRole=> {
-		this.memberSelectionService.addMemberToSelectedMembersWithRolesAndSync(memberWithRole.member, memberWithRole.role);
-	      });
-	      
-            },
-          });
-      });
-    }
+    this.name = this.formData().controls.name;
+    this.description = this.formData().controls.description;
+    this.coordinator = this.formData().controls.coordinator;
+    //if coordinator is loaded for edit page: 
+    if(this.isEditPage()) {
+      this.memberSelectionService.removeMemberFromUnselectedMembers(this.coordinator.value);
+      this.currentCoordinator = this.coordinator.value;
+    } 
+    this.status = this.formData().controls.status;
+    this.maxNoOfMeetings = this.formData().controls.maxNoOfMeetings;
+    this.minuteLanguage = this.formData().controls.minuteLanguage;
   }
+
+  // ngOnInit() {
+  //   if (this.loadDataForEditCommitteePage()) {
+  //     this.activatedRoute.queryParams.subscribe((receivedParams) => {
+  //       const params = new HttpParams().set(
+  //         'committeeId',
+  //         receivedParams['committeeId'],
+  //       );
+  //       this.httpClient
+  //         .get<
+  //           Response<CommitteeDetailsForEditDto>
+  //         >(BACKEND_URL + '/api/getCommitteeDetailsForEditPage', { params: params, withCredentials: true })
+  //         .subscribe({
+  //           next: (response) => {
+  //             console.log('data loaded for edit page is: ');
+  //             console.log(response);
+  //             const committeeDetails = response.mainBody;
+  //             this.name.setValue(committeeDetails.name);
+  //             this.description.setValue(committeeDetails.description);
+  //             this.status.setValue(committeeDetails.status);
+  //             this.maxNoOfMeetings.setValue(committeeDetails.maxNoOfMeetings);
+  //             this.minuteLanguage.setValue(committeeDetails.minuteLanguage);
+  //             this.coordinator.setValue(committeeDetails.coordinator);
+  //             //to synchronize coordinator selection
+  //             this.onCoordinatorSelectionOrChange();
+
+  //             committeeDetails.membersWithRoles.forEach((memberWithRole) => {
+  //               this.memberSelectionService.addMemberToSelectedMembersWithRolesAndSync(
+  //                 memberWithRole.member,
+  //                 memberWithRole.role,
+  //               );
+  //             });
+  //           },
+  //         });
+  //     });
+  //   }
+  // }
 
   currentCoordinator!: MemberSearchResult;
 
@@ -184,14 +175,14 @@ export class CommitteeFormComponent implements OnInit {
   }
 
   saveForm = () => {
-    //only try to saveForm if loadData = false
-    if(this.loadData()) return;
+    //only try to saveForm if loadDataForEditCommitteePage = false
+    if (this.isEditPage()) return;
 
     //save the form EXCEPT for the coordinator
-    (this.formData as any).removeControl('coordinator');
+    (this.formData() as any).removeControl('coordinator');
     localStorage.setItem(
       'createCommitteeForm',
-      JSON.stringify(this.formData.getRawValue()),
+      JSON.stringify(this.formData().getRawValue()),
     );
 
     //save the selected members
@@ -202,16 +193,15 @@ export class CommitteeFormComponent implements OnInit {
   };
 
   restoreForm = () => {
-    //only try to restore form if loadData = false
-    if(this.loadData()) return;
-
+    //only try to restore form if loadDataForEditCommitteePage = false
+    if (this.isEditPage()) return;
 
     //restore the form except for the coordinator
     const savedForm = localStorage.getItem('createCommitteeForm');
     if (savedForm) {
       try {
         const parsedData = JSON.parse(savedForm);
-        this.formData.patchValue(parsedData);
+        this.formData().patchValue(parsedData);
       } catch (err) {
         console.error('Error parsing saved form data:', err);
       }
@@ -221,4 +211,13 @@ export class CommitteeFormComponent implements OnInit {
   ngOnDestroy() {
     console.log('DEBUG: create-committee component destroyed');
   }
+}
+
+export interface CommitteeFromComponentFormGroup {
+  name: FormControl;
+  description: FormControl;
+  coordinator: FormControl<MemberSearchResult>;
+  status: FormControl<'ACTIVE' | 'INACTIVE'>;
+  maxNoOfMeetings: FormControl;
+  minuteLanguage: FormControl<'NEPALI' | 'ENGLISH' | null>;
 }

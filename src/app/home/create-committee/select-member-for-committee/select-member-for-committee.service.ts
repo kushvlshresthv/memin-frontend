@@ -20,29 +20,6 @@ export class MemberSelectionService implements OnDestroy {
     role: string;
   }[] = [];
 
-  //to convey the components that user has been loaded
-  private usersSubject = new BehaviorSubject<MemberSearchResult[]>([]);
-  public loadingUsers$ = this.usersSubject.asObservable();
-
-  constructor() {
-    this.memberLoadService.loadAllMembers().subscribe({
-      next: (response) => {
-        this.unselectedMembers = response;
-
-        //if selected members are already there (from local storage), remove them from unselected members
-        if(this.selectedMembersWithRoles.length > 0) {
-          this.selectedMembersWithRoles.forEach((selectedMemberWithRole) => {
-            this.removeMemberFromUnselectedMembers(selectedMemberWithRole.member);
-          });
-        }
-        this.displayedMembers = this.unselectedMembers;
-        this.usersSubject.next(this.unselectedMembers);
-      },
-      error: (error) => {
-        console.log('TODO: show in popup' + error);
-      },
-    });
-  }
 
   removeMemberFromUnselectedMembers(memberToRemove: MemberSearchResult) {
     this.unselectedMembers = this.unselectedMembers.filter(
@@ -125,6 +102,10 @@ export class MemberSelectionService implements OnDestroy {
 
   setDisplayed(newDisplayedMembers: MemberSearchResult[]) {
     this.displayedMembers = newDisplayedMembers;
+  }
+
+  setUnselected(unselectedMembers: MemberSearchResult[]) {
+    this.unselectedMembers = unselectedMembers;
   }
 
   fuzzySearchUnselectedMembers(query: string): MemberSearchResult[] {
