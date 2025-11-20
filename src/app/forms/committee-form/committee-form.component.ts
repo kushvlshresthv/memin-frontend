@@ -2,55 +2,258 @@ import {
   Component,
   effect,
   ElementRef,
-  inject,
   input,
   output,
   viewChild,
 } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { MemberSelectionService } from '../../home/create-committee/select-member-for-committee/select-member-for-committee.service';
-import {
-  MemberSearchResult,
-  CommitteeCreationDto,
-} from '../../models/models';
-import { SelectMemberForCommitteeComponent } from '../../home/create-committee/select-member-for-committee/select-member-for-committee.component';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MemberSearchResult, CommitteeCreationDto } from '../../models/models';
 import { SafeCloseDialogCustom } from '../../utils/safe-close-dialog-custom.directive';
+import { debounceTime, Subscription } from 'rxjs';
+import Fuse from 'fuse.js';
+import { CommitteeFormData } from '../../home/create-committee/create-committee.component';
+import { query } from '@angular/animations';
 
 @Component({
   selector: 'app-committee-form',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    SelectMemberForCommitteeComponent,
-    SafeCloseDialogCustom,
-  ],
+  imports: [ReactiveFormsModule, SafeCloseDialogCustom],
   templateUrl: './committee-form.component.html',
   styleUrl: './committee-form.component.scss',
 })
 export class CommitteeFormComponent {
-  diag = viewChild<ElementRef<HTMLDialogElement>>('new_project_dialogue');
-  memberSelectionService = inject(MemberSelectionService);
+  diag = viewChild<ElementRef<HTMLDialogElement>>('committee_form_dialog');
+
+  //SELECT MEMBER SECTION OF THE FORM
+  //---------------------------------------------------------------------------
+
+  searchInputFieldSubscription!: Subscription;
 
   //inputs
-  formData = input.required<FormGroup<CommitteeFromComponentFormGroup>>();
   isEditPage = input.required<boolean>();
-  memberAndRoleFormControlMap = input.required<Map<number, FormControl<string>>>();
+  committeeFormData = input.required<CommitteeFormData>();
+
+  //variables
+  unselectedMembers: MemberSearchResult[] = [];
+  displayedMembers: MemberSearchResult[] = [];
+  selectedMembersWithRoles: {
+    member: MemberSearchResult;
+    role: string;
+  }[] = [];
+
+  ngOnInit(): void {
+    this.setupObservableForSearchBarInputChange();
+
+    this.name = new FormControl(this.committeeFormData().name, {
+      nonNullable: true,
+    });
+    this.description = new FormControl(this.committeeFormData().description, {
+      nonNullable: true,
+    });
+    this.coordinator = new FormControl(this.committeeFormData().coordinator, {
+      nonNullable: true,
+    });
+    this.status = new FormControl(this.committeeFormData().status, {
+      nonNullable: true,
+    });
+    this.maxNoOfMeetings = new FormControl(
+      this.committeeFormData().maxNoOfMeetings,
+      { nonNullable: true },
+    );
+    this.minuteLanguage = new FormControl(
+      this.committeeFormData().minuteLanguage,
+    );
+
+    this.committeeFormGroup = new FormGroup({
+      name: this.name,
+      description: this.description,
+      coordinator: this.coordinator, 
+      status: this.status,
+      maxNoOfMeetings: this.maxNoOfMeetings,
+      minuteLanguage: this.minuteLanguage,
+    });
+
+
+    //set unselected members and display them as well
+    this.unselectedMembers = this.committeeFormData().unselectedMembers;
+    this.displayedMembers = this.unselectedMembers;
+
+    this.unselectedMembers.forEach((member) => {
+      this.memberAndRoleFormControlMap.set(
+        member.memberId,
+        new FormControl('Add', { nonNullable: true }),
+      );
+    });
+
+    //finally restore selected members from local storage
+    if (!this.isEditPage()) {
+      this.restoreSelectedMembersFromLocalStorage();
+    }
+  }
+
+  //formControls:
+  memberAndRoleFormControlMap = new Map<number, FormControl<string>>();
+  selectMemberFormGroup = new FormGroup({
+    searchBarInput: new FormControl(''),
+  });
+
+  //when the search bar input changes filter the displayed members after a debounce time,
+  setupObservableForSearchBarInputChange() {
+    this.searchInputFieldSubscription =
+      this.selectMemberFormGroup.controls.searchBarInput.valueChanges
+        .pipe(debounceTime(500)) // wait 0.5 seconds after user stops typing
+        .subscribe((value) => {
+          console.log('searching');
+          if (value === '') {
+            this.displayedMembers = this.unselectedMembers;
+          } else {
+            this.displayedMembers = this.fuzzySearchUnselectedMembers(
+              value as string,
+            );
+          }
+        });
+  }
+
+  fuzzySearchUnselectedMembers(query: string): MemberSearchResult[] {
+    const fuse = new Fuse(this.unselectedMembers, {
+      keys: ['firstName', 'lastName'],
+      threshold: 0.3, // lower = stricter match
+    });
+    return fuse
+      .search(query)
+      .map((result) => result.item)
+      .sort(this.memberSortingFunction);
+  }
+
+  private memberSortingFunction = (
+    member1: MemberSearchResult,
+    member2: MemberSearchResult,
+  ) => member1.firstName.localeCompare(member2.firstName);
+
+  sortUnselected() {
+    return this.displayedMembers.sort(this.memberSortingFunction);
+  }
+
+  ngOnDestroy(): void {
+    this.searchInputFieldSubscription.unsubscribe();
+    console.log('DEBUG: select-member-for-committee component destroyed');
+  }
+
+  onRoleSelect(selectedMember: MemberSearchResult) {
+    const role = this.memberAndRoleFormControlMap.get(
+      selectedMember.memberId,
+    )!.value;
+    this.addMemberToSelectedMembersWithRolesAndSync(selectedMember, role);
+  }
+
+  //by sync we mean to remove the selected member from unselected member and displayed member array
+  addMemberToSelectedMembersWithRolesAndSync(
+    selectedMember: MemberSearchResult,
+    role: string,
+  ) {
+    this.removeMemberFromUnselectedMembers(selectedMember);
+    this.removeMemberFromDisplayedMembers(selectedMember);
+    this.selectedMembersWithRoles.push({
+      member: selectedMember,
+      role: role,
+    });
+  }
+
+  removeMemberFromUnselectedMembers(memberToRemove: MemberSearchResult) {
+    this.unselectedMembers = this.unselectedMembers.filter(
+      (member) => member.memberId != memberToRemove.memberId,
+    );
+  }
+
+  removeMemberFromDisplayedMembers(memberToRemove: MemberSearchResult) {
+    this.displayedMembers = this.displayedMembers.filter(
+      (member) => member.memberId != memberToRemove.memberId,
+    );
+  }
+
+  removeMemberFromSelectedMembersWithRoles(memberToRemove: MemberSearchResult) {
+    this.selectedMembersWithRoles = this.selectedMembersWithRoles.filter(
+      (memberWithRole) =>
+        memberWithRole.member.memberId != memberToRemove.memberId,
+    );
+  }
+
+  onRoleChange(targetMember: MemberSearchResult): void {
+    if (
+      this.memberAndRoleFormControlMap.get(targetMember.memberId)!.value ===
+      'remove'
+    ) {
+      this.unselectedMembers.push(targetMember);
+      this.displayedMembers.push(targetMember);
+      this.removeMemberFromSelectedMembersWithRoles(targetMember);
+      this.memberAndRoleFormControlMap
+        .get(targetMember.memberId)!
+        .setValue('Add');
+    } else {
+      const memberToBeUpdatedWithRole = this.selectedMembersWithRoles.find(
+        (memberWithRole) =>
+          memberWithRole.member.memberId == targetMember.memberId,
+      );
+      memberToBeUpdatedWithRole!.role = this.memberAndRoleFormControlMap.get(
+        targetMember.memberId,
+      )!.value;
+    }
+  }
+
+  restoreSelectedMembersFromLocalStorage(): void {
+    //if loadDataForEditCommitteePage = true, don't restore from local storage
+    if (this.isEditPage()) return;
+
+    //restore the selected members and remove them from the unselected list
+    const savedSelectedMembers = localStorage.getItem(
+      'selectedMembersWithRole',
+    );
+    if (savedSelectedMembers) {
+      try {
+        const selectedMembersWithRoles: {
+          member: MemberSearchResult;
+          role: string;
+        }[] = JSON.parse(savedSelectedMembers);
+
+        //for the saved selected members:
+        //1. add them to the selected members list
+        //2. restore the form control value for their role
+        //3. remove them from the unselected members list and displayed members list
+
+        selectedMembersWithRoles.forEach((memberWithRole) => {
+          this.addMemberToSelectedMembersWithRolesAndSync(
+            memberWithRole.member,
+            memberWithRole.role,
+          );
+        });
+      } catch (err) {
+        console.error('Error parsing saved selected members data:', err);
+      }
+    }
+  }
+
+  //------------------------------------------------------------------------
 
   //outputs
   formSaveEvent = output<CommitteeCreationDto>();
 
+  //setting aliases for this.committeeFormGroup().controls
+  name!: FormControl<string>;
+  description!: FormControl<string>
+  coordinator!: FormControl<MemberSearchResult>; 
+  status!: FormControl<'ACTIVE' | 'INACTIVE'>;
+  maxNoOfMeetings!: FormControl<number>
+  minuteLanguage!: FormControl<'NEPALI' | 'ENGLISH' | null>;
+  
 
-  //setting aliases for this.formData().controls
-  name!: FormControl;
-  description!: FormControl;
-  coordinator!: FormControl;
-  status!: FormControl;
-  maxNoOfMeetings!: FormControl;
-  minuteLanguage!: FormControl
+  committeeFormGroup!: FormGroup<{
+    name: FormControl<string>;
+    description: FormControl<string>;
+    coordinator: FormControl<MemberSearchResult>;
+    status: FormControl<'ACTIVE' | 'INACTIVE'>; 
+    maxNoOfMeetings: FormControl<number>;
+    minuteLanguage: FormControl<'NEPALI' | 'ENGLISH' | null>;
+  }>;
 
   constructor() {
     effect(() => {
@@ -58,78 +261,19 @@ export class CommitteeFormComponent {
     });
   }
 
-  ngOnInit() {
-    this.name = this.formData().controls.name;
-    this.description = this.formData().controls.description;
-    this.coordinator = this.formData().controls.coordinator;
-    //if coordinator is loaded for edit page: 
-    if(this.isEditPage()) {
-      this.memberSelectionService.removeMemberFromUnselectedMembers(this.coordinator.value);
-      this.currentCoordinator = this.coordinator.value;
-    } 
-    this.status = this.formData().controls.status;
-    this.maxNoOfMeetings = this.formData().controls.maxNoOfMeetings;
-    this.minuteLanguage = this.formData().controls.minuteLanguage;
-  }
-
-  // ngOnInit() {
-  //   if (this.loadDataForEditCommitteePage()) {
-  //     this.activatedRoute.queryParams.subscribe((receivedParams) => {
-  //       const params = new HttpParams().set(
-  //         'committeeId',
-  //         receivedParams['committeeId'],
-  //       );
-  //       this.httpClient
-  //         .get<
-  //           Response<CommitteeDetailsForEditDto>
-  //         >(BACKEND_URL + '/api/getCommitteeDetailsForEditPage', { params: params, withCredentials: true })
-  //         .subscribe({
-  //           next: (response) => {
-  //             console.log('data loaded for edit page is: ');
-  //             console.log(response);
-  //             const committeeDetails = response.mainBody;
-  //             this.name.setValue(committeeDetails.name);
-  //             this.description.setValue(committeeDetails.description);
-  //             this.status.setValue(committeeDetails.status);
-  //             this.maxNoOfMeetings.setValue(committeeDetails.maxNoOfMeetings);
-  //             this.minuteLanguage.setValue(committeeDetails.minuteLanguage);
-  //             this.coordinator.setValue(committeeDetails.coordinator);
-  //             //to synchronize coordinator selection
-  //             this.onCoordinatorSelectionOrChange();
-
-  //             committeeDetails.membersWithRoles.forEach((memberWithRole) => {
-  //               this.memberSelectionService.addMemberToSelectedMembersWithRolesAndSync(
-  //                 memberWithRole.member,
-  //                 memberWithRole.role,
-  //               );
-  //             });
-  //           },
-  //         });
-  //     });
-  //   }
-  // }
-
   currentCoordinator!: MemberSearchResult;
 
   onCoordinatorSelectionOrChange() {
     const newCoordinator = this.coordinator.value;
     if (this.currentCoordinator != undefined) {
-      this.memberSelectionService.addMemberToUnselectedMembers(
-        this.currentCoordinator,
-      );
-      this.memberSelectionService.addMemberToDisplayedMembers(
-        this.currentCoordinator,
-      );
+      //add previus coordinator baced to unselected and displayed members
+      this.unselectedMembers.push(this.currentCoordinator);
+      this.displayedMembers.push(this.currentCoordinator);
     }
 
-    this.memberSelectionService.removeMemberFromUnselectedMembers(
-      newCoordinator,
-    );
-    this.memberSelectionService.removeMemberFromDisplayedMembers(
-      newCoordinator,
-    );
+    this.removeMemberFromUnselectedMembers(newCoordinator);
+    this.removeMemberFromDisplayedMembers(newCoordinator);
     this.currentCoordinator = this.coordinator.value;
-    console.log(this.memberSelectionService.selectedWithRoles());
   }
 
   onSubmit($event: Event) {
@@ -152,12 +296,10 @@ export class CommitteeFormComponent {
     //     3: 'Member'
     //   }
     // }
-    this.memberSelectionService
-      .selectedWithRoles()
-      .forEach((memberWithRole) => {
-        committeeCreationDto.members[memberWithRole.member.memberId] =
-          memberWithRole.role;
-      });
+    this.selectedMembersWithRoles.forEach((memberWithRole) => {
+      committeeCreationDto.members[memberWithRole.member.memberId] =
+        memberWithRole.role;
+    });
 
     this.formSaveEvent.emit(committeeCreationDto);
   }
@@ -179,16 +321,16 @@ export class CommitteeFormComponent {
     if (this.isEditPage()) return;
 
     //save the form EXCEPT for the coordinator
-    (this.formData() as any).removeControl('coordinator');
+    (this.committeeFormGroup as any).removeControl('coordinator');
     localStorage.setItem(
       'createCommitteeForm',
-      JSON.stringify(this.formData().getRawValue()),
+      JSON.stringify(this.committeeFormGroup.getRawValue()),
     );
 
     //save the selected members
     localStorage.setItem(
       'selectedMembersWithRole',
-      JSON.stringify(this.memberSelectionService.selectedWithRoles()),
+      JSON.stringify(this.selectedMembersWithRoles),
     );
   };
 
@@ -201,23 +343,10 @@ export class CommitteeFormComponent {
     if (savedForm) {
       try {
         const parsedData = JSON.parse(savedForm);
-        this.formData().patchValue(parsedData);
+        this.committeeFormGroup.patchValue(parsedData);
       } catch (err) {
         console.error('Error parsing saved form data:', err);
       }
     }
   };
-
-  ngOnDestroy() {
-    console.log('DEBUG: create-committee component destroyed');
-  }
-}
-
-export interface CommitteeFromComponentFormGroup {
-  name: FormControl;
-  description: FormControl;
-  coordinator: FormControl<MemberSearchResult>;
-  status: FormControl<'ACTIVE' | 'INACTIVE'>;
-  maxNoOfMeetings: FormControl;
-  minuteLanguage: FormControl<'NEPALI' | 'ENGLISH' | null>;
 }

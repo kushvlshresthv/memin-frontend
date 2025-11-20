@@ -22,12 +22,9 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { BACKEND_URL } from '../../../global_constants';
 import {
-  MemberSearchResult,
-  CommitteeCreationDto,
   MeetingCreationDto,
   MeetingSummaryDto,
 } from '../../models/models';
-import { MemberSelectionService } from '../create-committee/select-member-for-committee/select-member-for-committee.service';
 import { SelectInviteeForMeetingComponent } from './select-invitee-for-meeting/select-invitee-for-meeting.component';
 import { SafeCloseDialogCustom } from '../../utils/safe-close-dialog-custom.directive';
 import { Response } from '../../response/response';
@@ -36,13 +33,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {
   MatAutocompleteModule,
-  MatAutocompleteTrigger,
 } from '@angular/material/autocomplete';
 import { MatOptionModule } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
 import Fuse from 'fuse.js';
 import { debounceTime, Subscription } from 'rxjs';
-import id from '@angular/common/locales/id';
 
 
 
@@ -161,6 +156,7 @@ export class CreateMeetingComponent implements OnInit {
   onCommitteeSelection(committeeIdAndName: {committeeId: number, committeeName: string}): void {
     this.committeeSearch.setValue(committeeIdAndName.committeeName);
     this.selectedCommitteeId = committeeIdAndName.committeeId;
+    console.log(this.selectedCommitteeId);
     this.showDropdown = false;
     console.log('Committee member selected:', this.selectedCommitteeId);
   }

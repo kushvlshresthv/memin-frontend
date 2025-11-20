@@ -9,8 +9,7 @@ import { HttpClient, } from '@angular/common/http';
 import { BACKEND_URL } from '../../../global_constants';
 import { Response } from '../../response/response';
 import {  Router } from '@angular/router';
-import { CommitteeFormComponent, CommitteeFromComponentFormGroup } from '../../forms/committee-form/committee-form.component';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { CommitteeFormComponent} from '../../forms/committee-form/committee-form.component';
 import { LoadMemberService } from '../../load-member.service';
 
 @Component({
@@ -24,8 +23,6 @@ import { LoadMemberService } from '../../load-member.service';
   providers: [MemberSelectionService],
 })
 export class CreateCommitteeComponent implements OnInit{
-
-
   constructor(
     private httpClient: HttpClient,
     private router: Router,
@@ -34,63 +31,34 @@ export class CreateCommitteeComponent implements OnInit{
 
   //preparing data from CommitteeFormComponent
   hasDataLoaded = false; 
-
-  name = new FormControl();
-  description = new FormControl();
-  defaultOptionForCoordinator: MemberSearchResult = {
-    memberId: 0,
-    firstName: '',
-    lastName: '',
-    post: '',
-  };
-  coordinator = new FormControl<MemberSearchResult>(
-    this.defaultOptionForCoordinator,
-    {
-      nonNullable: true,
+  committeeFormData: CommitteeFormData = {
+    name: '',
+    description: '',
+    coordinator: {
+      memberId: 0,
+      firstName: '',
+      lastName: '',
+      post: '',
     },
-  );
-  status = new FormControl<'ACTIVE' | 'INACTIVE'>('ACTIVE', {
-    nonNullable: true,
-    validators: [Validators.required],
-  });
-  maxNoOfMeetings = new FormControl();
-  minuteLanguage = new FormControl<'NEPALI' | 'ENGLISH' | null>(null);
-  formData = new FormGroup<CommitteeFromComponentFormGroup>({
-    name: this.name,
-    description: this.description,
-    coordinator: this.coordinator,
-    status: this.status,
-    maxNoOfMeetings: this.maxNoOfMeetings,
-    minuteLanguage: this.minuteLanguage,
-  });
+    status: 'ACTIVE',
+    maxNoOfMeetings: 0,
+    minuteLanguage: null,
+    selectedMembersWithRoles: [],
+    unselectedMembers: [],
+  };
 
   ngOnInit() {
     this.loadAllMembers();
   }
 
-  //preparing data for SelectMemberForCommtteeComponent
-  //basically loads all the members, creates a FormControl(to store Role) for each members and initialize the FormControl with 'Add'
-
-  //this function also initializes the MemberSelectionService
 
   loadMemberService = inject(LoadMemberService);
-  memberSelectionService = inject(MemberSelectionService);
-  memberAndRoleFormControlMap = new Map<number, FormControl<string>>();
 
   loadAllMembers() {
     this.loadMemberService.loadAllMembers().subscribe({
       next: (loadedMembers) => {
-	this.memberSelectionService.setUnselected(loadedMembers);
-	this.memberSelectionService.setDisplayed(loadedMembers);
-	console.log("unselected members");
-	console.log(this.memberSelectionService.unselected());
-	loadedMembers.forEach((member)=> {
-	  this.memberAndRoleFormControlMap.set(
-	    member.memberId,
-	    new FormControl('Add', {nonNullable:true})
-	  );
-	});
-
+	this.committeeFormData.unselectedMembers = loadedMembers;
+	this.hasDataLoaded=true;
       },
       error: (response) => {
 	console.log("TODO: handle error" + response);
@@ -98,11 +66,8 @@ export class CreateCommitteeComponent implements OnInit{
     });
   }
 
-
-
-
   //called when the create-committee.component's form is submitted
-  createCommittee(committeeCreationDto: CommitteeCreationDto) {
+  onFormSave(committeeCreationDto: CommitteeCreationDto) {
     console.log(committeeCreationDto);
     this.httpClient.post<Response<string[]>>(BACKEND_URL + '/api/createCommittee', committeeCreationDto, {
       withCredentials: true,
@@ -122,5 +87,16 @@ export class CreateCommitteeComponent implements OnInit{
   }
 }
 
-
-
+export interface CommitteeFormData {
+  name: string;
+  description: string;
+  coordinator: MemberSearchResult;
+  status: 'ACTIVE' | 'INACTIVE';
+  maxNoOfMeetings: number;
+  minuteLanguage: 'NEPALI' | 'ENGLISH' | null;
+  selectedMembersWithRoles:{
+    member: MemberSearchResult;
+    role: string;
+  }[];
+  unselectedMembers: MemberSearchResult[];
+}
