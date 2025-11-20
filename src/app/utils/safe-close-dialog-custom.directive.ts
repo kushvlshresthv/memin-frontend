@@ -1,6 +1,6 @@
 import { AfterViewInit, Directive, ElementRef, HostBinding, HostListener,  input,  Input,  OnDestroy,  OnInit,  ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Directive({
   selector: '[appSafeCloseDialogCustom]',
@@ -10,7 +10,7 @@ export class SafeCloseDialogCustom implements OnInit, OnDestroy {
   customSaveForm = input.required<()=> void>();
   customRestoreForm = input.required<()=> void>();
 
-  constructor(private dialogElementRef: ElementRef<HTMLDialogElement>, private router: Router) {}
+  constructor(private dialogElementRef: ElementRef<HTMLDialogElement>, private router: Router, private activatedRoute: ActivatedRoute) {}
 
 
 
@@ -32,7 +32,11 @@ export class SafeCloseDialogCustom implements OnInit, OnDestroy {
     const dialog = this.dialogElementRef?.nativeElement;
     this.customSaveForm()();
     dialog.close();
-    this.router.navigate(['./home/my-committees']);
+    console.log(this.router.url);
+    if(this.router.url.includes("committee-details/edit"))
+      this.router.navigate(['./committee-details/overview'], {queryParamsHandling:'preserve'})
+    else
+      this.router.navigate(['./home/my-committees']);
   }
 
   ngOnInit(): void {
