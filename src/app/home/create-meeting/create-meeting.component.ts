@@ -1,45 +1,34 @@
 import {
   Component,
-  computed,
   effect,
   ElementRef,
-  inject,
   OnInit,
-  signal,
   ViewChild,
   viewChild,
 } from '@angular/core';
-import { MinuteComponent } from '../../committee-details/minute/minute.component';
-import { MinuteDataService } from '../../committee-details/minute/minute-data.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import {
   FormControl,
-  Validators,
   FormGroup,
   ReactiveFormsModule,
   FormArray,
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BACKEND_URL } from '../../../global_constants';
 import {
   MeetingCreationDto,
   MeetingSummaryDto,
+  MemberSearchResult,
 } from '../../models/models';
-import { SelectInviteeForMeetingComponent } from './select-invitee-for-meeting/select-invitee-for-meeting.component';
 import { SafeCloseDialogCustom } from '../../utils/safe-close-dialog-custom.directive';
 import { Response } from '../../response/response';
-import { InviteeSelectionService } from './select-invitee-for-meeting/select-invitee-for-meeting.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {
-  MatAutocompleteModule,
-} from '@angular/material/autocomplete';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatOptionModule } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
 import Fuse from 'fuse.js';
 import { debounceTime, Subscription } from 'rxjs';
-
-
 
 @Component({
   selector: 'app-create-meeting',
@@ -47,7 +36,6 @@ import { debounceTime, Subscription } from 'rxjs';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    SelectInviteeForMeetingComponent,
     SafeCloseDialogCustom,
     MatInputModule,
     MatFormFieldModule,
@@ -56,17 +44,108 @@ import { debounceTime, Subscription } from 'rxjs';
     RouterLink,
   ],
 
-
   templateUrl: './create-meeting.component.html',
   styleUrl: './create-meeting.component.scss',
-  providers: [InviteeSelectionService],
 })
 export class CreateMeetingComponent implements OnInit {
+  //---------------------------------LEFT PANEL-----------------------------
+
+  //variables
+  invitteeSearchInputFieldSubscription!: Subscription;
+  possibleInvitees: MemberSearchResult[] = [];
+  selectedInvitees: MemberSearchResult[] = [];
+  displayedPossibleInvitees: MemberSearchResult[] = [];
+
+  selectInviteeFormGroup = new FormGroup({
+    searchBarInput: new FormControl(''),
+  });
+
+  constructor(
+    private router: Router,
+    private httpClient: HttpClient,
+    private activatedRoute: ActivatedRoute,
+  ) {
+    //open dialog
+    effect(() => {
+      this.diag()!.nativeElement.showModal();
+    });
+
+    //load data for right panel
+    this.httpClient
+      .get<
+        Response<{ committeeId: number; committeeName: string }[]>
+      >(BACKEND_URL + '/api/getMyCommittees', { withCredentials: true })
+      .subscribe({
+        next: (response) => {
+          console.log(response.mainBody);
+          response.mainBody.forEach((committeeIdAndName) =>
+            this.committeeIdsAndNames.push({
+              committeeId: committeeIdAndName.committeeId,
+              committeeName: committeeIdAndName.committeeName,
+            }),
+          );
+          this.displayedCommitteeIdsAndNames = this.committeeIdsAndNames;
+          console.log(this.displayedCommitteeIdsAndNames);
+        },
+      });
+  }
+
+  onInviteeSelect(selectedInvitee: MemberSearchResult) {
+    this.selectedInvitees.push(selectedInvitee);
+    this.possibleInvitees = this.possibleInvitees.filter(
+      (possibleInvitee) =>
+        possibleInvitee.memberId !== selectedInvitee.memberId,
+    );
+    this.displayedPossibleInvitees = this.possibleInvitees;
+  }
+
+  ngOnInit(): void {
+    this.setupObservableForInviteeSearchBarInputChange();
+    this.setupObservableForCommitteeSearchBarInputChange();
+  }
+
+  setupObservableForInviteeSearchBarInputChange() {
+    this.invitteeSearchInputFieldSubscription =
+      this.selectInviteeFormGroup.controls.searchBarInput.valueChanges
+        .pipe(debounceTime(500)) // wait 0.5 seconds after user stops typing
+
+        .subscribe((value) => {
+          console.log('searching');
+          if (value === '') {
+            this.displayedPossibleInvitees = this.possibleInvitees;
+          } else {
+            this.displayedPossibleInvitees = this.fuzzySearchPossibleInvitees(
+              value as string,
+            );
+          }
+        });
+  }
+
+  fuzzySearchPossibleInvitees(query: string): MemberSearchResult[] {
+    const fuse = new Fuse(this.possibleInvitees, {
+      keys: ['firstName', 'lastName'],
+      threshold: 0.3, // lower = stricter match
+    });
+    return fuse
+      .search(query)
+      .map((result) => result.item)
+      .sort(this.memberSortingFunction);
+  }
+
+  private memberSortingFunction = (
+    member1: MemberSearchResult,
+    member2: MemberSearchResult,
+  ) => member1.firstName.localeCompare(member2.firstName);
+
+  //---------------------------------RIGHT PANEL-----------------------------
+
+  //variables
   FORM_NAME = 'create_meeting_form';
   diag = viewChild<ElementRef<HTMLDialogElement>>('new_meeting_dialogue');
-  inviteeSelectionService = inject(InviteeSelectionService);
 
   showDropdown = false;
+
+  //form controls
 
   committeeSearch = new FormControl<string>('');
   title = new FormControl();
@@ -76,7 +155,7 @@ export class CreateMeetingComponent implements OnInit {
   decisions = new FormArray<FormControl>([]);
   agendas = new FormArray<FormControl>([]);
 
-  formData = new FormGroup({
+  createMeetingFormGroup = new FormGroup({
     title: this.title,
     heldDate: this.heldDate,
     heldTime: this.heldTime,
@@ -88,77 +167,88 @@ export class CreateMeetingComponent implements OnInit {
   selectedCommitteeId!: number;
   committeeSearchSubscription!: Subscription;
   @ViewChild('meetingCreationForm') private scrollContainer!: ElementRef;
-  committeeIdsAndNames: {committeeId: number, committeeName: string}[] = [];
-  displayedCommitteeIdsAndNames: {committeeId: number, committeeName: string}[] = []; 
+  committeeIdsAndNames: { committeeId: number; committeeName: string }[] = [];
+  displayedCommitteeIdsAndNames: {
+    committeeId: number;
+    committeeName: string;
+  }[] = [];
 
+  setupObservableForCommitteeSearchBarInputChange() {
+    this.committeeSearchSubscription = this.committeeSearch.valueChanges
+      .pipe(debounceTime(250))
+      .subscribe((value) => {
+        console.log('searching');
 
-
-  constructor(private httpClient: HttpClient, private router: Router) {
-    effect(() => {
-      this.diag()!.nativeElement.showModal();
-    });
-
-
-
-    this.httpClient.get<Response<{committeeId: number, committeeName:string}[]>>(BACKEND_URL + "/api/getMyCommittees", {withCredentials:true}).subscribe({
-      next: (response)=>{
-	console.log(response.mainBody);
-	response.mainBody.forEach((committeeIdAndName)=> this.committeeIdsAndNames.push({
-	  committeeId: committeeIdAndName.committeeId,
-	  committeeName: committeeIdAndName.committeeName,
-	}));
-	this.displayedCommitteeIdsAndNames = this.committeeIdsAndNames;
-	console.log(this.displayedCommitteeIdsAndNames);
-      }
-    });
-  }
-  
-  ngOnInit(): void {
-    this.setupObservableForSearchBarInputChange();
+        if (value === '') {
+          this.displayedCommitteeIdsAndNames = this.committeeIdsAndNames;
+        } else {
+          this.displayedCommitteeIdsAndNames = this.fuzzySearchCommittee(
+            value as string,
+          );
+        }
+      });
   }
 
-
-  setupObservableForSearchBarInputChange() {
-    this.committeeSearchSubscription = this.committeeSearch.valueChanges.pipe(debounceTime(250)).subscribe((value)=> {
-      console.log('searching');
-      if(value==='') {
-	this.displayedCommitteeIdsAndNames = this.committeeIdsAndNames;
-      } else {
-	this.displayedCommitteeIdsAndNames = this.fuzzySearchCommittee(value as string);
-      }
-      
-    });
+  //if a committee is already selected, and again 'Select Committee' is clicked, all possible committees are displayed
+  onFocus() {
+    this.displayedCommitteeIdsAndNames = this. committeeIdsAndNames;
   }
 
-  
-  fuzzySearchCommittee(query: string): {committeeId: number, committeeName: string}[] {
+  fuzzySearchCommittee(
+    query: string,
+  ): { committeeId: number; committeeName: string }[] {
     const fuse = new Fuse(Array.from(this.committeeIdsAndNames.values()), {
       keys: ['committeeName'],
-      threshold: 0.3, 
+      threshold: 0.3,
     });
     return fuse
       .search(query)
-      .map((result)=> result.item)
-      .sort(this.memberSortingFunction);
+      .map((result) => result.item)
+      .sort(this.committeeSortingFunction);
   }
 
-
-  private memberSortingFunction = (
-    committee1: {committeeId: number, committeeName:string},
-    committee2: {committeeId: number, committeeName:string},
+  private committeeSortingFunction = (
+    committee1: { committeeId: number; committeeName: string },
+    committee2: { committeeId: number; committeeName: string },
   ) => committee1.committeeName.localeCompare(committee2.committeeName);
 
-
-
-
+  //to use in template to make sure invitee has been displayed before displaying: No possible invitees
+  hasInviteeDataLoaded = false;
 
   // Handle option selection
-  onCommitteeSelection(committeeIdAndName: {committeeId: number, committeeName: string}): void {
+  onCommitteeSelection(committeeIdAndName: {
+    committeeId: number;
+    committeeName: string;
+  }): void {
     this.committeeSearch.setValue(committeeIdAndName.committeeName);
     this.selectedCommitteeId = committeeIdAndName.committeeId;
-    console.log(this.selectedCommitteeId);
     this.showDropdown = false;
-    console.log('Committee member selected:', this.selectedCommitteeId);
+
+    //reset displayedCommitteeIdsAndNames
+    this.displayedCommitteeIdsAndNames = this.committeeIdsAndNames;
+
+    //clear the invitees variables first
+    this.possibleInvitees = [];
+    this.displayedPossibleInvitees = [];
+    this.selectedInvitees = [];
+
+    this.hasInviteeDataLoaded = false;
+    this.httpClient
+      .get<
+        Response<MemberSearchResult[]>
+      >(BACKEND_URL + '/api/getPossibleInvitees', { params: new HttpParams().set('committeeId', this.selectedCommitteeId), withCredentials: true })
+      .subscribe({
+        next: (response) => {
+          this.possibleInvitees = response.mainBody;
+          this.displayedPossibleInvitees = this.possibleInvitees;
+          console.log(this.displayedPossibleInvitees);
+          this.hasInviteeDataLoaded = true;
+        },
+        error: (response) => {
+          console.log(response);
+          //TODO: handle error with popup message
+        },
+      });
   }
 
   redirectToCreateCommittee() {
@@ -176,10 +266,9 @@ export class CreateMeetingComponent implements OnInit {
     requestBody.agendas = this.agendas.value;
     requestBody.decisions = this.decisions.value;
 
-
-    requestBody.inviteeIds = this.inviteeSelectionService
-      .getSelectedInvitees()
-      .map((invitee) => invitee.memberId);
+    requestBody.inviteeIds = this.selectedInvitees.map(
+      (invitee) => invitee.memberId,
+    );
 
     console.log(requestBody);
 
@@ -189,7 +278,7 @@ export class CreateMeetingComponent implements OnInit {
         requestBody,
         {
           withCredentials: true,
-        }
+        },
       )
       .subscribe({
         next: (response) => {
@@ -232,11 +321,11 @@ export class CreateMeetingComponent implements OnInit {
   }
 
   saveFormData = () => {
-    const formValue = this.formData.getRawValue();
+    const formValue = this.createMeetingFormGroup.getRawValue();
 
     // Check if at least one field has some value
     const hasData = Object.values(formValue).some(
-      (value) => value !== null && value !== undefined && value !== ''
+      (value) => value !== null && value !== undefined && value !== '',
     );
 
     if (!hasData) {
@@ -254,22 +343,22 @@ export class CreateMeetingComponent implements OnInit {
       console.log(savedData);
       try {
         const parsedData = JSON.parse(savedData);
-        this.formData.patchValue(parsedData); // prefill the form
+        this.createMeetingFormGroup.patchValue(parsedData); // prefill the form
 
         //the above patchValue does not restore the FormArrays, so manually restoring agendas and decisions
         if (parsedData['agendas'] && parsedData['agendas'].length > 0) {
           (parsedData['agendas'] as Array<string>).forEach((agenda) => {
-            (this.formData.controls['agendas'] as FormArray).push(
-              new FormControl(agenda)
+            (this.createMeetingFormGroup.controls['agendas'] as FormArray).push(
+              new FormControl(agenda),
             );
           });
         }
 
         if (parsedData['decisions'] && parsedData['decisions'].length > 0) {
           (parsedData['decisions'] as Array<string>).forEach((decision) => {
-            (this.formData.controls['decisions'] as FormArray).push(
-              new FormControl(decision)
-            );
+            (
+              this.createMeetingFormGroup.controls['decisions'] as FormArray
+            ).push(new FormControl(decision));
           });
         }
       } catch (err) {
@@ -281,5 +370,6 @@ export class CreateMeetingComponent implements OnInit {
   ngOnDestroy() {
     console.log('DEBUG: create-committee component destroyed');
     this.committeeSearchSubscription.unsubscribe();
+    this.invitteeSearchInputFieldSubscription.unsubscribe();
   }
 }

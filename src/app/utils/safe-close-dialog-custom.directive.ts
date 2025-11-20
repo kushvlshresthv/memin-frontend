@@ -1,5 +1,4 @@
-import { AfterViewInit, Directive, ElementRef, HostBinding, HostListener,  input,  Input,  OnDestroy,  OnInit,  ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Directive, ElementRef,  HostListener,  input,    OnDestroy,  OnInit,  } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Directive({
@@ -10,7 +9,7 @@ export class SafeCloseDialogCustom implements OnInit, OnDestroy {
   customSaveForm = input.required<()=> void>();
   customRestoreForm = input.required<()=> void>();
 
-  constructor(private dialogElementRef: ElementRef<HTMLDialogElement>, private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(private dialogElementRef: ElementRef<HTMLDialogElement>, private router: Router) {}
 
 
 

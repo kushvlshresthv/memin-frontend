@@ -1,9 +1,7 @@
 import {
   AfterViewInit,
   Component,
-  effect,
   ElementRef,
-  OnInit,
   viewChild,
 } from '@angular/core';
 import {
@@ -12,11 +10,10 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { MemberCreationDto, MemberDetailsDto } from '../../models/models';
+import { MemberCreationDto} from '../../models/models';
 import { HttpClient } from '@angular/common/http';
 import { BACKEND_URL } from '../../../global_constants';
 import { Router } from '@angular/router';
-import { SelectInviteeForMeetingComponent } from '../create-meeting/select-invitee-for-meeting/select-invitee-for-meeting.component';
 import { SafeCloseDialogCustom } from '../../utils/safe-close-dialog-custom.directive';
 
 @Component({
