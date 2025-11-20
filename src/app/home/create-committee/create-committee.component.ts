@@ -36,8 +36,8 @@ export class CreateCommitteeComponent implements OnInit{
     description: '',
     coordinator: {
       memberId: 0,
-      firstName: '',
-      lastName: '',
+      firstName: 'Select',
+      lastName: 'Coordinator',
       post: '',
     },
     status: 'ACTIVE',
@@ -52,8 +52,9 @@ export class CreateCommitteeComponent implements OnInit{
   }
 
 
-  loadMemberService = inject(LoadMemberService);
 
+
+  loadMemberService = inject(LoadMemberService);
   loadAllMembers() {
     this.loadMemberService.loadAllMembers().subscribe({
       next: (loadedMembers) => {

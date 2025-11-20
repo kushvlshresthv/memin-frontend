@@ -183,7 +183,7 @@
             [compareWith]="compareCoordinators"
           >
             <option [ngValue]="coordinator.value" disabled>
-              Select Coordinator
+		{{coordinator.value.firstName + " " + coordinator.value.lastName}}
             </option>
             @if (currentCoordinator != undefined) {
               <option [ngValue]="currentCoordinator">

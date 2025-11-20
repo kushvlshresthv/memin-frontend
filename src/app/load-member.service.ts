@@ -21,7 +21,6 @@ export class LoadMemberService implements OnDestroy {
       })
       .pipe(
         map((response) => {
-	  console.log("loaded response yeah:");
 	  console.log(response.mainBody);
           return response.mainBody;
         }),

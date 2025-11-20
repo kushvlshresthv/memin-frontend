@@ -3,6 +3,7 @@ import {
   effect,
   ElementRef,
   input,
+  OnInit,
   output,
   viewChild,
 } from '@angular/core';
@@ -21,7 +22,7 @@ import { query } from '@angular/animations';
   templateUrl: './committee-form.component.html',
   styleUrl: './committee-form.component.scss',
 })
-export class CommitteeFormComponent {
+export class CommitteeFormComponent implements OnInit {
   diag = viewChild<ElementRef<HTMLDialogElement>>('committee_form_dialog');
 
   //SELECT MEMBER SECTION OF THE FORM
@@ -78,12 +79,28 @@ export class CommitteeFormComponent {
     this.unselectedMembers = this.committeeFormData().unselectedMembers;
     this.displayedMembers = this.unselectedMembers;
 
+    console.log("Displayed Member");
+    console.log(this.displayedMembers);
+    console.log(this.unselectedMembers);
+    console.log(this.committeeFormData());
+    console.log("unselected member");
+    console.log(this.committeeFormData().unselectedMembers);
+
+
+    //add form controls for each member
     this.unselectedMembers.forEach((member) => {
       this.memberAndRoleFormControlMap.set(
         member.memberId,
         new FormControl('Add', { nonNullable: true }),
       );
     });
+    
+    if(this.isEditPage()) {
+      //if edit page, there may be already some selected members 
+      this.committeeFormData().selectedMembersWithRoles.forEach((memberWithRole) => {
+	this.addMemberToSelectedMembersWithRolesAndSync(memberWithRole.member, memberWithRole.role);
+      });
+    }
 
     //finally restore selected members from local storage
     if (!this.isEditPage()) {
