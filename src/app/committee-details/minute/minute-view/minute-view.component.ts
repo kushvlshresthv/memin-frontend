@@ -16,16 +16,22 @@ import { Response } from '../../../response/response';
 export class MinuteViewComponent {
   //data loading logic is not in the component because data needs to be shared with minute-edit component.
   minuteData = inject(MinuteDataService).getMinuteData();
-  minute = viewChild(MinuteNepali1Component);
+  minuteNepali1 = viewChild(MinuteNepali1Component);
+  minuteEnglish1 = viewChild(MinuteEnglish1Component);
 
   constructor(private httpClient: HttpClient) {}
 
+  htmlContent!: string|undefined;
+
   onPrint() {
-    const htmlContent =
-      this.minute()?.processedMinute()?.nativeElement?.innerHTML;
+    if(this.minuteData().minuteLanguage == 'ENGLISH') {
+      this.htmlContent = this.minuteEnglish1()?.processedMinute()?.nativeElement?.innerHTML;
+    } else if(this.minuteData().minuteLanguage = 'NEPALI') {
+      this.htmlContent = this.minuteNepali1()?.processedMinute()?.nativeElement?.innerHTML;
+    }
 
     this.httpClient
-      .post(BACKEND_URL + '/api/getWordFileForMinute', htmlContent, {
+      .post(BACKEND_URL + '/api/getWordFileForMinute', this.htmlContent, {
         withCredentials: true,
         responseType: 'blob', // This tells Angular to parse the body as binary
       })

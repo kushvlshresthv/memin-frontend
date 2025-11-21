@@ -1,7 +1,6 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, ElementRef, inject, input, viewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { MinuteDataDto } from '../../../../models/models';
-import { MinuteDataService } from '../../minute-data.service';
 
 @Component({
   selector: 'app-minute-english-1',
@@ -12,4 +11,5 @@ import { MinuteDataService } from '../../minute-data.service';
 })
 export class MinuteEnglish1Component {
   minuteData = input.required<MinuteDataDto>();
+  processedMinute = viewChild<ElementRef<HTMLDivElement>>("processedMinute");
 }
