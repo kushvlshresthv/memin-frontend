@@ -1,7 +1,8 @@
 <!-- when this template is rendered for the first time, minuteData()() may not have been populated by the server, and it may be undefined   -->
+<button class="btn btn-primary print-button" (click)="onPrint()">Get Word File</button>
 @if(minuteData() != undefined && minuteData().minuteLanguage === 'NEPALI') {
   <app-minute-nepali-1 [minuteData]="minuteData()" ></app-minute-nepali-1>
 }@else if (minuteData() != undefined && minuteData().minuteLanguage === 'ENGLISH') {
-  <app-minute-english-1 [minuteData]="minuteData()"></app-minute-english-1>
+  <app-minute-english-1 [minuteData]="minuteData()" ></app-minute-english-1>
 }
 

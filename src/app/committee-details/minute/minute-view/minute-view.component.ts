@@ -1,18 +1,50 @@
-import { Component, inject, input } from '@angular/core';
-import { SafeHtml } from '@angular/platform-browser';
-import { DatePipe } from '@angular/common';
-import { MinuteDataDto } from '../../../models/models';
+import { Component, ElementRef, inject, input, viewChild } from '@angular/core';
 import { MinuteEnglish1Component } from './minute-english-1/minute-english-1.component';
 import { MinuteNepali1Component } from './minute-nepali-1/minute-nepali-1.component';
 import { MinuteDataService } from '../minute-data.service';
+import { BACKEND_URL } from '../../../../global_constants';
+import { HttpClient } from '@angular/common/http';
+import { Response } from '../../../response/response';
 
 @Component({
   selector: 'app-minute-view',
   standalone: true,
   imports: [MinuteNepali1Component, MinuteEnglish1Component],
   templateUrl: './minute-view.component.html',
-  styleUrl: './minute-view.component.scss'
+  styleUrl: './minute-view.component.scss',
 })
 export class MinuteViewComponent {
+  //data loading logic is not in the component because data needs to be shared with minute-edit component.
   minuteData = inject(MinuteDataService).getMinuteData();
+  minute = viewChild(MinuteNepali1Component);
+
+  constructor(private httpClient: HttpClient) {}
+
+  onPrint() {
+    const htmlContent =
+      this.minute()?.processedMinute()?.nativeElement?.innerHTML;
+
+    this.httpClient
+      .post(BACKEND_URL + '/api/getWordFileForMinute', htmlContent, {
+        withCredentials: true,
+        responseType: 'blob', // This tells Angular to parse the body as binary
+      })
+      .subscribe({
+        next: (blob: Blob) => {
+          // The response is now directly the file blob.
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'minute.docx'; // TODO: extract the file name from header or create the download name in the frontend itself with time in the title
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+        },
+        error: (error) => {
+	  //TODO: handle error properly
+          console.error('Download failed', error.error);
+        },
+      });
+  }
 }

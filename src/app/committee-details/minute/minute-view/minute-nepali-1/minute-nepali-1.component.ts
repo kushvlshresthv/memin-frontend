@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, ElementRef, inject, input, viewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { MinuteDataDto } from '../../../../models/models';
 import { MinuteDataService } from '../../minute-data.service';
@@ -16,6 +16,7 @@ import NepaliDate from 'nepali-date-converter';
 export class MinuteNepali1Component {
   minuteData = input.required<MinuteDataDto>();
   constructor(private datePipe: DatePipe) {}
+  processedMinute = viewChild<ElementRef<HTMLDivElement>>("processedMinute");
 
   // to use it in the template
   toNepaliDigits = toNepaliDigits;

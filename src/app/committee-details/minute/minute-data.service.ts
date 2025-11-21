@@ -1,12 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, Signal, signal } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { BACKEND_URL } from '../../../global_constants';
 import { MinuteDataDto } from '../../models/models';
 import { Response } from '../../response/response';
 
 @Injectable()
+//data loading logic is not in the component because data needs to be shared with minute-edit component. 
 export class MinuteDataService {
   private minuteData = signal<MinuteDataDto>(new MinuteDataDto());
 
