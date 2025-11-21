@@ -1,20 +1,23 @@
-@use 'constants' as constants;
+@use "constants" as constants;
 
 #a4-box {
-    font-family: Roboto, "Annapurna", sans-serif;
-    line-height: 1.8rem;
-    background: grey;
-    color: black;
-    width: constants.$minute-width;
-    height: 297mm;
-    margin: 0 auto;
-    padding: 30mm 20mm;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    box-sizing: border-box;
+  font-family: Roboto, "Annapurna", sans-serif;
+  line-height: 1.8rem;
+  background: grey;
+  color: black;
+  width: constants.$minute-width;
+  height: 297mm;
+  margin: 0 auto;
+  padding: 30mm 20mm;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
 }
 
-p, li, td, th {
-    line-height: 1.6;
+p,
+li,
+td,
+th {
+  line-height: 1.6;
 }
 
 ol {
@@ -26,62 +29,71 @@ li {
   padding-left: 1.5em; /* pushes the text block forward */
 }
 
-
 table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
-th, td {
-    padding: 8px 12px;
-    border: 1px solid black;
-    text-align: left;
-    white-space: nowrap; /* Prevents line wrapping in narrow columns */
+th,
+td {
+  padding: 8px 12px;
+  border: 1px solid black;
+  text-align: left;
+  white-space: nowrap; /* Prevents line wrapping in narrow columns */
 }
 
 th:last-child,
 td:last-child {
-    width: 100%; /* Take up the remaining space */
-    white-space: normal; /* Allow wrapping in signature column */
+  width: 100%; /* Take up the remaining space */
+  white-space: normal; /* Allow wrapping in signature column */
 }
 
 .heading {
-    font-weight: bold;
-    text-decoration: underline;
+  font-weight: bold;
+  text-decoration: underline;
 }
 
 ol {
-    padding-left: 1.2rem;
+  padding-left: 1.2rem;
 }
 
 .justify-text {
-    text-align: justify;
-    text-justify: inter-word;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
-
-.decision, .agenda {
-    margin-top:0;
-    margin-bottom:8px;
+.decision,
+.agenda {
+  margin-top: 0;
+  margin-bottom: 8px;
 }
 
 p {
-    margin: 0;
+  margin: 0;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    margin: 0;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
 }
 
-.introduction, .decisions, .memberships, .agendas {
-    margin: 8px;
+.introduction,
+.decisions,
+.memberships,
+.agendas {
+  margin: 8px;
 }
 
-li,ol {
-    margin: 0;
+li,
+ol {
+  margin: 0;
 }
 
-.agenda-lists, .decision-lists {
-    margin-left: 13px;
+.agenda-lists,
+.decision-lists {
+  margin-left: 13px;
 }
-

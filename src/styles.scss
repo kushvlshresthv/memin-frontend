@@ -67,11 +67,50 @@ body {
 html,
 body {
   height: 100%;
-
 }
 body {
   margin: 0;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+//FOR PRINTING MINUTE
+
+@page {
+  size: A4; 
+}
+
+@media print {
+
+  /* 1. Hide everything in the body */
+  body * {
+    visibility: hidden;
+    margin: 0 !important;
+  }
+
+  //withinout this there is some margin/padding
+  .main-content {
+      margin: 0 !important;
+      padding: 0 !important;
+  }
+
+
+  /* 2. Make the target div and its children visible */
+  #a4-box,
+  #a4-box * {
+    visibility: visible;
+  }
+
+  /* 3. Position the target div at the top-left of the paper */
+  #a4-box {
+    box-shadow: none;
+  }
+}
