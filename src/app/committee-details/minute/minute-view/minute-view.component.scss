@@ -1,8 +1,25 @@
+
 :host {
   width: 210mm;
+  position: relative;
+}
+
+.word-file-button, .print-button {
+    position: absolute;
+    right: 10px;
+    opacity: 0.8;
+    padding: 5px 14px;
+    font-family: Roboto, sans-serif;
+}
+
+.word-file-button {
+    top: 10px;
 }
 
 .print-button {
-    position: absolute;
+    top: 50px;
 }
 
+.word-file-button:hover {
+    opacity: 1;
+}
