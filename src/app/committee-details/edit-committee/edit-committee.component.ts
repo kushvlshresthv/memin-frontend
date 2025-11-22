@@ -5,7 +5,10 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Response } from '../../response/response';
 import { BACKEND_URL } from '../../../global_constants';
-import { CommitteeCreationDto, CommitteeDetailsForEditDto } from '../../models/models';
+import {
+  CommitteeCreationDto,
+  CommitteeDetailsForEditDto,
+} from '../../models/models';
 import { CommitteeFormData } from '../../home/create-committee/create-committee.component';
 import { LoadMemberService } from '../../load-member.service';
 
@@ -20,9 +23,9 @@ import { LoadMemberService } from '../../load-member.service';
 export class EditCommitteeComponent implements OnInit {
   constructor(
     private httpClient: HttpClient,
-    private router: Router,
     private activatedRoute: ActivatedRoute,
   ) {}
+  httpParams!: HttpParams;
 
   hasDataLoaded = false;
 
@@ -48,16 +51,13 @@ export class EditCommitteeComponent implements OnInit {
 
   loadAllData() {
     this.activatedRoute.queryParams.subscribe((receivedParams) => {
-      const httpParams = new HttpParams().set(
-        'committeeId',
-        receivedParams['committeeId'],
-      );
+     this.httpParams = new HttpParams().set('committeeId', receivedParams['committeeId']);
       this.httpClient
         .get<Response<CommitteeDetailsForEditDto>>(
           BACKEND_URL + '/api/getCommitteeDetailsForEditPage',
           {
             withCredentials: true,
-            params: httpParams,
+            params: this.httpParams,
           },
         )
         .subscribe({
@@ -73,8 +73,8 @@ export class EditCommitteeComponent implements OnInit {
             this.committeeFormData.selectedMembersWithRoles =
               mainBody.membersWithRoles;
             this.loadAllMembers();
-	    console.log("CommitteeFormData");
-	    console.log(this.committeeFormData);
+            console.log('CommitteeFormData');
+            console.log(this.committeeFormData);
           },
           error: (error) => {
             console.log('TODO: show error', error);
@@ -83,16 +83,15 @@ export class EditCommitteeComponent implements OnInit {
     });
   }
 
-
   loadMemberService = inject(LoadMemberService);
   loadAllMembers() {
     this.loadMemberService.loadAllMembers().subscribe({
       next: (loadedMembers) => {
         this.committeeFormData.unselectedMembers = loadedMembers;
 
-	//dataLoaded should be here, not after call for this.loadAllMembers() because this is an async operation, and if template is loaded with unselected members, there will be timing issues
+        //dataLoaded should be here, not after call for this.loadAllMembers() because this is an async operation, and if template is loaded with unselected members, there will be timing issues
 
-	this.hasDataLoaded = true;
+        this.hasDataLoaded = true;
       },
       error: (response) => {
         console.log('TODO: handle error' + response);
@@ -102,6 +101,20 @@ export class EditCommitteeComponent implements OnInit {
 
   onFormSave(committeeCreationDto: CommitteeCreationDto) {
     console.log('saving form');
-    console.log(committeeCreationDto);
+    this.httpClient
+      .post<Response<Object>>(
+        BACKEND_URL + '/api/updateCommitteeDetails',
+        committeeCreationDto,
+        { withCredentials: true, params: this.httpParams },
+      )
+      .subscribe({
+	next: (response) => {
+	  console.log("TODO: show response properly");
+	  console.log(response.mainBody);
+	},
+	error: (error) => {
+	  console.log("TODO: show errors properly");
+	}
+      });
   }
 }
