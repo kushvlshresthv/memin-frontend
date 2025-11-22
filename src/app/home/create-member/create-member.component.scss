@@ -7,6 +7,10 @@
   width: 600px;
 }
 
+.panel-header {
+    border-bottom: 1px solid colors.$color-border-primary;
+}
+
 .member-details-panel {
   flex: 1;
   background: colors.$color-background-card;

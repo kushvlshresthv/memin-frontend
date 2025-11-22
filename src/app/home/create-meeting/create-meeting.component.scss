@@ -5,6 +5,10 @@ dialog {
   max-width: 1000px;
 }
 
+.panel-header {
+    border-bottom: 1px solid colors.$color-border-primary;
+}
+
 //----------------------------------LEFT PANEL -------------------------------------
 
 .invitee-selection-container {

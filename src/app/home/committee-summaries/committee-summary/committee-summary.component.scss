@@ -5,22 +5,22 @@
 }
 
 .committee-card {
-  background: #2f3136;
+  background: colors.$color-background-card;
   border-radius: 8px;
-  border: 1px solid #202225;
+  border: 1px solid colors.$color-border-primary;
   width: 100%;
   max-width: 450px;
   overflow: hidden;
   &:hover {
-    background: #32353a;
+      background: colors.$color-card-hover;
     transform: translateY(-2px);
   }
 }
 
 .card-header {
-  background: #36393f;
+  background: colors.$color-background-secondary; 
   padding: 20px 24px;
-  border-bottom: 1px solid #202225;
+  border-bottom: 1px solid colors.$color-border-primary;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;

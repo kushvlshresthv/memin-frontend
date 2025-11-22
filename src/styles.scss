@@ -26,7 +26,7 @@ ht html,
 body {
   font-family: Roboto, "Baloo", sans-serif !important;
   font-weight: 400;
-  background-color: #36393f;
+  background-color: colors.$color-background-main;
   color: #dcddde;
   scrollbar-gutter: stable; //reserves space for scrollbar even when not visible to prevent layout shift
 }

@@ -62,7 +62,7 @@ select {
 }
 
 .month {
-  border: 1px solid #1a1818;
+    border: 1px solid colors.$color-border-primary;
   border-radius: 8px;
   padding: 0.75rem;
   text-align: center;

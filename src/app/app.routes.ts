@@ -12,6 +12,7 @@ import { CommitteeDetailsComponent } from './committee-details/committee-details
 import { MinuteComponent } from './committee-details/minute/minute.component';
 import { CreateMeetingComponent } from './home/create-meeting/create-meeting.component';
 import { EditCommitteeComponent } from './committee-details/edit-committee/edit-committee.component';
+import { DemoComponent } from './demo/demo.component';
 
 export const routes: Routes = [
   {
@@ -23,6 +24,12 @@ export const routes: Routes = [
     path: 'login',
     component: LoginComponent,
   },
+
+  {
+    
+    path: 'demo',
+    component: DemoComponent,
+  }, 
 
   {
     path: 'home',

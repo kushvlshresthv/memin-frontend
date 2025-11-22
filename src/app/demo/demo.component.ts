@@ -263,3 +263,221 @@
 //   }
 // }
 //
+
+
+
+
+
+//Paper texture
+
+
+import { Component, ViewEncapsulation } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { bootstrapApplication } from '@angular/platform-browser';
+
+// Interface for our meeting data
+interface MinuteItem {
+  id: number;
+  topic: string;
+  discussion: string;
+  action: string;
+  owner: string;
+}
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  encapsulation: ViewEncapsulation.None, // Allows global styles for print/body
+  template: `
+    <!-- Load Google Fonts for that authentic print look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+
+    <!-- Invisible SVG Filters for Ink Bleed Effect -->
+    <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="ink-bleed" x="-20%" y="-20%" width="140%" height="140%">
+          <!-- Create turbulence/noise -->
+          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" result="noise" />
+          <!-- Displace the source text by the noise -->
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.5" xChannelSelector="R" yChannelSelector="G" />
+          <!-- Blur slightly to soften -->
+          <feGaussianBlur stdDeviation="0.2" />
+        </filter>
+      </defs>
+    </svg>
+
+    <div class="min-h-screen bg-gray-100 flex flex-col lg:flex-row font-sans text-gray-800">
+
+      <!-- LEFT PANEL: EDITOR -->
+      <div class="w-full lg:w-1/3 p-6 bg-white border-r border-gray-200 overflow-y-auto shadow-lg z-10">
+        <h1 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+          <span class="text-blue-600 text-3xl">✎</span> Minute Writer
+        </h1>
+
+        <!-- Meta Data Form -->
+        <div class="space-y-4 mb-8">
+          <div>
+            <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Organization / Title</label>
+            <input [(ngModel)]="data.title" class="w-full p-2 border border-gray-300 rounded focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition" placeholder="e.g. Q3 Strategy Review">
+          </div>
+          
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Date</label>
+              <input type="date" [(ngModel)]="data.date" class="w-full p-2 border border-gray-300 rounded focus:border-blue-500 outline-none">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Location</label>
+              <input [(ngModel)]="data.location" class="w-full p-2 border border-gray-300 rounded focus:border-blue-500 outline-none" placeholder="Conf Room B">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-gray-500 mb-1">Attendees (comma separated)</label>
+            <textarea [(ngModel)]="data.attendees" rows="2" class="w-full p-2 border border-gray-300 rounded focus:border-blue-500 outline-none" placeholder="John Doe, Jane Smith..."></textarea>
+          </div>
+        </div>
+
+        <hr class="my-6 border-gray-200">
+
+        <!-- Items List -->
+        <div class="space-y-6">
+          <h2 class="text-sm font-bold uppercase text-gray-500">Agenda Items</h2>
+          
+          <div *ngFor="let item of data.items; let i = index" class="bg-gray-50 p-4 rounded border border-gray-200 group hover:border-blue-300 transition">
+            <div class="flex justify-between items-start mb-2">
+              <span class="text-xs font-bold text-gray-400">Item #{{i + 1}}</span>
+              <button (click)="removeItem(i)" class="text-red-400 hover:text-red-600 text-xs font-bold px-2 py-1 rounded hover:bg-red-50 transition">DELETE</button>
+            </div>
+
+            <input [(ngModel)]="item.topic" class="w-full mb-2 font-semibold bg-transparent border-b border-gray-300 focus:border-blue-500 outline-none placeholder-gray-400" placeholder="Topic">
+            <textarea [(ngModel)]="item.discussion" rows="3" class="w-full text-sm bg-transparent border-b border-gray-300 focus:border-blue-500 outline-none placeholder-gray-400 mb-2" placeholder="Discussion notes..."></textarea>
+            
+            <div class="flex gap-2 mt-2">
+              <input [(ngModel)]="item.action" class="flex-1 text-xs bg-white border border-gray-200 p-1 rounded" placeholder="Action Item">
+              <input [(ngModel)]="item.owner" class="w-24 text-xs bg-white border border-gray-200 p-1 rounded" placeholder="Owner">
+            </div>
+          </div>
+
+          <button (click)="addItem()" class="w-full py-3 border-2 border-dashed border-gray-300 text-gray-500 font-bold rounded hover:border-blue-500 hover:text-blue-500 transition flex items-center justify-center gap-2">
+            <span>+</span> Add Agenda Item
+          </button>
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL: PREVIEW (The Paper Effect) -->
+      <div class="w-full lg:w-2/3 bg-gray-800 p-4 lg:p-12 overflow-y-auto flex justify-center items-start">
+        
+        <!-- THE PAPER SHEET -->
+        <div class="paper-sheet shadow-2xl relative w-full max-w-[210mm] min-h-[297mm] bg-[#fdfbf7] p-[20mm] text-black">
+          
+          <!-- Paper Texture Overlay (Grain) -->
+          <div class="texture-overlay absolute inset-0 pointer-events-none z-0"></div>
+
+          <!-- Content Container (The Ink) -->
+          <div class="relative z-10 ink-content">
+            
+            <!-- Header -->
+            <header class="border-b-2 border-black pb-6 mb-8 flex justify-between items-end">
+              <div>
+                <h1 class="text-4xl font-serif font-bold uppercase tracking-wider mb-2 leading-none">{{data.title || 'Meeting Minutes'}}</h1>
+                <p class="font-serif italic text-lg opacity-80">Record of Proceedings</p>
+              </div>
+              <div class="text-right font-serif text-sm leading-relaxed">
+                <p><span class="font-bold">Date:</span> {{data.date | date:'longDate'}}</p>
+                <p><span class="font-bold">Loc:</span> {{data.location}}</p>
+              </div>
+            </header>
+
+            <!-- Attendees Box -->
+            <section class="mb-8 bg-black/5 p-4 border border-black/10">
+              <h3 class="font-serif font-bold uppercase text-sm tracking-widest mb-2 border-b border-black/20 pb-1">Present</h3>
+              <p class="font-serif leading-relaxed">{{data.attendees}}</p>
+            </section>
+
+            <!-- Minutes Table Layout -->
+            <section>
+              <div *ngFor="let item of data.items; let i = index" class="mb-8">
+                <div class="flex items-baseline gap-4 mb-2">
+                  <span class="font-mono text-lg font-bold opacity-60">{{i + 1}}.</span>
+                  <h3 class="font-serif text-xl font-bold border-b border-black/20 flex-1 pb-1">{{item.topic}}</h3>
+                </div>
+                
+                <div class="pl-8">
+                  <p class="font-serif text-justify leading-relaxed mb-4 whitespace-pre-wrap">{{item.discussion}}</p>
+                  
+                  <div *ngIf="item.action" class="flex gap-4 items-start mt-2 pl-4 border-l-4 border-black/20">
+                    <div class="font-bold font-mono text-xs uppercase tracking-wider mt-1">Action:</div>
+                    <div class="font-serif italic flex-1">{{item.action}}</div>
+                    <div *ngIf="item.owner" class="font-mono text-xs border border-black px-2 py-0.5 rounded-full">{{item.owner}}</div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Footer / Sign-off -->
+            <footer class="mt-16 pt-8 border-t border-black flex justify-between items-end opacity-60">
+              <p class="font-mono text-xs">Generated via MinuteWriter</p>
+              <div class="text-center">
+                <div class="w-48 border-b border-black border-dashed mb-2 h-8"></div>
+                <p class="font-serif text-sm italic">Signature</p>
+              </div>
+            </footer>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  `,
+  styles: [`
+    /* --- THE MAGIC: PAPER & INK TEXTURES --- */
+
+    /* 1. The Font Configuration */
+    .font-serif {
+      font-family: 'EB Garamond', serif;
+    }
+    .font-mono {
+      font-family: 'Special Elite', monospace; /* Typewriter style */
+    }
+
+    /* 2. The Paper Sheet */
+    .paper-sheet {
+      /* A warm, slightly off-white base */
+      background-color: #fdfbf7; 
+    }
+
+    /* 3. The Texture Overlay */
+    /* This creates the grain using a tiny SVG pattern encoded in CSS */
+    .texture-overlay {
+      opacity: 0.6;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E");
+    }
+
+    /* 4. The Ink Effect */
+    .ink-content {
+      /* Dark grey instead of pure black looks more like real ink */
+      color: #2a2a2a; 
+      
+      /* Multiply blend mode makes the text look like it's soaking INTO the texture */
+      mix-blend-mode: multiply; 
+
+      /* Optional: Apply the subtle SVG bleed filter defined in the template */
+      /* Performance Note: If this causes lag on slow devices, remove this filter line */
+      filter: url(#ink-bleed);
+    }
+
+    /* Improve printing of the app itself */
+    @media print {
+      .w-full.lg\\:w-1\\/3 { display: none; } /* Hide editor */
+      .w-full.lg\\:w-2\\/3 { width: 100%; padding: 0; background: white; }
+      .paper-sheet { box-shadow: none; margin: 0; width: 100%; max-width: none; }
+      body { -webkit-print-color-adjust: exact; }
+    }
+  `]
+})

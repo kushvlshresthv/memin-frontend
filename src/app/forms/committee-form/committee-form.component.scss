@@ -18,6 +18,10 @@ dialog {
   overflow: hidden;
 }
 
+.panel-header {
+    border-bottom: 1px solid colors.$color-border-primary;
+}
+
 .search-section {
   flex: 1;
   display: flex;
@@ -222,6 +226,7 @@ dialog {
   flex-direction: column;
   overflow: hidden;
 }
+
 
 .committee-details-panel {
   flex: 1;
