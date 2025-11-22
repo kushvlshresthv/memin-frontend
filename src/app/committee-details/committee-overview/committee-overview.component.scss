@@ -1,9 +1,34 @@
 @use "colors" as colors;
 @use "constants" as constants;
 
+
 :host {
   background: colors.$color-background-main;
 }
+
+
+//------------------RIGHT PANEL that shows committee members---------------------------
+
+app-member-summaries {
+  position: fixed;
+  top: constants.$header-height; // distance from top of viewport
+  right: 0; // distance from right of viewport
+  background: colors.$color-background-main;
+  z-index: 9998; // make sure it's above everything but below the header
+  border-left: 1px solid colors.$color-border-primary;
+  width: constants.$app-committee-member-summaries-width;
+  height: calc(100vh - constants.$header-height);
+  overflow-y: auto;
+  padding: 16px 15px;
+  box-sizing: border-box;
+}
+
+.committee.members-not-shown {
+  margin-right: 0; // no space on the right when the members are not shown
+}
+
+
+//-----------------------------Main overview section-------------------------------------------------
 
 .details-and-calendar {
   display:flex;
@@ -11,6 +36,8 @@
   flex-direction: column;
   gap: 24px;
   align-items: start;
+  margin-right: constants.$app-committee-member-summaries-width;
+  padding-right: 25px;  //space from the right committee member panel
 }
 
 .committee-details {

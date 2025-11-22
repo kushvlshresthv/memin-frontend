@@ -42,6 +42,9 @@ export class CommitteeFormComponent implements OnInit {
     role: string;
   }[] = [];
 
+
+
+  //initialize data for both right and left panel
   ngOnInit(): void {
     this.setupObservableForSearchBarInputChange();
 
@@ -49,9 +52,6 @@ export class CommitteeFormComponent implements OnInit {
       nonNullable: true,
     });
     this.description = new FormControl(this.committeeFormData().description, {
-      nonNullable: true,
-    });
-    this.coordinator = new FormControl(this.committeeFormData().coordinator, {
       nonNullable: true,
     });
     this.status = new FormControl(this.committeeFormData().status, {
@@ -65,27 +65,10 @@ export class CommitteeFormComponent implements OnInit {
       this.committeeFormData().minuteLanguage,
     );
 
-    this.committeeFormGroup = new FormGroup({
-      name: this.name,
-      description: this.description,
-      coordinator: this.coordinator, 
-      status: this.status,
-      maxNoOfMeetings: this.maxNoOfMeetings,
-      minuteLanguage: this.minuteLanguage,
-    });
-
 
     //set unselected members and display them as well
     this.unselectedMembers = this.committeeFormData().unselectedMembers;
     this.displayedMembers = this.unselectedMembers;
-
-    console.log("Displayed Member");
-    console.log(this.displayedMembers);
-    console.log(this.unselectedMembers);
-    console.log(this.committeeFormData());
-    console.log("unselected member");
-    console.log(this.committeeFormData().unselectedMembers);
-
 
     //add form controls for each member
     this.unselectedMembers.forEach((member) => {
@@ -101,6 +84,26 @@ export class CommitteeFormComponent implements OnInit {
 	this.addMemberToSelectedMembersWithRolesAndSync(memberWithRole.member, memberWithRole.role);
       });
     }
+
+    //at last, add coordinator at last because coordinator has to be removed from the unselectedMembers 
+    this.coordinator = new FormControl(this.committeeFormData().coordinator, {
+      nonNullable: true,
+    });
+    //this needs to be set because onCoordinatorSelect() relies on this to restore when a new coordaintor is selected
+    this.currentCoordinator = this.committeeFormData().coordinator;
+    this.removeMemberFromDisplayedMembers(this.committeeFormData().coordinator);
+    this.removeMemberFromUnselectedMembers(this.committeeFormData().coordinator);
+
+
+    //finally initialize the form group for right panel
+    this.committeeFormGroup = new FormGroup({
+      name: this.name,
+      description: this.description,
+      coordinator: this.coordinator, 
+      status: this.status,
+      maxNoOfMeetings: this.maxNoOfMeetings,
+      minuteLanguage: this.minuteLanguage,
+    });
 
     //finally restore selected members from local storage
     if (!this.isEditPage()) {

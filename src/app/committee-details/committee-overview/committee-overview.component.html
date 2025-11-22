@@ -1,4 +1,10 @@
-@if (dataLoaded) {
+@if (hasCommitteeMembersLoaded) {
+<app-member-summaries
+    [membersOfCommittee]="membersOfCommittee"
+></app-member-summaries>
+}
+
+@if (hasOverviewDataLoaded && hasMeetingDataLoaded) {
   <div class="details-and-calendar">
     <div class="committee-details">
       <div class="committee-info">

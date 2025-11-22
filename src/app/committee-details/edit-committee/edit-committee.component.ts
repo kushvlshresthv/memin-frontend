@@ -24,6 +24,7 @@ export class EditCommitteeComponent implements OnInit {
   constructor(
     private httpClient: HttpClient,
     private activatedRoute: ActivatedRoute,
+    private router: Router,
   ) {}
   httpParams!: HttpParams;
 
@@ -111,6 +112,7 @@ export class EditCommitteeComponent implements OnInit {
 	next: (response) => {
 	  console.log("TODO: show response properly");
 	  console.log(response.mainBody);
+      this.router.navigate(['./committee-details/overview'], {queryParamsHandling:'preserve'})
 	},
 	error: (error) => {
 	  console.log("TODO: show errors properly");
