@@ -147,3 +147,13 @@ export class MemberSearchResultWithRoleDto {
   };
   role: string = '';
 }
+
+export class MinuteUpdateDto {
+  committeeName!: string;
+  committeeDescription!: string;
+  meetingHeldDate!: string;
+  meetingHeldTime!: string;
+  meetingHeldPlace!: string;
+  decisions!: DecisionDto[];
+  agendas!: AgendaDto[];
+}
