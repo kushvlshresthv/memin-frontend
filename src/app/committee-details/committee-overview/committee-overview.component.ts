@@ -6,14 +6,14 @@ import { CommitteeDetailsDto, CommitteeOverviewDto, MeetingSummaryDto, MemberOfC
 import { Response } from '../../response/response';
 import { CalendarComponent } from './calendar/calendar.component';
 import { DatePipe } from '@angular/common';
-import { MemberSummariesComponent } from './member-summaries/member-summaries.component';
 import { MeetingSummariesComponent } from './meeting-summaries/meeting-summaries.component';
 import { filter } from 'rxjs';
+import { CommitteeMemberSummariesComponent } from './committee-member-summaries/committee-member-summaries.component';
 
 @Component({
   selector: 'app-committee-overview',
   standalone: true,
-  imports: [RouterOutlet, MemberSummariesComponent, CalendarComponent,DatePipe, MeetingSummariesComponent, MeetingSummariesComponent],
+  imports: [RouterOutlet, CommitteeMemberSummariesComponent, CalendarComponent,DatePipe, MeetingSummariesComponent, MeetingSummariesComponent],
   templateUrl: './committee-overview.component.html',
   styleUrl: './committee-overview.component.scss',
 })

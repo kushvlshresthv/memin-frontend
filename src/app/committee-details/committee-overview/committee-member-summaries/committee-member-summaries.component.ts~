@@ -1,14 +1,14 @@
 import { Component, input } from '@angular/core';
 import { MemberOfCommitteeDto, MemberSummaryDto } from '../../../models/models';
-import { MemberSummaryComponent } from './member-summary/member-summary.component';
+import { MemberSummaryComponent } from './committee-member-summary/member-summary.component';
 
 @Component({
   selector: 'app-member-summaries',
   standalone: true,
   imports: [MemberSummaryComponent],
-  templateUrl: './member-summaries.component.html',
-  styleUrl: './member-summaries.component.scss'
+  templateUrl: './committee-member-summaries.component.html',
+  styleUrl: './committee-member-summaries.component.scss'
 })
-export class MemberSummariesComponent {
+export class CommitteeMemberSummariesComponent {
   membersOfCommittee = input.required<MemberOfCommitteeDto[]>();
 }

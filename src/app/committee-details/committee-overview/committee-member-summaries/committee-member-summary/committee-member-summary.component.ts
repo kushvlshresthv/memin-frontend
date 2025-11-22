@@ -5,9 +5,9 @@ import { MemberOfCommitteeDto, MemberSummaryDto } from '../../../../models/model
   selector: 'app-member-summary',
   standalone: true,
   imports: [],
-  templateUrl: './member-summary.component.html',
-  styleUrl: './member-summary.component.scss'
+  templateUrl: './committee-member-summary.component.html',
+  styleUrl: './committee-member-summary.component.scss'
 })
-export class MemberSummaryComponent {
+export class CommitteeMemberSummaryComponent {
   memberOfCommittee = input.required<MemberOfCommitteeDto>();
 }
