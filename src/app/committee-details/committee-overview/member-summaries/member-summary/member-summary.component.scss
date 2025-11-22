@@ -19,7 +19,7 @@
   cursor: pointer;
 
   &:hover {
-    background: colors.$color-background-input;
+      background: colors.$color-card-hover;
     transform: translateY(-1px);
   }
 }

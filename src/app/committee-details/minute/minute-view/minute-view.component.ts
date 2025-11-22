@@ -23,7 +23,8 @@ export class MinuteViewComponent {
 
   htmlContent!: string|undefined;
 
-  onPrint() {
+  onWordFileDownload($event:Event) {
+    $event.preventDefault();
     if(this.minuteData().minuteLanguage == 'ENGLISH') {
       this.htmlContent = this.minuteEnglish1()?.processedMinute()?.nativeElement?.innerHTML;
     } else if(this.minuteData().minuteLanguage = 'NEPALI') {

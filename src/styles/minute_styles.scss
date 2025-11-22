@@ -1,10 +1,14 @@
 @use "constants" as constants;
+@use "colors" as colors;
 
 #a4-box {
   font-family: Roboto, "Annapurna", sans-serif;
   line-height: 1.8rem;
-  background: grey;
+  background: white;
+  // background: colors.$color-background-main;
   color: black;
+  // border: 2px solid colors.$color-border-primary;
+  // color: colors.$color-text-primary; 
   width: constants.$minute-width;
   height: 297mm;
   margin: 0 auto;
@@ -37,7 +41,8 @@ table {
 th,
 td {
   padding: 8px 12px;
-  border: 1px solid black;
+  // border: 1px solid black;
+  border: 1px solid colors.$color-border-primary;
   text-align: left;
   white-space: nowrap; /* Prevents line wrapping in narrow columns */
 }

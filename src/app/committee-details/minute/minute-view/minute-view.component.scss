@@ -1,27 +1,29 @@
+@use 'constants' as constants;
+@use 'colors' as colors;
 
 :host {
   width: 210mm;
   position: relative;
 }
 
-
-
-.word-file-button, .print-button {
-    position: absolute;
-    right: 10px;
-    opacity: 0.8;
-    padding: 5px 14px;
-    font-family: Roboto, sans-serif;
+.minute-options {
+    position: fixed;
+    left: 0px;
+    width: constants.$sidebar-width;
+    bottom: 0px;
+    z-index: 9999;
+    border-top: 1px solid colors.$color-border-primary;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    box-sizing: border-box;
+    gap: 20px;
+    font-size: constants.$font-normal;
 }
 
-.word-file-button {
-    top: 10px;
-}
 
-.print-button {
-    top: 50px;
-}
-
-.word-file-button:hover {
-    opacity: 1;
+.option:hover {
+    color: colors.$text-select-highlight; 
+    cursor: pointer;
 }
