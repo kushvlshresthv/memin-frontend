@@ -39,6 +39,7 @@ export class CreateCommitteeComponent implements OnInit{
       firstName: 'Select',
       lastName: 'Coordinator',
       post: '',
+      title: '',
     },
     status: 'ACTIVE',
     maxNoOfMeetings: 0,

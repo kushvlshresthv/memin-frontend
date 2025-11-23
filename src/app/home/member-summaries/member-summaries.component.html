@@ -1,0 +1,9 @@
+<div class="heading">Your Members</div>
+
+<div class="member-summaries">
+  @if (memberSummariesLoaded) {
+    @for (memberSummary of memberSummaries; track memberSummary.memberId) {
+      <app-member-summary [memberSummary]="memberSummary"></app-member-summary>
+    }
+  }
+</div>

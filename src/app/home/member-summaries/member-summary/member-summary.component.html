@@ -1,0 +1,23 @@
+<div class="memberSummary-card">
+  <div class="card-header">
+    <div class="header-content">
+      <h3 class="memberSummary-name">
+        {{ memberSummary().firstName + " " + memberSummary().lastName}} 
+      </h3>
+    </div>
+  </div>
+
+  <div class="card-content">
+    <div class="info-grid">
+      <div class="info-item">
+        <span class="label">Post</span>
+        <span class="value">{{memberSummary().post}}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="label">Title</span>
+        <span class="value">{{memberSummary().title}}</span>
+      </div>
+    </div>
+  </div>
+</div>

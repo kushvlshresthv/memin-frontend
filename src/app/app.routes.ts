@@ -12,6 +12,7 @@ import { CommitteeDetailsComponent } from './committee-details/committee-details
 import { MinuteComponent } from './committee-details/minute/minute.component';
 import { CreateMeetingComponent } from './home/create-meeting/create-meeting.component';
 import { EditCommitteeComponent } from './committee-details/edit-committee/edit-committee.component';
+import { MemberSummariesComponent } from './home/member-summaries/member-summaries.component';
 
 export const routes: Routes = [
   {
@@ -45,6 +46,10 @@ export const routes: Routes = [
       {
         path: 'create-meeting',
         component: CreateMeetingComponent,
+      },
+      {
+	path: 'members-list',
+	component: MemberSummariesComponent,
       },
       {
         path: '**',

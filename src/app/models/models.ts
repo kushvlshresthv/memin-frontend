@@ -3,6 +3,7 @@ export interface MemberSearchResult {
   firstName: string;
   lastName: string;
   post: string;
+  title: string;
 }
 
 export class CommitteeCreationDto {
@@ -134,6 +135,7 @@ export class CommitteeDetailsForEditDto {
     firstName: '',
     lastName: '',
     post: '',
+    title:'',
   };
   membersWithRoles: MemberSearchResultWithRoleDto[] = [];
 }
@@ -144,6 +146,7 @@ export class MemberSearchResultWithRoleDto {
     firstName: '',
     lastName: '',
     post: '',
+    title: '',
   };
   role: string = '';
 }

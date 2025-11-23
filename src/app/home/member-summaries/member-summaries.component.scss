@@ -1,20 +1,17 @@
-@use 'colors' as colors;
 @use 'constants' as constants;
+
 .heading {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     font-size: constants.$font-xxl;
     font-weight: constants.$font-weight-semibold;
 }
-
-
-.summaryCards {
+.member-summaries {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  margin-right: 20px;
+  grid-template-columns: repeat(6, 1fr);
+  margin-right: 40px;
   gap: 20px;
   scrollbar-gutter: stable;
 }
-
 
 
 
