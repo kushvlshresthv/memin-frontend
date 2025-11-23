@@ -16,6 +16,7 @@ import { RouterLink } from '@angular/router';
 export class CommitteeSummariesComponent {
   committeeSummaries!: CommitteeSummary[];
   constructor(private httpClient: HttpClient) {}
+  hasCommitteesLoaded=false;
 
   ngOnInit(): void {
     this.httpClient
@@ -25,6 +26,7 @@ export class CommitteeSummariesComponent {
       .subscribe({
         next: (response) => {
           this.committeeSummaries = response.mainBody;
+	  this.hasCommitteesLoaded = true;
         },
         error: (response) => {
           console.log('error fetching committee');

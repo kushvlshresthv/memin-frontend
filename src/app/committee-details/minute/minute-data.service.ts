@@ -45,7 +45,7 @@ export class MinuteDataService {
   }
 
   hasDataChanged(): boolean {
-    if(JSON.stringify(this.minuteData()) !== this.originalData) {
+    if(this.originalData.length != 0 && JSON.stringify(this.minuteData()) !== this.originalData) {
       return true;
     }
     return false;
