@@ -7,6 +7,21 @@ dialog {
   height: 73%;
 }
 
+.drag-handle {
+  cursor: move;
+  margin-right: 10px;
+  color: #888;
+  font-size: 1.2rem;
+}
+
+
+// Style the ghost placeholder which appears when a member is lifted
+.custom-placeholder {
+    background: colors.$color-card-hover;
+  border: 2px dashed #999;
+  min-height: 60px; 
+  opacity: 0.5;
+}
 
 //-LEFT PANEL
 

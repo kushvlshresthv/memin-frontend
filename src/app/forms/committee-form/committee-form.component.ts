@@ -13,17 +13,42 @@ import { SafeCloseDialogCustom } from '../../utils/safe-close-dialog-custom.dire
 import { debounceTime, Subscription } from 'rxjs';
 import Fuse from 'fuse.js';
 import { CommitteeFormData } from '../../home/create-committee/create-committee.component';
-import { query } from '@angular/animations';
+import {
+  CdkDragDrop,
+  DragDropModule,
+  moveItemInArray,
+} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-committee-form',
   standalone: true,
-  imports: [ReactiveFormsModule, SafeCloseDialogCustom],
+  imports: [ReactiveFormsModule, SafeCloseDialogCustom, DragDropModule],
   templateUrl: './committee-form.component.html',
   styleUrl: './committee-form.component.scss',
 })
 export class CommitteeFormComponent implements OnInit {
   diag = viewChild<ElementRef<HTMLDialogElement>>('committee_form_dialog');
+
+  drop(event: CdkDragDrop<MemberSearchResult[]>) {
+    moveItemInArray(
+      this.selectedMembersWithRoles,
+      event.previousIndex,
+      event.currentIndex,
+    );
+
+    console.log('drop executed');
+  }
+
+  initializeFormControls() {
+    this.selectedMembersWithRoles.forEach((item) => {
+      const control = this.memberAndRoleFormControlMap.get(
+        item.member.memberId,
+      );
+      if (control) {
+        control.setValue(item.role, { emitEvent: false });
+      }
+    });
+  }
 
   //SELECT MEMBER SECTION OF THE FORM
   //---------------------------------------------------------------------------
@@ -42,9 +67,8 @@ export class CommitteeFormComponent implements OnInit {
     role: string;
   }[] = [];
 
-
-
   //initialize data for both right and left panel
+
   ngOnInit(): void {
     this.setupObservableForSearchBarInputChange();
 
@@ -65,7 +89,6 @@ export class CommitteeFormComponent implements OnInit {
       this.committeeFormData().minuteLanguage,
     );
 
-
     //set unselected members and display them as well
     this.unselectedMembers = this.committeeFormData().unselectedMembers;
     this.displayedMembers = this.unselectedMembers;
@@ -77,29 +100,40 @@ export class CommitteeFormComponent implements OnInit {
         new FormControl('Add', { nonNullable: true }),
       );
     });
-    
-    if(this.isEditPage()) {
-      //if edit page, there may be already some selected members 
-      this.committeeFormData().selectedMembersWithRoles.forEach((memberWithRole) => {
-	this.addMemberToSelectedMembersWithRolesAndSync(memberWithRole.member, memberWithRole.role);
-      });
+
+    if (this.isEditPage()) {
+      //if edit page, there may be already some selected members
+      this.committeeFormData().selectedMembersWithRoles.forEach(
+        (memberWithRole) => {
+          this.addMemberToSelectedMembersWithRolesAndSync(
+            memberWithRole.member,
+            memberWithRole.role,
+          );
+
+          //for those selected members, initialize the RoleFormControl with the roles of selected members as well
+          this.memberAndRoleFormControlMap
+            .get(memberWithRole.member.memberId)!
+            .setValue(memberWithRole.role);
+        },
+      );
     }
 
-    //at last, add coordinator at last because coordinator has to be removed from the unselectedMembers 
+    //at last, add coordinator at last because coordinator has to be removed from the unselectedMembers
     this.coordinator = new FormControl(this.committeeFormData().coordinator, {
       nonNullable: true,
     });
     //this needs to be set because onCoordinatorSelect() relies on this to restore when a new coordaintor is selected
     this.currentCoordinator = this.committeeFormData().coordinator;
     this.removeMemberFromDisplayedMembers(this.committeeFormData().coordinator);
-    this.removeMemberFromUnselectedMembers(this.committeeFormData().coordinator);
-
+    this.removeMemberFromUnselectedMembers(
+      this.committeeFormData().coordinator,
+    );
 
     //finally initialize the form group for right panel
     this.committeeFormGroup = new FormGroup({
       name: this.name,
       description: this.description,
-      coordinator: this.coordinator, 
+      coordinator: this.coordinator,
       status: this.status,
       maxNoOfMeetings: this.maxNoOfMeetings,
       minuteLanguage: this.minuteLanguage,
@@ -201,7 +235,7 @@ export class CommitteeFormComponent implements OnInit {
   onRoleChange(targetMember: MemberSearchResult): void {
     if (
       this.memberAndRoleFormControlMap.get(targetMember.memberId)!.value ===
-      'remove'
+      'Remove'
     ) {
       this.unselectedMembers.push(targetMember);
       this.displayedMembers.push(targetMember);
@@ -259,18 +293,17 @@ export class CommitteeFormComponent implements OnInit {
 
   //setting aliases for this.committeeFormGroup().controls
   name!: FormControl<string>;
-  description!: FormControl<string>
-  coordinator!: FormControl<MemberSearchResult>; 
+  description!: FormControl<string>;
+  coordinator!: FormControl<MemberSearchResult>;
   status!: FormControl<'ACTIVE' | 'INACTIVE'>;
-  maxNoOfMeetings!: FormControl<number>
+  maxNoOfMeetings!: FormControl<number>;
   minuteLanguage!: FormControl<'NEPALI' | 'ENGLISH' | null>;
-  
 
   committeeFormGroup!: FormGroup<{
     name: FormControl<string>;
     description: FormControl<string>;
     coordinator: FormControl<MemberSearchResult>;
-    status: FormControl<'ACTIVE' | 'INACTIVE'>; 
+    status: FormControl<'ACTIVE' | 'INACTIVE'>;
     maxNoOfMeetings: FormControl<number>;
     minuteLanguage: FormControl<'NEPALI' | 'ENGLISH' | null>;
   }>;
