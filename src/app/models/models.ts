@@ -11,9 +11,14 @@ export class CommitteeCreationDto {
   description: string = '';
   status: 'ACTIVE' | 'INACTIVE' = 'ACTIVE';
   maximumNumberOfMeetings?: number = undefined;
-  members: { [key: number]: string } = {}; //sends the key and value as  a map to backend
+  members: MemberIdAndRole[] = [];
   coordinatorId: number = 0;
   minuteLanguage: string = '';
+}
+
+export class MemberIdAndRole {
+  memberId!: number;
+  role!: string;
 }
 
 export class CommitteeDetailsDto {

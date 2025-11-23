@@ -8,7 +8,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MemberSearchResult, CommitteeCreationDto } from '../../models/models';
+import { MemberSearchResult, CommitteeCreationDto, MemberIdAndRole } from '../../models/models';
 import { SafeCloseDialogCustom } from '../../utils/safe-close-dialog-custom.directive';
 import { debounceTime, Subscription } from 'rxjs';
 import Fuse from 'fuse.js';
@@ -29,14 +29,17 @@ import {
 export class CommitteeFormComponent implements OnInit {
   diag = viewChild<ElementRef<HTMLDialogElement>>('committee_form_dialog');
 
+
+  // Form Drag and drop reorder
+
   drop(event: CdkDragDrop<MemberSearchResult[]>) {
     moveItemInArray(
       this.selectedMembersWithRoles,
       event.previousIndex,
       event.currentIndex,
     );
-
     console.log('drop executed');
+    console.log(this.selectedMembersWithRoles);
   }
 
   initializeFormControls() {
@@ -318,15 +321,16 @@ export class CommitteeFormComponent implements OnInit {
 
   onCoordinatorSelectionOrChange() {
     const newCoordinator = this.coordinator.value;
-    if (this.currentCoordinator != undefined) {
-      //add previus coordinator baced to unselected and displayed members
+    //when current coordinator is a valid coordinator, add them ot unselectedMembers, and displayedMembers
+    if(this.currentCoordinator.memberId>0)   {
+      //add previous coordinator baced to unselected and displayed members
       this.unselectedMembers.push(this.currentCoordinator);
       this.displayedMembers.push(this.currentCoordinator);
     }
 
     this.removeMemberFromUnselectedMembers(newCoordinator);
     this.removeMemberFromDisplayedMembers(newCoordinator);
-    this.currentCoordinator = this.coordinator.value;
+    this.currentCoordinator = newCoordinator;
   }
 
   onSubmit($event: Event) {
@@ -341,18 +345,17 @@ export class CommitteeFormComponent implements OnInit {
       .value as number;
     committeeCreationDto.minuteLanguage = this.minuteLanguage.value!;
 
-    //set the members in this format:
-    // {
-    //   members: {
-    //     1: 'Treasurer',
-    //     2: 'Member',
-    //     3: 'Member'
-    //   }
-    // }
     this.selectedMembersWithRoles.forEach((memberWithRole) => {
-      committeeCreationDto.members[memberWithRole.member.memberId] =
-        memberWithRole.role;
+      const memberIdAndRole = new MemberIdAndRole();
+      memberIdAndRole.memberId = memberWithRole.member.memberId;
+      memberIdAndRole.role = memberWithRole.role;
+      committeeCreationDto.members.push(memberIdAndRole);
+
+      console.log(memberWithRole.member.firstName);
     });
+
+    console.log("emitting event");
+    console.log(committeeCreationDto);
 
     this.formSaveEvent.emit(committeeCreationDto);
   }
