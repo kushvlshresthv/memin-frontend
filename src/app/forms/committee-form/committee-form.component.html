@@ -49,35 +49,80 @@
                       }}
                     </span>
                   </div>
-                  <select
-                    [formControl]="
-                      memberAndRoleFormControlMap.get(selectedMember.memberId)!
-                    "
-                    (change)="onRoleChange(selectedMember)"
-                    class="role-select"
-                  >
-                    <option value="Remove">Remove</option>
-                    <option value="Member">Member</option>
-                    <option value="Treasurer">Treasurer</option>
-		    @let role = memberAndRoleFormControlMap.get(selectedMember.memberId)!.value;
 
-		    <!-- if the current role isn't Member or Treasurur, then add an option of the current role(so that it is selected as default case) -->
-		    @if(role != "Remove" && role!="Member" && role != "Treasurer") {
-                    <option
-                      [value]="
+                  <!-- the position for the options for custom-topdown is calculated when the <input> field is focused because the .dropdown-options is fixed so that is it no hidden when it overflows the selected member container  -->
+                  <div class="custom-dropdown">
+                    <input
+                      type="text"
+                      class="form-input"
+                      [formControl]="
                         memberAndRoleFormControlMap.get(
                           selectedMember.memberId
-                        )!.value
+                        )!
                       "
-                    >
-                      {{
-                        memberAndRoleFormControlMap.get(
+                      placeholder="Add"
+                      (focus)="showDropdown = true"
+                      (focus)="onFocus($event)"
+                      (focus)="
+                        memberIdForWhomDropDownIsSelected =
                           selectedMember.memberId
-                        )!.value
-                      }}
-                    </option>
-		    }
-                  </select>
+                      "
+                      (focus)="
+                        memberAndRoleFormControlMap
+                          .get(selectedMember.memberId)!
+                          .setValue('')
+                      "
+                      (blur)="showDropdown = false"
+                      (blur)="onRoleChange(selectedMember)"
+                      (input)="showDropdown = false"
+                      autocomplete="off"
+                      spellcheck="false"
+                    />
+
+                    @if (
+                      showDropdown &&
+                      memberIdForWhomDropDownIsSelected ==
+                        selectedMember.memberId
+                    ) {
+                      <div
+                        class="dropdown-options"
+                        [style.top.px]="dropdownTop"
+                        [style.left.px]="dropdownLeft"
+                      >
+                        @let selectedMemberFormControl =
+                          memberAndRoleFormControlMap.get(
+                            selectedMember.memberId
+                          );
+                        <div
+                          class="dropdown-option"
+                          (mousedown)="
+                            selectedMemberFormControl!.setValue('Member')
+                          "
+                          (click)="showDropdown = false"
+                        >
+                          Member
+                        </div>
+                        <div
+                          class="dropdown-option"
+                          (mousedown)="
+                            selectedMemberFormControl!.setValue('Treasurer')
+                          "
+                          (click)="showDropdown = false"
+                        >
+                          Treasurer
+                        </div>
+                        <div
+                          class="dropdown-option"
+                          (mousedown)="
+                            selectedMemberFormControl!.setValue('Remove')
+                          "
+                          (click)="showDropdown = false"
+                        >
+                          Remove
+                        </div>
+                      </div>
+                    }
+                  </div>
                 </div>
               }
             </div>
@@ -100,18 +145,63 @@
               <span class="member-name">
                 {{ displayedMember.firstName + " " + displayedMember.lastName }}
               </span>
-              <select
-                [formControl]="
-                  memberAndRoleFormControlMap.get(displayedMember.memberId)!
-                "
-                (change)="onRoleSelect(displayedMember)"
-                class="role-select compact"
-              >
-                <option value="Add">Add</option>
-                <option value="" disabled>Select Role</option>
-                <option value="member">Member</option>
-                <option value="treasurer">Treasurer</option>
-              </select>
+              <div class="custom-dropdown">
+                <input
+                  type="text"
+                  class="form-input"
+                  [formControl]="
+                    memberAndRoleFormControlMap.get(displayedMember.memberId)!
+                  "
+                  placeholder="Add"
+                  (focus)="showDropdown = true"
+                  (focus)="onFocus($event)"
+                  (focus)="
+                    memberIdForWhomDropDownIsSelected = displayedMember.memberId
+                  "
+                  (focus)="
+                    memberAndRoleFormControlMap
+                      .get(displayedMember.memberId)!
+                      .setValue('')
+                  "
+                  (blur)="showDropdown = false"
+                  (blur)="onRoleSelect(displayedMember)"
+                  (input)="showDropdown = false"
+                  autocomplete="off"
+                  spellcheck="false"
+                />
+
+                @if (
+                  showDropdown &&
+                  memberIdForWhomDropDownIsSelected == displayedMember.memberId
+                ) {
+                  <div
+                    class="dropdown-options"
+                    [style.top.px]="dropdownTop"
+                    [style.left.px]="dropdownLeft"
+                  >
+                    @let displayedMemberFormControl =
+                      memberAndRoleFormControlMap.get(displayedMember.memberId);
+                    <div
+                      class="dropdown-option"
+                      (mousedown)="
+                        displayedMemberFormControl!.setValue('Member')
+                      "
+                      (click)="showDropdown = false"
+                    >
+                      Member
+                    </div>
+                    <div
+                      class="dropdown-option"
+                      (mousedown)="
+                        displayedMemberFormControl!.setValue('Treasurer')
+                      "
+                      (click)="showDropdown = false"
+                    >
+                      Treasurer
+                    </div>
+                  </div>
+                }
+              </div>
             </div>
           } @empty {
             <div class="empty-state">

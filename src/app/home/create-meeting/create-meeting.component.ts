@@ -233,6 +233,8 @@ export class CreateMeetingComponent implements OnInit {
     this.selectedInvitees = [];
 
     this.hasInviteeDataLoaded = false;
+
+    //load the possible invitees
     this.httpClient
       .get<
         Response<MemberSearchResult[]>

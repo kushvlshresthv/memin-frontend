@@ -1,6 +1,62 @@
+@use "colors" as colors;
+@use "constants" as constants;
 
-@use 'colors' as colors;
-@use 'constants' as constants;
+@import "@angular/cdk/overlay-prebuilt.css";
+
+///////////////////////////////
+//styling for the custom role dropdown
+
+.custom-dropdown {
+  box-sizing: border-box;
+  position: static;
+  input {
+    height: 33px;
+    border-radius: 2px;
+    box-sizing: border-box;
+  }
+  input[type="text"] {
+    field-sizing: content;
+    min-width: 10ch; /* Example minimum width */
+    max-width: 200px; /* Example maximum width */
+  }
+}
+
+.dropdown-options {
+  position: fixed;
+  max-height: 300px;
+  overflow-y: auto;
+  background: colors.$color-background-input;
+  border: 1px solid colors.$color-border-primary;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  margin-top: 4px;
+  width: 100px;
+}
+
+.dropdown-option {
+  padding: 10px 16px;
+  cursor: pointer;
+  color: colors.$color-text-primary;
+  transition: background 0.2s ease;
+  border: 1px solid colors.$color-border-primary;
+
+  &:hover:not(.disabled) {
+    background: colors.$color-background-input-hover;
+  }
+
+  &.disabled {
+    opacity: 0.6;
+    color: colors.$color-text-muted;
+  }
+
+  a {
+    color: white;
+  }
+}
+
+////////////////////////////////////
+//for the main dialog
 
 dialog {
   max-width: 1200px;
@@ -14,12 +70,11 @@ dialog {
   font-size: 1.2rem;
 }
 
-
 // Style the ghost placeholder which appears when a member is lifted
 .custom-placeholder {
-    background: colors.$color-card-hover;
+  background: colors.$color-card-hover;
   border: 2px dashed #999;
-  min-height: 60px; 
+  min-height: 60px;
   opacity: 0.5;
 }
 
@@ -34,7 +89,7 @@ dialog {
 }
 
 .panel-header {
-    border-bottom: 1px solid colors.$color-border-primary;
+  border-bottom: 1px solid colors.$color-border-primary;
 }
 
 .search-section {
@@ -80,6 +135,7 @@ dialog {
   margin-bottom: 20px;
   max-height: 35%;
   overflow-y: auto;
+  overflow-x: visible;
   scrollbar-gutter: stable;
 
   .section-title {
@@ -98,6 +154,7 @@ dialog {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  overflow: visible;
 }
 
 .selected-member-item {
@@ -108,6 +165,7 @@ dialog {
   margin-bottom: 4px;
   border-radius: 4px;
   transition: all 0.15s ease;
+  overflow: visible;
 
   &:hover {
     background: rgba(88, 101, 242, 0.1);
@@ -220,16 +278,7 @@ dialog {
   padding: 40px 0px;
 }
 
-
-
-
-
-
-
-
-
 //------------------------------------------------------------------------------------
-
 
 //RIGHT PANEL
 
@@ -241,7 +290,6 @@ dialog {
   flex-direction: column;
   overflow: hidden;
 }
-
 
 .committee-details-panel {
   flex: 1;
@@ -255,11 +303,10 @@ dialog {
   position: absolute;
   //15px because the actual form has padding-right of 15px wrt dialog
   right: 15px;
-  top:25px;
+  top: 25px;
   font-size: 14px;
   padding: 8px 16px;
 }
-
 
 .form-group {
   display: flex;
@@ -273,7 +320,7 @@ dialog {
 }
 
 #committee-description {
-    &::-webkit-scrollbar {
+  &::-webkit-scrollbar {
     width: 11px;
   }
 
@@ -289,7 +336,6 @@ dialog {
   &::-webkit-scrollbar-thumb:hover {
     background: #40444b;
   }
-
 }
 
 .form-row {
@@ -357,8 +403,7 @@ dialog {
   font-size: constants.$font-normal;
 }
 
-
-.language-radio-item input[type='radio'] {
+.language-radio-item input[type="radio"] {
   appearance: none; // removes default browser style
   -webkit-appearance: none;
   width: 16px;
@@ -367,15 +412,15 @@ dialog {
   border-radius: 50%;
   background-color: grey;
   cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
 }
 
-.language-radio-item input[type='radio']:checked {
+.language-radio-item input[type="radio"]:checked {
   background-color: colors.$color-button-primary;
 }
 
-.language-radio-item input[type='radio']:hover {
+.language-radio-item input[type="radio"]:hover {
   border-color: #666;
 }
-
-
