@@ -13,6 +13,7 @@ import { MinuteComponent } from './committee-details/minute/minute.component';
 import { CreateMeetingComponent } from './home/create-meeting/create-meeting.component';
 import { EditCommitteeComponent } from './committee-details/edit-committee/edit-committee.component';
 import { MemberSummariesComponent } from './home/member-summaries/member-summaries.component';
+import { ViewArchivesComponent } from './home/view-archives/view-archives.component';
 
 export const routes: Routes = [
   {
@@ -50,6 +51,10 @@ export const routes: Routes = [
       {
 	path: 'members-list',
 	component: MemberSummariesComponent,
+      },
+      {
+	path: 'archives',
+	component: ViewArchivesComponent,
       },
       {
         path: '**',

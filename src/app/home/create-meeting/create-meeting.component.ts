@@ -74,7 +74,7 @@ export class CreateMeetingComponent implements OnInit {
     this.httpClient
       .get<
         Response<{ committeeId: number; committeeName: string }[]>
-      >(BACKEND_URL + '/api/getMyCommittees', { withCredentials: true })
+      >(BACKEND_URL + '/api/getMyActiveCommitteeNamesAndIds', { withCredentials: true })
       .subscribe({
         next: (response) => {
           console.log(response.mainBody);
