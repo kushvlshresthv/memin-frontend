@@ -16,13 +16,14 @@
   }
   input[type="text"] {
     field-sizing: content;
-    min-width: 10ch; /* Example minimum width */
-    max-width: 200px; /* Example maximum width */
+    min-width: 13ch;
+    max-width: 200px;
   }
 }
 
 .dropdown-options {
   position: fixed;
+  width: 13ch;  //keep the dropdown options width same as input field
   max-height: 300px;
   overflow-y: auto;
   background: colors.$color-background-input;
@@ -31,7 +32,6 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   z-index: 9999;
   margin-top: 4px;
-  width: 100px;
 }
 
 .dropdown-option {
@@ -77,6 +77,9 @@ dialog {
   min-height: 60px;
   opacity: 0.5;
 }
+
+
+/////////////////////////////////////////////////
 
 //-LEFT PANEL
 
@@ -278,7 +281,7 @@ dialog {
   padding: 40px 0px;
 }
 
-//------------------------------------------------------------------------------------
+////////////////////////////////////////////////////
 
 //RIGHT PANEL
 

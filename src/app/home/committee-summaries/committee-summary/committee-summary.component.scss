@@ -1,10 +1,13 @@
-@use 'colors' as colors;
+@use "colors" as colors;
+@use "constants" as constants;
+
 :host {
   display: flex;
   justify-content: center;
 }
 
 .committee-card {
+  cursor: pointer;
   background: colors.$color-background-card;
   // border-radius: 8px;
   border: 1px solid colors.$color-border-primary;
@@ -12,14 +15,14 @@
   max-width: 450px;
   overflow: hidden;
   &:hover {
-      background: colors.$color-card-hover;
+    background: colors.$color-card-hover;
     transform: translateY(-2px);
   }
 }
 
 .card-header {
-  background: colors.$color-background-secondary; 
-  padding: 20px 24px;
+  background: colors.$color-background-secondary;
+  padding: 20px 10px 20px 24px;
   border-bottom: 1px solid colors.$color-border-primary;
   display: flex;
   justify-content: space-between;
@@ -30,32 +33,80 @@
 .header-content {
   flex: 1;
   min-width: 0;
+
+  .committee-name {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #dcddde;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+    min-height: calc(1.3rem * 1.4 * 2);
+  }
 }
 
-.committee-name {
-  margin: 0;
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #dcddde;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.4;
-  min-height: calc(1.3rem * 1.4 * 2);
-}
+.menu-btn-container {
+  display: flex;
+  gap: 10px;
+  position: relative; //using relative to have menu-options as 'absolute'
+  bottom: 4px;
 
-.status-badge {
-  padding: 6px 12px;
-  border-radius: 2px;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  background: #5865f2;
-  color: #ffffff;
-  flex-shrink: 0;
+  .menu-btn {
+  cursor: pointer;
+    background: colors.$color-background-main;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    border: none;
+    bottom: 3px;
+    right: 0;
+    padding: 0 6px;
+  }
+
+  .menu-btn:hover {
+    background: colors.$color-card-hover;
+    border-radius: 50%;
+  }
+
+  .menu-options {
+    width: 85px;
+    position: absolute;
+    right: 0;
+    top: 33px;
+    font-size: constants.$font-large;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 12px;
+    background: colors.$color-background-main;
+    border-radius: 4px;
+    gap: 20px;
+    opacity: 1;
+    visibility: visible;
+    transition:
+      opacity 0.2s ease-in-out,
+      visibility 0.2s ease-in-out;
+  }
+
+  .menu-options.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .menu-option {
+    text-align: left;
+    color: colors.$color-text-primary;
+    font-weight: constants.$font-weight-normal;
+  }
+
+
+  .menu-option:hover {
+      color: white;
+  }
 }
 
 .card-content {
@@ -78,8 +129,6 @@
     text-overflow: ellipsis;
     min-height: calc(16px * 1.6 * 2);
   }
-
-
 }
 
 .info-grid {
@@ -107,4 +156,3 @@
     color: #dcddde;
   }
 }
-

@@ -14,7 +14,7 @@ import {
   MemberIdAndRole,
 } from '../../models/models';
 import { SafeCloseDialogCustom } from '../../utils/safe-close-dialog-custom.directive';
-import { debounceTime, map, Observable, startWith, Subscription } from 'rxjs';
+import { debounceTime, Subscription } from 'rxjs';
 import Fuse from 'fuse.js';
 import { CommitteeFormData } from '../../home/create-committee/create-committee.component';
 import {
@@ -22,14 +22,7 @@ import {
   DragDropModule,
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
-import {
-  MatAutocomplete,
-  MatAutocompleteModule,
-  MatOption,
-} from '@angular/material/autocomplete';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { AsyncPipe } from '@angular/common';
-import { OverlayModule } from '@angular/cdk/overlay';
+
 
 @Component({
   selector: 'app-committee-form',
@@ -38,13 +31,6 @@ import { OverlayModule } from '@angular/cdk/overlay';
     ReactiveFormsModule,
     SafeCloseDialogCustom,
     DragDropModule,
-    MatAutocomplete,
-    MatOption,
-    MatFormField,
-    MatAutocompleteModule,
-    AsyncPipe,
-    MatLabel,
-    OverlayModule,
   ],
   templateUrl: './committee-form.component.html',
   styleUrl: './committee-form.component.scss',
@@ -52,6 +38,12 @@ import { OverlayModule } from '@angular/cdk/overlay';
 export class CommitteeFormComponent implements OnInit {
   diag = viewChild<ElementRef<HTMLDialogElement>>('committee_form_dialog');
 
+
+
+
+  ///////////////////////////////////
+
+  //for role dropdowns
   showDropdown = false;
   memberIdForWhomDropDownIsSelected = -1;
   dropdownTop = 0;
@@ -63,6 +55,8 @@ export class CommitteeFormComponent implements OnInit {
     this.dropdownTop = rect.bottom + 4;
     this.dropdownLeft = rect.left;
   }
+
+  ////////////////////////////////////
 
   // Form Drag and drop reorder
 
@@ -87,8 +81,10 @@ export class CommitteeFormComponent implements OnInit {
     });
   }
 
+
+  //////////////////////////////////////////
+
   //SELECT MEMBER SECTION OF THE FORM
-  //---------------------------------------------------------------------------
 
   searchInputFieldSubscription!: Subscription;
 
@@ -234,7 +230,9 @@ export class CommitteeFormComponent implements OnInit {
     const role = this.memberAndRoleFormControlMap.get(
       selectedMember.memberId
     )!.value;
+    if(role!="") {
     this.addMemberToSelectedMembersWithRolesAndSync(selectedMember, role);
+    }
   }
 
   //by sync we mean to remove the selected member from unselected member and displayed member array
@@ -324,7 +322,8 @@ export class CommitteeFormComponent implements OnInit {
     }
   }
 
-  //------------------------------------------------------------------------
+  ///////////////////////////////////////////////
+  //main form section: 
 
   //outputs
   formSaveEvent = output<CommitteeCreationDto>();

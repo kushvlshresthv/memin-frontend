@@ -1,24 +1,23 @@
 <div class="committee-card">
   <div class="card-header">
     <div class="header-content">
-      <h2
-        class="committee-name"
-      >
+      <h2 class="committee-name">
         {{ committeeSummary.name }}
       </h2>
     </div>
-    <span
-      class="status-badge"
-      [class]="'status-' + committeeSummary.status.toLowerCase()"
-    >
-      {{ committeeSummary.status }}
-    </span>
+    <div class="menu-btn-container">
+      <button class="menu-btn" (click)="toggleMenu($event)">⋯</button>
+      <div class="menu-options" [class.hidden]="!showMenuOptions">
+        <div class="menu-option" (click)="onEditOptionClick($event)">Edit</div>
+        <div class="menu-option" (click)="onOverviewOptionClick($event)">Overview</div>
+        <div class="menu-option" (click)="onSummaryOptionClick($event)">Summary</div>
+        <div class="menu-option" (click)="onArchiveOptionClick($event)">Archive</div>
+      </div>
+    </div>
   </div>
 
   <div class="card-content">
-    <div
-      class="description"
-    >
+    <div class="description">
       <p>
         {{ committeeSummary.description }}
       </p>
