@@ -37,8 +37,6 @@ export class EditCommitteeComponent implements OnInit {
       memberId: 0,
       firstName: '',
       lastName: '',
-      post: '',
-      title: '',
     },
     status: 'ACTIVE',
     maxNoOfMeetings: 0,

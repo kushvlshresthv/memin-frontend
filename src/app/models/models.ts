@@ -2,6 +2,12 @@ export interface MemberSearchResult {
   memberId: number;
   firstName: string;
   lastName: string;
+}
+
+export interface MemberDetails {
+  memberId: number;
+  firstName: string;
+  lastName: string;
   post: string;
   title: string;
 }
@@ -135,18 +141,18 @@ export class CommitteeDetailsForEditDto {
   status: 'ACTIVE' | 'INACTIVE' = 'ACTIVE';
   maxNoOfMeetings?: number = undefined;
   minuteLanguage: 'NEPALI' | 'ENGLISH' | null = null;
-  coordinator: MemberSearchResult = {
+  coordinator: MemberDetails = {
     memberId: 0,
     firstName: '',
     lastName: '',
     post: '',
     title:'',
   };
-  membersWithRoles: MemberSearchResultWithRoleDto[] = [];
+  membersWithRoles: MemberDetailsWithRole[] = [];
 }
 
-export class MemberSearchResultWithRoleDto {
-  member: MemberSearchResult = {
+export class MemberDetailsWithRole {
+  member: MemberDetails = {
     memberId: 0,
     firstName: '',
     lastName: '',

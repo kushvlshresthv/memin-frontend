@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy, OnInit } from '@angular/core';
-import { MemberSearchResult } from './models/models';
+import { MemberDetails, MemberSearchResult } from './models/models';
 import { BACKEND_URL } from '../global_constants';
 import { Response } from './response/response';
 import { HttpClient } from '@angular/common/http';
@@ -16,7 +16,7 @@ export class LoadMemberService implements OnDestroy {
   public loadAllMembers() {
     console.log("DEBUG: trying to load all members")
     return this.httpClient
-      .get<Response<MemberSearchResult[]>>(BACKEND_URL + '/api/getAllMembers', {
+      .get<Response<MemberDetails[]>>(BACKEND_URL + '/api/getAllMembers', {
         withCredentials: true,
       })
       .pipe(
