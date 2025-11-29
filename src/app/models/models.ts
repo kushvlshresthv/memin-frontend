@@ -194,3 +194,22 @@ export class CommitteeIdAndName {
   committeeId!: number;
   committeeName!: string;
 }
+
+export class CommitteeExtendedSummary {
+  committeeId!: number;
+  name!: string;
+  description!: string
+  language!: "NEPALI" | "ENGLISH" | null;
+  meetings!: MeetingExtendedSummary[];
+}
+
+export class MeetingExtendedSummary {
+  meetingId!: number;
+  meetingHeldDate!: string
+  meetingHeldPlace!: string;
+  meetingHeldTime!: string
+  decisions!: string[];
+  agendas!: string[]
+  inviteeNames!: string[];
+}
+

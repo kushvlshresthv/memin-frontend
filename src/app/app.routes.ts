@@ -14,6 +14,8 @@ import { CreateMeetingComponent } from './home/create-meeting/create-meeting.com
 import { EditCommitteeComponent } from './committee-details/edit-committee/edit-committee.component';
 import { MemberSummariesComponent } from './home/member-summaries/member-summaries.component';
 import { ViewArchivesComponent } from './home/view-archives/view-archives.component';
+import { CommitteeSummaryComponent } from './home/committee-summaries/committee-summary/committee-summary.component';
+import { CommitteeExtendedSummaryComponent } from './committee-details/committee-extended-summary/committee-extended-summary.component';
 
 export const routes: Routes = [
   {
@@ -84,18 +86,11 @@ export const routes: Routes = [
 	path: 'edit',
 	component: EditCommitteeComponent,
       },
-      // {
-      //   //this is above meetings so that meetings/minute is rendered directly in the /committee-details instead of inside the /meetings
-      //   path: 'meetings/minute',
-      //   component: MinuteComponent,
-      // },
-      //
-      //
-      // {
-      //   path: 'meetings',
-      //   component: MeetingSummariesComponent,
-      // },
-
+      {
+	canActivate: [committeeRouteGuard],
+	path: 'summary',
+	component: CommitteeExtendedSummaryComponent,
+      },
       {
         path: '**',
         component: ErrorComponent,

@@ -9,5 +9,5 @@ import { GlobalSearchComponent } from './global-search/global-search.component';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-  showGlobalSearchDialog = true;
+  showGlobalSearchDialog = false;
 }

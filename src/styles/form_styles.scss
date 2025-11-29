@@ -59,7 +59,7 @@ ADDITIONAL
 
 
 
-form label {
+form label, .data-label {
   font-size: constants.$font-small;
   font-weight: constants.$font-weight-medium;
   color: colors.$color-text-secondary;
