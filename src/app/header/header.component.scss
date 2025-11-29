@@ -32,15 +32,22 @@
 
 .global-search {
     background: colors.$color-card-hover;
-    color: colors.$color-text-primary;
-    border: 1px solid red;
-    font-size: constants.$font-large;
+    color: colors.$color-text-muted;
+    font-size: constants.$font-normal;
+    height: 35px;
+    border: 0px;
+    padding: 0px 15px;
+    border-radius: 2px;
+    font-weight: constants.$font-weight-normal;
+    font-family: Roboto;
+    border: 1px solid colors.$color-border-primary;
 }
 
 .eye-glass {
     width: 15px;
     height: 15px;
-    fill: colors.$color-text-primary;
+    fill: colors.$color-text-muted;
+    margin-left: 10px;
 }
 
 

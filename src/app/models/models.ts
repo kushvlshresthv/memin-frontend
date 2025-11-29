@@ -101,6 +101,17 @@ export class AgendaDto {
   agenda: string = '';
 }
 
+
+export class DecisionWithMeetingId {
+  meetingId: number = 0;
+  decision: string = '';
+}
+export class AgendaWithMeetingId {
+  meetingId: number = 0;
+  agenda: string = '';
+}
+
+
 export class CommitteeMembershipDto {
   fullName: string = '';
   role: string = '';
@@ -170,4 +181,16 @@ export class MinuteUpdateDto {
   meetingHeldPlace!: string;
   decisions!: DecisionDto[];
   agendas!: AgendaDto[];
+}
+
+export class GlobalSearchResult {
+  committees!:CommitteeIdAndName[];
+  members!: MemberSearchResult[];
+  decisions!: DecisionWithMeetingId[];
+  agendas!: AgendaWithMeetingId[];
+}
+
+export class CommitteeIdAndName {
+  committeeId!: number;
+  committeeName!: string;
 }

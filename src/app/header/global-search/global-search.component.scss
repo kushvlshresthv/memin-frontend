@@ -3,8 +3,9 @@
   height: fit-content;
   max-height: 80vh;
   width: fit-content;
-  border: 3px solid red;
-
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
   &[open] {
     top: 20vh !important;
     left: 50% !important;
@@ -15,4 +16,16 @@
 
 .search-bar {
     width: 400px;
+}
+
+.results {
+    border: 1px solid red;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.data {
+    cursor: pointer;
 }

@@ -68,17 +68,19 @@ export const routes: Routes = [
     path: 'committee-details',
     component: CommitteeDetailsComponent,
     canMatch: [isAuthenticated],
-    canActivate: [committeeRouteGuard],
     children: [
       {
+	//TODO: only open this when there is a meetingId
         path: 'overview/minute',
         component: MinuteComponent,
       },
       {
+	canActivate: [committeeRouteGuard],
         path: 'overview',
         component: CommitteeOverviewComponent,
       },
       {
+	canActivate: [committeeRouteGuard],
 	path: 'edit',
 	component: EditCommitteeComponent,
       },
