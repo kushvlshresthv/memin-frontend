@@ -1,0 +1,18 @@
+.main-dialog {
+  position: fixed !important;
+  height: fit-content;
+  max-height: 80vh;
+  width: fit-content;
+  border: 3px solid red;
+
+  &[open] {
+    top: 20vh !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    margin: 0 !important;
+  }
+}
+
+.search-bar {
+    width: 400px;
+}

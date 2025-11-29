@@ -23,23 +23,15 @@ import {
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
 
-
 @Component({
   selector: 'app-committee-form',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    SafeCloseDialogCustom,
-    DragDropModule,
-  ],
+  imports: [ReactiveFormsModule, SafeCloseDialogCustom, DragDropModule],
   templateUrl: './committee-form.component.html',
   styleUrl: './committee-form.component.scss',
 })
 export class CommitteeFormComponent implements OnInit {
   diag = viewChild<ElementRef<HTMLDialogElement>>('committee_form_dialog');
-
-
-
 
   ///////////////////////////////////
 
@@ -80,7 +72,6 @@ export class CommitteeFormComponent implements OnInit {
       }
     });
   }
-
 
   //////////////////////////////////////////
 
@@ -230,8 +221,8 @@ export class CommitteeFormComponent implements OnInit {
     const role = this.memberAndRoleFormControlMap.get(
       selectedMember.memberId
     )!.value;
-    if(role!="") {
-    this.addMemberToSelectedMembersWithRolesAndSync(selectedMember, role);
+    if (role != '') {
+      this.addMemberToSelectedMembersWithRolesAndSync(selectedMember, role);
     }
   }
 
@@ -266,7 +257,6 @@ export class CommitteeFormComponent implements OnInit {
         memberWithRole.member.memberId != memberToRemove.memberId
     );
   }
-
 
   onRoleChange(targetMember: MemberSearchResult): void {
     if (
@@ -323,7 +313,7 @@ export class CommitteeFormComponent implements OnInit {
   }
 
   ///////////////////////////////////////////////
-  //main form section: 
+  //main form section:
 
   //outputs
   formSaveEvent = output<CommitteeCreationDto>();

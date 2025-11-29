@@ -1,0 +1,19 @@
+.main-dialog {
+  position: fixed !important;
+  border: 1px solid green;
+  height: fit-content;
+  max-height: 80vh;
+  width: fit-content;
+  height: 100px;
+
+  &[open] {
+    top: 20vh !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    margin: 0 !important;
+  }
+}
+h1 {
+  color: white;
+  border: 1px solid red;
+}

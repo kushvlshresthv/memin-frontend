@@ -22,10 +22,30 @@
   padding-left: 40px;
 }
 
-.logo h1 {
+.logo{
   font-size: 2.5rem;
   padding: 15px 0;
   font-family: Revalia, sans-serif;
   line-height: 0; //this particular font has a big line height for some reason
   margin-bottom: 25px;
+}
+
+.global-search {
+    background: colors.$color-card-hover;
+    color: colors.$color-text-primary;
+    border: 1px solid red;
+    font-size: constants.$font-large;
+}
+
+.eye-glass {
+    width: 15px;
+    height: 15px;
+    fill: colors.$color-text-primary;
+}
+
+
+dialog {
+    position: fixed;
+    top: 0;
+    bottom: 0;
 }
