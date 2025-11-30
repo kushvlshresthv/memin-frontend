@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MemberSearchResult } from '../../models/models';
+import { MemberDetailsDto, MemberSearchResult } from '../../models/models';
 import { Response } from '../../response/response'
 import { HttpClient } from '@angular/common/http';
 import { BACKEND_URL } from '../../../global_constants';
@@ -19,7 +19,7 @@ export class MemberSummariesComponent implements OnInit {
   constructor(private httpClient: HttpClient){}
 
   ngOnInit() {
-    this.httpClient.get<Response<MemberSearchResult[]>>(BACKEND_URL+"/api/getAllMembers", {withCredentials: true}).subscribe({
+    this.httpClient.get<Response<MemberDetailsDto[]>>(BACKEND_URL+"/api/getAllMembers", {withCredentials: true}).subscribe({
       next: (response) => {
 	this.memberSummaries = response.mainBody;
 	this.memberSummariesLoaded = true;

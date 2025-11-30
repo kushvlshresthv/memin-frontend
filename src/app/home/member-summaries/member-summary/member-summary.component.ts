@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { MemberSearchResult } from '../../../models/models';
+import { MemberDetailsDto } from '../../../models/models';
 
 @Component({
   selector: 'app-member-summary',
@@ -9,5 +9,5 @@ import { MemberSearchResult } from '../../../models/models';
   styleUrl: './member-summary.component.scss'
 })
 export class MemberSummaryComponent {
-  memberSummary = input.required<MemberSearchResult>();
+  memberSummary = input.required<MemberDetailsDto>();
 }

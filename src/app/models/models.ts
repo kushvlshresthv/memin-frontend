@@ -35,17 +35,9 @@ export class CommitteeDetailsDto {
   status: 'ACTIVE' | 'INACTIVE' = 'ACTIVE';
   maxNoOfMeetings?: number = undefined;
   meetings: MeetingSummaryDto[] = [];
-  members: MemberSummaryDto[] = [];
+  members: MemberDetailsDto[] = [];
 }
 
-export class MemberSummaryDto {
-  memberId: number = 0;
-  firstName: string = '';
-  lastName: string = '';
-  institution: string = '';
-  post: string = '';
-  role: string = '';
-}
 
 export class MeetingSummaryDto {
   id: number = 0;
@@ -118,13 +110,11 @@ export class CommitteeMembershipDto {
 }
 
 export class MemberDetailsDto {
+  memberId: number = 0; 
   firstName: string = '';
   lastName: string = '';
-  username: string = '';
-  institution: string = '';
   title: string = '';
   post: string = '';
-  email: string = '';
 }
 
 export class MemberCreationDto {

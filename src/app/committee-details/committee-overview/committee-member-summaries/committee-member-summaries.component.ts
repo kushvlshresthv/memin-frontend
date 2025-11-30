@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { MemberOfCommitteeDto, MemberSummaryDto } from '../../../models/models';
+import { MemberOfCommitteeDto } from '../../../models/models';
 import { CommitteeMemberSummaryComponent } from './committee-member-summary/committee-member-summary.component';
 
 @Component({
