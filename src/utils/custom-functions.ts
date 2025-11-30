@@ -1,4 +1,4 @@
-import { input } from "@angular/core";
+import NepaliDate from "nepali-date-converter";
 
 export function toNepaliDigits(input: string | null) {
 
@@ -17,4 +17,10 @@ export function toNepaliDigits(input: string | null) {
   }
   return result.join('');
 }
+
+
+  export function getNepaliDate(dateStr: string) {
+    const nepaliDate = NepaliDate.fromAD(new Date(dateStr));;
+    return toNepaliDigits(nepaliDate.format('YYYY/MM/DD'));
+  }
 

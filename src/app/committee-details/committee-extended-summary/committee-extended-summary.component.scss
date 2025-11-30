@@ -74,7 +74,7 @@
     font-weight: constants.$font-weight-medium;
     color: colors.$color-text-primary;
     padding: 6px 0;
-    border-bottom: 1px solid colors.$color-border-primary;
+    // border-bottom: 1px solid colors.$color-border-primary;
 
     &:last-child {
       border-bottom: none;
@@ -92,7 +92,7 @@
     font-weight: constants.$font-weight-semibold;
     color: colors.$color-text-primary;
     padding-bottom: 12px;
-    border-bottom: 1px solid colors.$color-border-primary;
+    // border-bottom: 1px solid colors.$color-border-primary;
   }
 
   .data-label {
@@ -104,17 +104,19 @@
     margin-bottom: 12px;
   }
 
-  .agendas, .decisions {
+  .agendas,
+  .decisions {
     display: flex;
     flex-direction: column;
   }
 
-  .agenda, .decision {
+  .agenda,
+  .decision {
     font-size: constants.$font-medium;
     font-weight: constants.$font-weight-normal;
     color: colors.$color-text-primary;
     padding: 8px 0;
-    border-bottom: 1px solid colors.$color-border-primary;
+    // border-bottom: 1px solid colors.$color-border-primary;
     line-height: 1.5;
 
     &:last-child {
@@ -122,4 +124,3 @@
     }
   }
 }
-
