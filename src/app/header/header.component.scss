@@ -22,7 +22,7 @@
   padding-left: 40px;
 }
 
-.logo{
+.logo {
   font-size: 2.5rem;
   padding: 15px 0;
   font-family: Revalia, sans-serif;
@@ -31,28 +31,67 @@
 }
 
 .global-search {
-    background: colors.$color-card-hover;
-    color: colors.$color-text-muted;
-    font-size: constants.$font-normal;
-    height: 35px;
-    border: 0px;
-    padding: 0px 15px;
-    border-radius: 2px;
-    font-weight: constants.$font-weight-normal;
-    font-family: Roboto;
-    border: 1px solid colors.$color-border-primary;
+  background: colors.$color-card-hover;
+  color: colors.$color-text-muted;
+  font-size: constants.$font-normal;
+  height: 35px;
+  border: 0px;
+  padding: 0px 15px;
+  border-radius: 2px;
+  font-weight: constants.$font-weight-normal;
+  font-family: Roboto;
+  border: 1px solid colors.$color-border-primary;
 }
 
 .eye-glass {
-    width: 15px;
-    height: 15px;
-    fill: colors.$color-text-muted;
-    margin-left: 10px;
+  width: 15px;
+  height: 15px;
+  fill: colors.$color-text-muted;
+  margin-left: 10px;
 }
 
-
 dialog {
-    position: fixed;
-    top: 0;
-    bottom: 0;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+}
+
+////////////////////////////////////////////////////
+// MOBILE RESPONSIVE STYLES
+
+@media (max-width: 768px) {
+  :host {
+    padding-right: 16px;
+    padding-left: 16px;
+    height: 56px;
+  }
+
+  .logo {
+    font-size: 1.8rem;
+    padding: 10px 0;
+    margin-bottom: 18px;
+  }
+
+  .global-search {
+    font-size: 0;
+    padding: 8px 12px;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+
+    &::after {
+      content: "Search";
+      font-size: 14px;
+      display: none;
+    }
+  }
+
+  .eye-glass {
+    width: 18px;
+    height: 18px;
+    margin-left: 0;
+  }
 }
