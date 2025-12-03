@@ -61,16 +61,15 @@
   .icon {
     width: 30px;
   }
-  
+
   .icon-selected * {
-      stroke:#9acd32;
+    stroke: #9acd32;
   }
 
   &:hover {
     background: colors.$color-background-input;
     color: colors.$color-text-primary;
   }
-
 
   &:active {
     background: colors.$color-background-main;
@@ -116,129 +115,33 @@
     flex-direction: row;
     height: 60px;
     border-right: none;
-    border-top: 1px solid colors.$color-border-primary;
-    overflow-x: auto;
-    overflow-y: hidden;
   }
 
   .sidebar-nav {
+    display: flex;
     flex-direction: row;
     width: 100%;
     justify-content: space-around;
-    gap: 4px;
-    padding: 0 8px;
   }
 
   .nav-item {
     flex: 1;
-    min-width: 60px;
     padding: 8px 4px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-size: 0.7rem;
-    gap: 4px;
-    border: none;
-    background: transparent;
-
-    // Add icons using pseudo-elements
-    &::before {
-      content: "";
-      display: block;
-      width: 24px;
-      height: 24px;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-      filter: brightness(0.7);
+    .icon {
+	box-sizing: border-box;
+	width: 100%;
     }
 
-    &:hover::before {
-      filter: brightness(1);
-    }
-
-    &.selected::before {
-      filter: brightness(1.2);
-    }
+    // .create-committee {
+      // transform: scale(1.5); //use if resize is needed
+    // }
   }
-
-  // Icon for My Committees
-  .nav-item[routerLink="home/my-committees"]::before {
-    content: "🏛️";
-    font-size: 20px;
-  }
-
-  // Icon for Create Committee
-  .nav-item[routerLink="home/create-committee"]::before {
-    content: "➕";
-    font-size: 20px;
-  }
-
-  // Icon for Create Member
-  .nav-item[routerLink="home/create-member"]::before {
-    content: "👤";
-    font-size: 20px;
-  }
-
-  // Icon for Create Meeting
-  .nav-item[routerLink="home/create-meeting"]::before {
-    content: "📅";
-    font-size: 20px;
-  }
-
-  // Icon for View Archives
-  .nav-item[routerLink="home/archives"]::before {
-    content: "📁";
-    font-size: 20px;
-  }
-
-  // Icon for Members List
-  .nav-item[routerLink="home/members-list"]::before {
-    content: "📋";
-    font-size: 20px;
-  }
-
-  // Icons for committee submenu
-  .nav-item[routerLink="committee-details/overview"]::before {
-    content: "👁️";
-    font-size: 18px;
-  }
-
-  .nav-item[routerLink="committee-details/edit"]::before {
-    content: "✏️";
-    font-size: 18px;
-  }
-
-  .nav-item[routerLink="committee-details/summary"]::before {
-    content: "📊";
-    font-size: 18px;
-  }
-
   .nav-text {
-    font-size: 0.7rem;
-    font-weight: 400;
-    line-height: 1.1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 70px;
+    display: none;
   }
 
-  .nav-text.sub {
-    font-size: 0.65rem;
-  }
-
-  // Hide submenu on mobile or make it scrollable
+  //hide submenu
   .sub-menu {
-    display: flex;
-    flex-direction: row;
-    margin-left: 0;
-    border-left: none;
-    gap: 4px;
-
-    .nav-item {
-      min-width: 50px;
-    }
+    display: none;
   }
 }
