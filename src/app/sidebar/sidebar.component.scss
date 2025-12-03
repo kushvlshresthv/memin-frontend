@@ -105,15 +105,15 @@
     bottom: 0;
     left: 0;
     width: 100vw;
-    height: 60px;
-    min-height: 60px;
+    height: constants.$sidebar-height-mobile;
+    min-height: constants.$sidebar-height-mobile;
     z-index: 9998;
     border-top: 1px solid colors.$color-border-primary;
   }
 
   .sidebar {
     flex-direction: row;
-    height: 60px;
+    height: constants.$sidebar-height-mobile;
     border-right: none;
   }
 

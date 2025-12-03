@@ -14,6 +14,7 @@
   ); //170px because it is the minimum to get 6 cards when full screen
   gap: 20px;
   scrollbar-gutter: stable;
+  margin-right: 20px;
 }
 
 @media (max-width: 768px) {
@@ -22,5 +23,7 @@
       auto-fit,
       minmax(150px, 1fr)
     ); //150px because it is the minimum to get 2 cards when mobile screen
+
+    margin-right: 0;
   }
 }

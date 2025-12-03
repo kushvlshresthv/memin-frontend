@@ -1,15 +1,25 @@
-@use 'colors' as colors;
-@use 'constants' as constants;
+@use "colors" as colors;
+@use "constants" as constants;
 
 .heading {
-    margin-bottom: 25px;
-    font-size: constants.$font-xxl;
-    font-weight: constants.$font-weight-semibold;
+  margin-bottom: 25px;
+  font-size: constants.$font-xxl;
+  font-weight: constants.$font-weight-semibold;
 }
 
 .summaryCards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(305px, 1fr)); //305px because it is the minimum to get 3 cards when full screen
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(310px, 1fr)
+  ); //305px because it is the minimum to get 3 cards when full screen
   gap: 20px;
   scrollbar-gutter: stable;
+  margin-right: 20px;
+}
+
+@media (max-width: 768px) {
+  .summaryCards {
+    margin-right: 0;
+  }
 }

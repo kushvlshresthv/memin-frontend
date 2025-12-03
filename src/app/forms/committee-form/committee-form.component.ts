@@ -33,6 +33,14 @@ import {
 export class CommitteeFormComponent implements OnInit {
   diag = viewChild<ElementRef<HTMLDialogElement>>('committee_form_dialog');
 
+
+  ///////////////////////////////////
+  //for multipart form in mobile view, this variable is not used in desktop view
+  isCommitteeDetailsPart = true;
+
+
+
+
   ///////////////////////////////////
 
   //for role dropdowns

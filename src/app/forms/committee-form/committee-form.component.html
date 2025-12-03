@@ -5,8 +5,21 @@
   #committee_form_dialog
   class="main-dialog"
 >
+  <!-- This button is only visibile in mobile view -->
+    
+    <!-- TODO: only activate this button when all form details are filled -->
+  <button
+    class="btn btn-primary next-button"
+    (click)="isCommitteeDetailsPart = !isCommitteeDetailsPart"
+  >
+      Next
+  </button>
+
   <!-- LEFT PANEL - Member Selection -->
-  <div class="member-selection-panel">
+  <div
+    class="member-selection-panel"
+    [class.activePartInMobileView]="!isCommitteeDetailsPart"
+  >
     <div class="panel-header">
       <h2>Select Members</h2>
       <p class="panel-subtitle">Search and assign roles to committee members</p>
@@ -217,7 +230,10 @@
     </div>
   </div>
   <!-- RIGHT PANEL - Committee Details -->
-  <div class="committee-details-panel">
+  <div
+    class="committee-details-panel"
+    [class.activePartInMobileView]="isCommitteeDetailsPart"
+  >
     <div class="panel-header">
       <h2>Committee Details</h2>
       <p class="panel-subtitle">Configure your committee information</p>
