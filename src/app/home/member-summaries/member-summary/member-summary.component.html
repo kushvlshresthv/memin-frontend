@@ -1,8 +1,8 @@
-<div class="memberSummary-card">
+<div class="memberDetail-card">
   <div class="card-header">
     <div class="header-content">
-      <h3 class="memberSummary-name">
-        {{ memberSummary().firstName + " " + memberSummary().lastName}} 
+      <h3 class="memberDetail-name">
+        {{ memberDetail().firstName + " " + memberDetail().lastName}} 
       </h3>
     </div>
   </div>
@@ -11,12 +11,12 @@
     <div class="info-grid">
       <div class="info-item">
         <span class="label">Post</span>
-        <span class="value">{{memberSummary().post}}</span>
+        <span class="value">{{memberDetail().post}}</span>
       </div>
 
       <div class="info-item">
         <span class="label">Title</span>
-        <span class="value">{{memberSummary().title}}</span>
+        <span class="value">{{memberDetail().title}}</span>
       </div>
     </div>
   </div>

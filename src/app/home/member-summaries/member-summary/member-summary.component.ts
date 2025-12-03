@@ -9,5 +9,5 @@ import { MemberDetailsDto } from '../../../models/models';
   styleUrl: './member-summary.component.scss'
 })
 export class MemberSummaryComponent {
-  memberSummary = input.required<MemberDetailsDto>();
+  memberDetail = input.required<MemberDetailsDto>();
 }

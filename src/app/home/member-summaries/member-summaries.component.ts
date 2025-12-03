@@ -13,18 +13,17 @@ import { MemberSummaryComponent } from './member-summary/member-summary.componen
   styleUrl: './member-summaries.component.scss'
 })
 export class MemberSummariesComponent implements OnInit {
-  memberSummaries!: MemberSearchResult[];
-  memberSummariesLoaded = false;
+  memberDetails!: MemberDetailsDto[];
+  memberDetailsLoaded = false;
 
   constructor(private httpClient: HttpClient){}
 
   ngOnInit() {
     this.httpClient.get<Response<MemberDetailsDto[]>>(BACKEND_URL+"/api/getAllMembers", {withCredentials: true}).subscribe({
       next: (response) => {
-	this.memberSummaries = response.mainBody;
-	this.memberSummariesLoaded = true;
+	this.memberDetails = response.mainBody;
+	this.memberDetailsLoaded = true;
 	console.log("data has been loaded: member summaries");
-	console.log(this.memberSummaries);
       },
       error: (error) => {
 	console.log("TODO: show response properly", error);
