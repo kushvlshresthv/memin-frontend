@@ -48,6 +48,15 @@ import { debounceTime, Subscription } from 'rxjs';
   styleUrl: './create-meeting.component.scss',
 })
 export class CreateMeetingComponent implements OnInit {
+
+  //////////////////////////////////////////////
+  //this variable is used for mobile view styling
+  isMeetingDetailsPart = true;
+
+
+
+
+
   //---------------------------------LEFT PANEL-----------------------------
 
   //variables

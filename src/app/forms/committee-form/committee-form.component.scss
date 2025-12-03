@@ -414,7 +414,9 @@ dialog {
   border-radius: 50%;
   background-color: grey;
   cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
 }
 
 .language-radio-item input[type="radio"]:checked {
@@ -426,7 +428,7 @@ dialog {
 }
 
 .next-button {
-    display: none;
+  display: none;
 }
 
 ////////////////////////////////////////////////////
@@ -434,42 +436,41 @@ dialog {
 
 @media (max-width: 768px) {
   dialog {
-    display: flex;
-    flex-direction: column-reverse;
     width: 100vw;
-    gap: 20px;
     min-height: calc(100vh - 60px);
-    margin-bottom: constants.$sidebar-height-mobile;  //for menu options
+    margin-bottom: constants.$sidebar-height-mobile; //for menu options
     border: none;
     border-bottom: 1px solid colors.$color-border-primary;
     margin-top: 0px;
-    height: 200vh;
+    border: 1px solid red;
     &::backdrop {
-	background: none;
-	backdrop-filter: none;
+      background: none;
+      backdrop-filter: none;
     }
   }
 
-  .committee-details-panel, .member-selection-panel {
-      display: none;
+  .committee-details-panel,
+  .member-selection-panel {
+    display: none;
   }
 
   .activePartInMobileView {
-      display: block;
+    display: block;
   }
 
   .panel-subtitle {
-      display: none;
+    display: none;
   }
 
-  .next-button, .save-button{
-      display: block;  //make next button visible in movile view
+  .next-button,
+  .save-button {
+    display: block; //make next button visible in movile view
 
-  position: absolute;
-  //15px because the actual form has padding-right of 15px wrt dialog
-  right: 15px;
-  top: 15px;
-  font-size: 14px;
-  padding: 5px 10px;
+    position: absolute;
+    //15px because the actual form has padding-right of 15px wrt dialog
+    right: 15px;
+    top: 15px;
+    font-size: 14px;
+    padding: 5px 10px;
   }
 }

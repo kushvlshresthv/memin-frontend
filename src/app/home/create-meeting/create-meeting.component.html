@@ -5,11 +5,28 @@
   #new_meeting_dialogue
   class="main-dialog"
 >
+
+  <!-- This button is only visibile in mobile view -->
+    
+    <!-- TODO: only activate this button when all form details are filled -->
+  <button
+    class="btn btn-primary next-button"
+    (click)="isMeetingDetailsPart = !isMeetingDetailsPart"
+  >
+      Next
+  </button>
+
+
+
   <!-- LEFT PANEL - Member Selection -->
-  <div class="invitee-selection-panel">
+  <div class="invitee-selection-panel" [class.activePartInMobileView]="!isMeetingDetailsPart">
     <div class="panel-header">
       <h2>Select Members</h2>
       <p class="panel-subtitle">Search invitees for the meeting</p>
+
+      <button class="btn btn-primary save-button" (click)="onSubmit($event)">
+        Save
+      </button>
     </div>
     <!-- <app-select-invitee-for-meeting></app-select-invitee-for-meeting> -->
 
@@ -96,13 +113,10 @@
   <!-- -------------------------------------------------------------------------  -->
 
   <!-- RIGHT PANEL - Meeting Details -->
-  <div class="meeting-details-panel">
+  <div class="meeting-details-panel" [class.activePartInMobileView] ="isMeetingDetailsPart" >
     <div class="panel-header">
       <h2>Meeting Details</h2>
       <p class="panel-subtitle">Meeting meeting information</p>
-      <button class="btn btn-primary save-button" (click)="onSubmit($event)">
-        Save
-      </button>
     </div>
 
     <form
@@ -175,7 +189,7 @@
           <input
             id="meeting-held-place"
             type="text"
-            placeholder="Enter meeting held place"
+            placeholder="Enter meeting place"
             class="form-input"
             name="meetingHeldPlace"
             autocomplete="off"
