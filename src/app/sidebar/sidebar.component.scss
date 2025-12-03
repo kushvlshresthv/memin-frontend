@@ -1,13 +1,13 @@
-@use 'colors' as colors;
-@use 'constants' as constants;
+@use "colors" as colors;
+@use "constants" as constants;
 
 :host {
   background: colors.$color-background-card;
   padding: 0px 0px;
 
   position: fixed;
-  top: constants.$header-height;       // distance from top of viewport
-  left: 0;      // distance from left of viewport
+  top: constants.$header-height; // distance from top of viewport
+  left: 0; // distance from left of viewport
   width: constants.$sidebar-width;
 
   background: colors.$color-background-main;
@@ -22,7 +22,6 @@
   border-right: 1px solid colors.$color-border-primary;
   height: 100vh;
 }
-
 
 .sidebar-title {
   margin: 0;
@@ -46,18 +45,32 @@
 
 .nav-item {
   display: flex;
+  flex-direction: row;
+  flex: flex-start;
   align-items: center;
-  padding: 12px 16px;
+  padding: 12px 16px 12px 10px;
   color: colors.$color-text-secondary;
   text-decoration: none;
   border-radius: 0;
   transition: all 0.15s ease;
   cursor: pointer;
+  height: 20px;
+
+  gap: 10px;
+
+  .icon {
+    width: 30px;
+  }
+  
+  .icon-selected * {
+      stroke:#9acd32;
+  }
 
   &:hover {
     background: colors.$color-background-input;
     color: colors.$color-text-primary;
   }
+
 
   &:active {
     background: colors.$color-background-main;
@@ -68,8 +81,6 @@
     color: #ffffff;
   }
 }
-
-
 
 .nav-text {
   font-size: 1rem;
@@ -83,4 +94,151 @@
 .selected {
   background: colors.$color-background-input;
   color: yellowgreen;
+}
+
+///////////////////////////////////////////////
+//mobile styling
+//////////////////////////////////////////////
+
+@media (max-width: 768px) {
+  :host {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 60px;
+    min-height: 60px;
+    z-index: 9998;
+    border-top: 1px solid colors.$color-border-primary;
+  }
+
+  .sidebar {
+    flex-direction: row;
+    height: 60px;
+    border-right: none;
+    border-top: 1px solid colors.$color-border-primary;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .sidebar-nav {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    gap: 4px;
+    padding: 0 8px;
+  }
+
+  .nav-item {
+    flex: 1;
+    min-width: 60px;
+    padding: 8px 4px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 0.7rem;
+    gap: 4px;
+    border: none;
+    background: transparent;
+
+    // Add icons using pseudo-elements
+    &::before {
+      content: "";
+      display: block;
+      width: 24px;
+      height: 24px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      filter: brightness(0.7);
+    }
+
+    &:hover::before {
+      filter: brightness(1);
+    }
+
+    &.selected::before {
+      filter: brightness(1.2);
+    }
+  }
+
+  // Icon for My Committees
+  .nav-item[routerLink="home/my-committees"]::before {
+    content: "🏛️";
+    font-size: 20px;
+  }
+
+  // Icon for Create Committee
+  .nav-item[routerLink="home/create-committee"]::before {
+    content: "➕";
+    font-size: 20px;
+  }
+
+  // Icon for Create Member
+  .nav-item[routerLink="home/create-member"]::before {
+    content: "👤";
+    font-size: 20px;
+  }
+
+  // Icon for Create Meeting
+  .nav-item[routerLink="home/create-meeting"]::before {
+    content: "📅";
+    font-size: 20px;
+  }
+
+  // Icon for View Archives
+  .nav-item[routerLink="home/archives"]::before {
+    content: "📁";
+    font-size: 20px;
+  }
+
+  // Icon for Members List
+  .nav-item[routerLink="home/members-list"]::before {
+    content: "📋";
+    font-size: 20px;
+  }
+
+  // Icons for committee submenu
+  .nav-item[routerLink="committee-details/overview"]::before {
+    content: "👁️";
+    font-size: 18px;
+  }
+
+  .nav-item[routerLink="committee-details/edit"]::before {
+    content: "✏️";
+    font-size: 18px;
+  }
+
+  .nav-item[routerLink="committee-details/summary"]::before {
+    content: "📊";
+    font-size: 18px;
+  }
+
+  .nav-text {
+    font-size: 0.7rem;
+    font-weight: 400;
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 70px;
+  }
+
+  .nav-text.sub {
+    font-size: 0.65rem;
+  }
+
+  // Hide submenu on mobile or make it scrollable
+  .sub-menu {
+    display: flex;
+    flex-direction: row;
+    margin-left: 0;
+    border-left: none;
+    gap: 4px;
+
+    .nav-item {
+      min-width: 50px;
+    }
+  }
 }

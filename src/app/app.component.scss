@@ -1,7 +1,7 @@
-@use 'constants' as constants;
+@use "constants" as constants;
 
 .total-screen {
-  display:flex;
+  display: flex;
   min-height: 90vh;
   margin-top: constants.$header-height;
 }
@@ -22,4 +22,31 @@ app-sidebar {
 
 .main-content.login-page {
   margin-left: 0;
+}
+
+////////////////////////////////////////////////////
+// MOBILE RESPONSIVE STYLES
+
+@media (max-width: 768px) {
+  .total-screen {
+    margin-top: 56px;  //for header
+    min-height: calc(100vh - 56px - 60px);   //leaving out space for header and menu
+    padding-bottom: 60px;
+  }
+
+  app-sidebar {
+    width: 100vw;
+    border-right: none;   //overriding from desktop view
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 12px;
+  }
+
+  .main-content.login-page {
+    padding-bottom: 0;
+  }
 }
