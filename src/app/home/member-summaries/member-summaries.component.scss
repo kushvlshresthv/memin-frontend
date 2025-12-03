@@ -1,17 +1,26 @@
-@use 'constants' as constants;
+@use "constants" as constants;
 
 .heading {
-    margin-bottom: 20px;
-    font-size: constants.$font-xxl;
-    font-weight: constants.$font-weight-semibold;
+  margin-bottom: 20px;
+  font-size: constants.$font-xxl;
+  font-weight: constants.$font-weight-semibold;
 }
 .member-summaries {
   display: grid;
   // grid-template-columns: repeat(6, 1fr);
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); //305px because it is the minimum to get 3 cards when full screen
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(170px, 1fr)
+  ); //170px because it is the minimum to get 6 cards when full screen
   gap: 20px;
   scrollbar-gutter: stable;
 }
 
-
-
+@media (max-width: 768px) {
+  .member-summaries {
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(150px, 1fr)
+    ); //150px because it is the minimum to get 2 cards when mobile screen
+  }
+}

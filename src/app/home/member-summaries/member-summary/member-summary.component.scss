@@ -3,7 +3,7 @@
 
 :host {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   border: 1px solid colors.$color-border-primary;
   width: 100%;
 }

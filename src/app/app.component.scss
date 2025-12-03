@@ -31,8 +31,7 @@ app-sidebar {
 
 @media (max-width: 768px) {
   .total-screen {
-    margin-top: 56px;  //for header
-    max-height: calc(100vh - 56px - 60px - 20px);   //leaving out space for header and menu and slight padding for bottom
+    height: calc(100vh - 56px - 60px - 20px);   //leaving out space for header and menu and slight padding for bottom(padding-bottom isn't working idk why)
   }
 
   app-sidebar {
