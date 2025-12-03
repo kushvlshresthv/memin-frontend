@@ -2,8 +2,15 @@
 @use 'colors' as colors;
 
 :host {
+    height: 90vh;
+    overflow: auto;
+}
+
+.minute {
   width: 210mm;
   position: relative;
+  height: 297mm;
+  overflow-y: auto;
 }
 
 .minute-options {
