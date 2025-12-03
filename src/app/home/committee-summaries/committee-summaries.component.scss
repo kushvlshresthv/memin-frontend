@@ -1,15 +1,15 @@
 @use 'colors' as colors;
 @use 'constants' as constants;
+
 .heading {
     margin-bottom: 25px;
     font-size: constants.$font-xxl;
     font-weight: constants.$font-weight-semibold;
 }
 
-
 .summaryCards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(305px, 1fr)); //305px because it is the minimum to get 3 cards when full screen
   margin-right: 20px;
   gap: 20px;
   scrollbar-gutter: stable;
