@@ -81,7 +81,7 @@ export class MinuteDataDto {
   coordinatorFullName: string = '';
   decisions: DecisionDto[] = [];
   agendas: AgendaDto[] = [];
-  committeeMemberships: CommitteeMembershipDto[] = [];
+  participants: CommitteeMembershipDto[] = [];
 }
 
 export class DecisionDto {

@@ -63,6 +63,8 @@ dialog {
   height: 73%;
 }
 
+//////////////////////////////////
+//for drag and drop feature
 .drag-handle {
   cursor: move;
   margin-right: 10px;
@@ -442,7 +444,6 @@ dialog {
     border: none;
     border-bottom: 1px solid colors.$color-border-primary;
     margin-top: 0px;
-    border: 1px solid red;
     &::backdrop {
       background: none;
       backdrop-filter: none;

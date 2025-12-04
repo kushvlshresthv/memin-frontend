@@ -1,9 +1,9 @@
-@use 'constants' as constants;
-@use 'colors' as colors;
+@use "constants" as constants;
+@use "colors" as colors;
 
 :host {
-    height: 90vh;
-    overflow: auto;
+  height: 90vh;
+  overflow: auto;
 }
 
 .minute {
@@ -14,23 +14,101 @@
 }
 
 .minute-options {
-    position: fixed;
-    left: 0px;
-    width: constants.$sidebar-width;
-    bottom: 0px;
-    z-index: 9999;
-    border-top: 1px solid colors.$color-border-primary;
-    height: 150px;
+  position: fixed;
+  left: 0px;
+  width: constants.$sidebar-width;
+  bottom: 0px;
+  z-index: 9999;
+  border-top: 1px solid colors.$color-border-primary;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  box-sizing: border-box;
+  gap: 20px;
+  font-size: constants.$font-normal;
+}
+
+.option:hover {
+  color: colors.$text-select-highlight;
+  cursor: pointer;
+}
+
+.main-dialog {
+  width: 500px;
+  height: fit-content;
+  max-height: 600px;
+  padding: 13px;
+  outline: none;
+
+  &[open] {
     display: flex;
     flex-direction: column;
-    padding: 15px;
-    box-sizing: border-box;
     gap: 20px;
-    font-size: constants.$font-normal;
+  }
+}
+
+.panel-header {
+  padding: 0;
+  padding-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-bottom: 1px solid colors.$color-border-primary;
+}
+
+.panel-subtitle {
+    color: colors.$color-text-muted;
 }
 
 
-.option:hover {
-    color: colors.$text-select-highlight; 
-    cursor: pointer;
+.participants {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: auto;
+  scrollbar-gutter: stable;
+  gap: 20px;
+  padding-right: 10px;
+}
+
+.participant-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  height: 30px;
+  gap: 20px;
+  &:hover {
+    background: rgba(88, 101, 242, 0.1);
+  }
+}
+
+.participant-name {
+  color: colors.$color-text-primary;
+  flex-grow: 1;
+}
+
+.participant-role {
+  color: colors.$color-text-primary;
+}
+
+.panel-header {
+  color: colors.$color-text-primary;
+}
+
+//////////////////////////////////////////////////////
+//for drag and drop feature
+.drag-handle {
+  cursor: move;
+  margin-right: 10px;
+  color: #888;
+  font-size: 1.2rem;
+}
+
+// Style the ghost placeholder which appears when a member is lifted
+.custom-placeholder {
+  background: colors.$color-card-hover;
+  border: 2px dashed #999;
+  min-height: 60px;
+  opacity: 0.5;
 }

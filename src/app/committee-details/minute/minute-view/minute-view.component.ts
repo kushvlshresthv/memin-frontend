@@ -5,15 +5,39 @@ import { MinuteDataService } from '../minute-data.service';
 import { BACKEND_URL } from '../../../../global_constants';
 import { HttpClient } from '@angular/common/http';
 import { Response } from '../../../response/response';
+import { AutoOpenDialogDirective } from '../../../utils/auto-open-dialog.directive';
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+import { MemberSearchResult } from '../../../models/models';
+import { SafeCloseDialogCustom } from '../../../utils/safe-close-dialog-custom.directive';
 
 @Component({
   selector: 'app-minute-view',
   standalone: true,
-  imports: [MinuteNepali1Component, MinuteEnglish1Component],
+  imports: [MinuteNepali1Component, MinuteEnglish1Component, AutoOpenDialogDirective, DragDropModule, SafeCloseDialogCustom],
   templateUrl: './minute-view.component.html',
   styleUrl: './minute-view.component.scss',
 })
 export class MinuteViewComponent {
+
+
+  ////////////////////////////////////////////////////////////
+  //for participant order change dialog
+ 
+  drop(event: CdkDragDrop<MemberSearchResult[]>) {
+    moveItemInArray(
+      this.minuteData().participants,
+      event.previousIndex,
+      event.currentIndex
+    );
+    console.log('drop executed');
+  }
+
+  diag = viewChild<ElementRef<HTMLDialogElement>>('participant_order_dialog');
+  showChangeParticipantOrderDialog() {
+      this.diag()!.nativeElement.showModal();
+  }
+
+
   //data loading logic is not in the component because data needs to be shared with minute-edit component.
   minuteData = inject(MinuteDataService).getMinuteData();
   minuteNepali1 = viewChild(MinuteNepali1Component);
