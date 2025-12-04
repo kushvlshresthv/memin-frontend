@@ -3,7 +3,7 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import { CommitteeCreationDto, MemberDetails, MemberSearchResult} from '../../models/models';
+import { CommitteeCreationDto, CommitteeFormData, MemberDetails, MemberSearchResult} from '../../models/models';
 import { MemberSelectionService } from './select-member-for-committee/select-member-for-committee.service';
 import { HttpClient, } from '@angular/common/http';
 import { BACKEND_URL } from '../../../global_constants';
@@ -87,16 +87,3 @@ export class CreateCommitteeComponent implements OnInit{
   }
 }
 
-export interface CommitteeFormData {
-  name: string;
-  description: string;
-  coordinator: MemberSearchResult;
-  status: 'ACTIVE' | 'INACTIVE';
-  maxNoOfMeetings: number;
-  minuteLanguage: 'NEPALI' | 'ENGLISH' | null;
-  selectedMembersWithRoles:{
-    member: MemberSearchResult;
-    role: string;
-  }[];
-  unselectedMembers: MemberSearchResult[];
-}

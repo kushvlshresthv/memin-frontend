@@ -1,0 +1,114 @@
+<dialog
+  class="main-dialog"
+  appSafeCloseDialogCustom
+  [customSaveForm]="saveFormData"
+  [customRestoreForm]="restoreFormData"
+  #create_member_dialog
+>
+  <div class="member-details-panel">
+    <div class="panel-header">
+      <h2>Create New Member</h2>
+      <p class="panel-subtitle">Add a new member to the system</p>
+      <!-- TODO: only if form data is valid, enable the save button  -->
+      <button class="btn btn-primary save-button" (click) ="onFormSave($event)">Save</button>
+    </div>
+
+    <form [formGroup]="memberFormGroup" class="actual-form">
+      <div class="form-row">
+        <div class="form-group half-width">
+          <label for="control-firstname"
+            >First Name <span class="required">*</span></label
+          >
+          <input
+            id="control-firstname"
+            type="text"
+            formControlName="firstName"
+            class="form-input"
+            placeholder="Enter first name"
+            [class.error]="
+              firstName.touched && firstName.dirty && firstName.invalid
+            "
+          />
+          @if (firstName.touched && firstName.dirty) {
+            @if (firstName.errors?.["required"]) {
+              <p class="field-error">First name is required</p>
+            } @else if (firstName.errors?.["minlength"]) {
+              <p class="field-error">
+                First name should be at least 2 characters long
+              </p>
+            } @else if (firstName.errors?.["maxlength"]) {
+              <p class="field-error">
+                First name should be under 50 characters
+              </p>
+            }
+          }
+        </div>
+
+        <div class="form-group half-width">
+          <label for="control-lastname"
+            >Last Name <span class="required">*</span></label
+          >
+          <input
+            id="control-lastname"
+            type="text"
+            formControlName="lastName"
+            class="form-input"
+            placeholder="Enter last name"
+            [class.error]="
+              lastName.touched && lastName.dirty && lastName.invalid
+            "
+          />
+          @if (lastName.touched && lastName.dirty) {
+            @if (lastName.errors?.["required"]) {
+              <p class="field-error">Last name is required</p>
+            } @else if (lastName.errors?.["minlength"]) {
+              <p class="field-error">
+                Last name should be at least 2 characters long
+              </p>
+            } @else if (lastName.errors?.["maxlength"]) {
+              <p class="field-error">Last name should be under 50 characters</p>
+            }
+          }
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group half-width">
+          <label for="control-title"
+            >Title <span class="required">*</span></label
+          >
+          <input
+            id="control-title"
+            type="text"
+            formControlName="title"
+            class="form-input"
+            placeholder="Enter title"
+            [class.error]="title.touched && title.dirty && title.invalid"
+          />
+          @if (title.touched && title.dirty) {
+            @if (title.errors?.["required"]) {
+              <p class="field-error">Title is required</p>
+            }
+          }
+        </div>
+
+        <div class="form-group half-width">
+          <label for="control-post">Post <span class="required">*</span></label>
+          <input
+            id="control-post"
+            type="text"
+            formControlName="post"
+            class="form-input"
+            placeholder="Enter post"
+            [class.error]="post.touched && post.dirty && post.invalid"
+          />
+          @if (post.touched && post.dirty) {
+            @if (post.errors?.["required"]) {
+              <p class="field-error">Post is required</p>
+            }
+          }
+        </div>
+      </div>
+    </form>
+  </div>
+</dialog>

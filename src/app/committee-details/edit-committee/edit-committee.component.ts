@@ -8,8 +8,8 @@ import { BACKEND_URL } from '../../../global_constants';
 import {
   CommitteeCreationDto,
   CommitteeDetailsForEditDto,
+  CommitteeFormData,
 } from '../../models/models';
-import { CommitteeFormData } from '../../home/create-committee/create-committee.component';
 import { LoadMemberService } from '../../load-member.service';
 
 @Component({

@@ -203,3 +203,26 @@ export class MeetingExtendedSummary {
   inviteeNames!: string[];
 }
 
+
+//these models are used in committee-form, member-form components
+export interface CommitteeFormData {
+  name: string;
+  description: string;
+  coordinator: MemberSearchResult;
+  status: 'ACTIVE' | 'INACTIVE';
+  maxNoOfMeetings: number;
+  minuteLanguage: 'NEPALI' | 'ENGLISH' | null;
+  selectedMembersWithRoles:{
+    member: MemberSearchResult;
+    role: string;
+  }[];
+  unselectedMembers: MemberSearchResult[];
+}
+
+
+export interface MemberFormData {
+  firstName: string;
+  lastName: string;
+  post: string;
+  title: string;
+}

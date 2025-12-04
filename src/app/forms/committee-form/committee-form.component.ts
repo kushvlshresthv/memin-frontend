@@ -12,11 +12,11 @@ import {
   MemberSearchResult,
   CommitteeCreationDto,
   MemberIdAndRole,
+  CommitteeFormData,
 } from '../../models/models';
 import { SafeCloseDialogCustom } from '../../utils/safe-close-dialog-custom.directive';
 import { debounceTime, Subscription } from 'rxjs';
 import Fuse from 'fuse.js';
-import { CommitteeFormData } from '../../home/create-committee/create-committee.component';
 import {
   CdkDragDrop,
   DragDropModule,
