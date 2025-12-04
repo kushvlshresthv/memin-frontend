@@ -131,8 +131,8 @@ export class MeetingCreationDto {
   heldTime: string = '';
   heldPlace: string = '';
   inviteeIds: number[] = [];
-  decisions: string[] = [];
-  agendas: string[] = [];
+  decisions: DecisionDto[] = [];
+  agendas: AgendaDto[] = [];
 }
 
 export class CommitteeDetailsForEditDto {
@@ -212,8 +212,7 @@ export interface CommitteeFormData {
   status: 'ACTIVE' | 'INACTIVE';
   maxNoOfMeetings: number;
   minuteLanguage: 'NEPALI' | 'ENGLISH' | null;
-  selectedMembersWithRoles:{
-    member: MemberSearchResult;
+  selectedMembersWithRoles:{member: MemberSearchResult;
     role: string;
   }[];
   unselectedMembers: MemberSearchResult[];
@@ -225,4 +224,15 @@ export interface MemberFormData {
   lastName: string;
   post: string;
   title: string;
+}
+
+export interface MeetingFormData {
+  title: string;
+  heldDate: string;
+  heldTime: string;
+  heldPlace: string;
+  decisions: DecisionDto[];
+  agendas: AgendaDto [];
+  possibleInvitees: MemberSearchResult[];
+  selectedInvitees: MemberSearchResult[];
 }

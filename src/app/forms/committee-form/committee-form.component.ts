@@ -99,8 +99,35 @@ export class CommitteeFormComponent implements OnInit {
     role: string;
   }[] = [];
 
-  //initialize data for both right and left panel
 
+
+  //FORM CONTROLS: 
+
+  //setting aliases for this.committeeFormGroup().controls
+  name!: FormControl<string>;
+  description!: FormControl<string>;
+  coordinator!: FormControl<MemberSearchResult>;
+  status!: FormControl<'ACTIVE' | 'INACTIVE'>;
+  maxNoOfMeetings!: FormControl<number>;
+  minuteLanguage!: FormControl<'NEPALI' | 'ENGLISH' | null>;
+
+  committeeFormGroup!: FormGroup<{
+    name: FormControl<string>;
+    description: FormControl<string>;
+    coordinator: FormControl<MemberSearchResult>;
+    status: FormControl<'ACTIVE' | 'INACTIVE'>;
+    maxNoOfMeetings: FormControl<number>;
+    minuteLanguage: FormControl<'NEPALI' | 'ENGLISH' | null>;
+  }>;
+
+  //formControls for left panel:
+  memberAndRoleFormControlMap = new Map<number, FormControl<string>>();
+  selectMemberFormGroup = new FormGroup({
+    searchBarInput: new FormControl(''),
+  });
+
+
+  //initialize form-controls for both right and left panel
   ngOnInit(): void {
     this.setupObservableForSearchBarInputChange();
 
@@ -177,11 +204,6 @@ export class CommitteeFormComponent implements OnInit {
     }
   }
 
-  //formControls:
-  memberAndRoleFormControlMap = new Map<number, FormControl<string>>();
-  selectMemberFormGroup = new FormGroup({
-    searchBarInput: new FormControl(''),
-  });
 
   //when the search bar input changes filter the displayed members after a debounce time,
   setupObservableForSearchBarInputChange() {
@@ -326,22 +348,6 @@ export class CommitteeFormComponent implements OnInit {
   //outputs
   formSaveEvent = output<CommitteeCreationDto>();
 
-  //setting aliases for this.committeeFormGroup().controls
-  name!: FormControl<string>;
-  description!: FormControl<string>;
-  coordinator!: FormControl<MemberSearchResult>;
-  status!: FormControl<'ACTIVE' | 'INACTIVE'>;
-  maxNoOfMeetings!: FormControl<number>;
-  minuteLanguage!: FormControl<'NEPALI' | 'ENGLISH' | null>;
-
-  committeeFormGroup!: FormGroup<{
-    name: FormControl<string>;
-    description: FormControl<string>;
-    coordinator: FormControl<MemberSearchResult>;
-    status: FormControl<'ACTIVE' | 'INACTIVE'>;
-    maxNoOfMeetings: FormControl<number>;
-    minuteLanguage: FormControl<'NEPALI' | 'ENGLISH' | null>;
-  }>;
 
   constructor() {
     effect(() => {
