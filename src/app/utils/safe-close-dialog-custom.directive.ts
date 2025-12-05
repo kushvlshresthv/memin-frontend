@@ -6,8 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
   standalone: true,
 })
 export class SafeCloseDialogCustom implements OnInit, OnDestroy {
-  customSaveForm = input<()=> void>();
-  customRestoreForm = input<()=> void>();
+  customSaveForm = input.required<()=> void>();
+  customRestoreForm = input.required<()=> void>();
 
   constructor(private dialogElementRef: ElementRef<HTMLDialogElement>, private router: Router) {}
 
@@ -29,9 +29,7 @@ export class SafeCloseDialogCustom implements OnInit, OnDestroy {
 
   closeDialog() {
     const dialog = this.dialogElementRef?.nativeElement;
-    if(this.customSaveForm() && this.customSaveForm() != undefined) {
-      this.customSaveForm()!();
-    }
+    this.customSaveForm()!();
     dialog.close();
     console.log(this.router.url);
     if(this.router.url.includes("committee-details/edit"))
@@ -44,7 +42,7 @@ export class SafeCloseDialogCustom implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.customRestoreForm()!();
+    this.customRestoreForm()();
   }
 
   ngOnDestroy() {

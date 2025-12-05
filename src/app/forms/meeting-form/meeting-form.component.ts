@@ -81,8 +81,8 @@ export class MeetingForm implements OnInit {
   }>;
 
   //for agenda and decision we will use two way binding as the input should be associated with DecisionDto not a string(as id is needed for edit page);
-  agendas!: AgendaDto[];
-  decisions!: DecisionDto[];
+  agendas: AgendaDto[] = [];
+  decisions: DecisionDto[] = [];
 
   ngOnInit(): void {
     //initializing the form groups and controls for both right and left panel
@@ -137,7 +137,10 @@ export class MeetingForm implements OnInit {
   selectedInvitees: MemberSearchResult[] = [];
   displayedPossibleInvitees: MemberSearchResult[] = [];
 
-  constructor(private router: Router, private httpClient: HttpClient) {
+  constructor(
+    private router: Router,
+    private httpClient: HttpClient,
+  ) {
     //open dialog
     effect(() => {
       this.diag()!.nativeElement.showModal();
@@ -145,10 +148,9 @@ export class MeetingForm implements OnInit {
 
     //load data for right panel
     this.httpClient
-      .get<Response<{ committeeId: number; committeeName: string }[]>>(
-        BACKEND_URL + '/api/getMyActiveCommitteeNamesAndIds',
-        { withCredentials: true }
-      )
+      .get<
+        Response<{ committeeId: number; committeeName: string }[]>
+      >(BACKEND_URL + '/api/getMyActiveCommitteeNamesAndIds', { withCredentials: true })
       .subscribe({
         next: (response) => {
           console.log(response.mainBody);
@@ -156,7 +158,7 @@ export class MeetingForm implements OnInit {
             this.committeeIdsAndNames.push({
               committeeId: committeeIdAndName.committeeId,
               committeeName: committeeIdAndName.committeeName,
-            })
+            }),
           );
           this.displayedCommitteeIdsAndNames = this.committeeIdsAndNames;
           console.log(this.displayedCommitteeIdsAndNames);
@@ -167,7 +169,8 @@ export class MeetingForm implements OnInit {
   onInviteeSelect(selectedInvitee: MemberSearchResult) {
     this.selectedInvitees.push(selectedInvitee);
     this.possibleInvitees = this.possibleInvitees.filter(
-      (possibleInvitee) => possibleInvitee.memberId !== selectedInvitee.memberId
+      (possibleInvitee) =>
+        possibleInvitee.memberId !== selectedInvitee.memberId,
     );
     this.displayedPossibleInvitees = this.possibleInvitees;
   }
@@ -183,7 +186,7 @@ export class MeetingForm implements OnInit {
             this.displayedPossibleInvitees = this.possibleInvitees;
           } else {
             this.displayedPossibleInvitees = this.fuzzySearchPossibleInvitees(
-              value as string
+              value as string,
             );
           }
         });
@@ -202,7 +205,7 @@ export class MeetingForm implements OnInit {
 
   private memberSortingFunction = (
     member1: MemberSearchResult,
-    member2: MemberSearchResult
+    member2: MemberSearchResult,
   ) => member1.firstName.localeCompare(member2.firstName);
 
   //---------------------------------RIGHT PANEL-----------------------------
@@ -232,7 +235,7 @@ export class MeetingForm implements OnInit {
           this.displayedCommitteeIdsAndNames = this.committeeIdsAndNames;
         } else {
           this.displayedCommitteeIdsAndNames = this.fuzzySearchCommittee(
-            value as string
+            value as string,
           );
         }
       });
@@ -244,7 +247,7 @@ export class MeetingForm implements OnInit {
   }
 
   fuzzySearchCommittee(
-    query: string
+    query: string,
   ): { committeeId: number; committeeName: string }[] {
     const fuse = new Fuse(Array.from(this.committeeIdsAndNames.values()), {
       keys: ['committeeName'],
@@ -258,7 +261,7 @@ export class MeetingForm implements OnInit {
 
   private committeeSortingFunction = (
     committee1: { committeeId: number; committeeName: string },
-    committee2: { committeeId: number; committeeName: string }
+    committee2: { committeeId: number; committeeName: string },
   ) => committee1.committeeName.localeCompare(committee2.committeeName);
 
   //to use in template to make sure invitee has been displayed before displaying: No possible invitees
@@ -291,7 +294,7 @@ export class MeetingForm implements OnInit {
         {
           params: new HttpParams().set('committeeId', this.selectedCommitteeId),
           withCredentials: true,
-        }
+        },
       )
       .subscribe({
         next: (response) => {
@@ -323,7 +326,7 @@ export class MeetingForm implements OnInit {
     requestBody.decisions = this.decisions;
 
     requestBody.inviteeIds = this.selectedInvitees.map(
-      (invitee) => invitee.memberId
+      (invitee) => invitee.memberId,
     );
 
     this.formSaveEvent.emit(requestBody);
@@ -347,15 +350,15 @@ export class MeetingForm implements OnInit {
   }
 
   deleteAgenda(agendaId: number) {
-    console.log("delete agenda executed");
+    console.log('delete agenda executed');
     this.agendas = this.agendas.filter(
-      (agenda) => agenda.agendaId !== agendaId
+      (agenda) => agenda.agendaId !== agendaId,
     );
   }
 
   deleteDecision(decisionId: number) {
     this.decisions = this.decisions.filter(
-      (decision) => decision.decisionId !== decisionId
+      (decision) => decision.decisionId !== decisionId,
     );
   }
 
@@ -368,20 +371,31 @@ export class MeetingForm implements OnInit {
   }
 
   saveFormData = () => {
+    console.log('saving form');
     if (this.isEditPage()) return;
 
     const formValue = this.meetingFormGroup.getRawValue();
 
+    //also saving the agendas and decisions
+    const dataToSave = {
+      ...this.meetingFormGroup.getRawValue(),
+      agendas: this.agendas.map(agendaDto => agendaDto.agenda),
+      decisions: this.decisions.map(decisionDto => decisionDto.decision)
+    };
+
     // Check if at least one field has some value
-    const hasData = Object.values(formValue).some(
-      (value) => value !== null && value !== undefined && value !== ''
+    const hasData = Object.values(dataToSave).some(
+      (value) => value !== null && value !== undefined && value !== '',
     );
 
+    console.log(hasData);
     if (!hasData) {
       return;
     }
 
-    localStorage.setItem(this.FORM_NAME, JSON.stringify(formValue));
+    localStorage.setItem(this.FORM_NAME, JSON.stringify(dataToSave));
+    console.log('saving form');
+    console.log(formValue);
   };
 
   restoreFormData = () => {
@@ -398,23 +412,26 @@ export class MeetingForm implements OnInit {
 
         //the above patchValue does not restore the FormArrays, so manually restoring agendas and decisions
 
-        //TODO: manually restore agendas and decisions
+        if (parsedData['agendas'] && parsedData['agendas'].length > 0) {
+          (parsedData['agendas'] as string[]).forEach((agenda) => {
+            const agendaDto = new AgendaDto();
+            //agendaId is required for agenda deletion on double click
+            agendaDto.agendaId = this.count--;
+            agendaDto.agenda = agenda;
+            this.agendas.push(agendaDto);
+          });
+        }
 
-        // if (parsedData['agendas'] && parsedData['agendas'].length > 0) {
-        //   (parsedData['agendas'] as Array<string>).forEach((agenda) => {
-        //     (this.meetingFormGroup.controls['agendas'] as FormArray).push(
-        //       new FormControl(agenda),
-        //     );
-        //   });
-        // }
-
-        // if (parsedData['decisions'] && parsedData['decisions'].length > 0) {
-        //   (parsedData['decisions'] as Array<string>).forEach((decision) => {
-        //     (this.meetingFormGroup.controls['decisions'] as FormArray).push(
-        //       new FormControl(decision),
-        //     );
-        //   });
-        // }
+        if (parsedData['decisions'] && parsedData['decisions'].length > 0) {
+          (parsedData['decisions'] as string[]).forEach((decision) => {
+            const decisionDto = new DecisionDto();
+            //agendaId is required for agenda deletion on double click
+            decisionDto.decisionId = this.count--;
+            decisionDto.decision = decision;
+            console.log(decision);
+            this.decisions.push(decisionDto);
+          });
+        }
       } catch (err) {
         console.error('Failed to parse saved form data', err);
       }
