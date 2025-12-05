@@ -347,6 +347,7 @@ export class MeetingForm implements OnInit {
   }
 
   deleteAgenda(agendaId: number) {
+    console.log("delete agenda executed");
     this.agendas = this.agendas.filter(
       (agenda) => agenda.agendaId !== agendaId
     );

@@ -230,7 +230,7 @@
               placeholder="Double click to delete"
               class="form-input"
               autocomplete="off"
-              (dblclick)="deleteAgenda($index)"
+              (dblclick)="deleteAgenda(agenda.agendaId)"
             ></textarea>
           </div>
           }
@@ -256,7 +256,7 @@
               placeholder="Double click to delete"
               class="form-input"
               autocomplete="off"
-              (dblclick)="deleteDecision($index)"
+              (dblclick)="deleteDecision(decision.decisionId)"
             ></textarea>
           </div>
           }

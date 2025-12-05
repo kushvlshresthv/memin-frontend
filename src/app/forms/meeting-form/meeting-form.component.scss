@@ -290,13 +290,15 @@ dialog {
 
 .form-element-pair {
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   gap: 10px;
   .form-group {
       min-width: 0;  //without this the form-group(title and held place) overflows in flex layout in mobile layout
       width: 50%;
   }
 
-  .btn {
+  .plus-button {
     padding: 5px 10px;
   }
 }
