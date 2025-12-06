@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { MemberDetailsDto } from '../../../models/models';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -17,17 +17,12 @@ export class MemberSummaryComponent {
     
   }
 
-  toggleMenu(event: Event) {
-    event.stopPropagation();
-    this.showMenuOptions = !this.showMenuOptions;
-  }
+  toggleMenu = output<{event: Event, memberId: number}>();
 
-  onEditOptionClick(event: Event) {
-    event.stopPropagation();
-    this.router.navigate(['/home/members-list/edit'], {
-      queryParams: {
-        memberId: this.memberDetail().memberId,
-      },
-    });
+  dropdownTop = 0;
+  dropdownLeft = 0;
+
+  toggleMenuEvent(eventObj: Event) {
+    this.toggleMenu.emit({event: eventObj, memberId: this.memberDetail().memberId});
   }
 }

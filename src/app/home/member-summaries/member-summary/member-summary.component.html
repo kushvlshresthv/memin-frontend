@@ -2,18 +2,11 @@
   <div class="card-header">
     <div class="header-content">
       <h3 class="memberDetail-name">
-        {{ memberDetail().firstName + " " + memberDetail().lastName}} 
+        {{ memberDetail().firstName + " " + memberDetail().lastName }}
       </h3>
     </div>
     <div class="menu-btn-container">
-      <button class="menu-btn" (click)="toggleMenu($event)">⋯</button>
-      <div class="menu-options" [class.hidden]="!showMenuOptions">
-        <div class="menu-option" (click)="onEditOptionClick($event)">Edit</div>
-        <div class="menu-option">New Meeting</div>
-        <div class="menu-option">Overview</div>
-        <div class="menu-option">Summary</div>
-        <div class="menu-option">Archive</div>
-      </div>
+	<button class="menu-btn" (click)="toggleMenuEvent($event)">⋯</button>
     </div>
   </div>
 
@@ -21,12 +14,12 @@
     <div class="info-grid">
       <div class="info-item">
         <span class="label">Post</span>
-        <span class="value">{{memberDetail().post}}</span>
+        <span class="value">{{ memberDetail().post }}</span>
       </div>
 
       <div class="info-item">
         <span class="label">Title</span>
-        <span class="value">{{memberDetail().title}}</span>
+        <span class="value">{{ memberDetail().title }}</span>
       </div>
     </div>
   </div>
