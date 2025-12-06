@@ -437,17 +437,8 @@ dialog {
 // MOBILE RESPONSIVE STYLES
 
 @media (max-width: 768px) {
-  dialog {
-    width: 100vw;
-    min-height: calc(100vh - 60px);
-    margin-bottom: constants.$sidebar-height-mobile; //for menu options
-    border: none;
-    border-bottom: 1px solid colors.$color-border-primary;
-    margin-top: 0px;
-    &::backdrop {
-      background: none;
-      backdrop-filter: none;
-    }
+  .main-dialog {
+      height: 80vh;
   }
 
   .committee-details-panel,
@@ -461,6 +452,10 @@ dialog {
 
   .panel-subtitle {
     display: none;
+  }
+
+  .available-members{
+      padding-bottom: 20px;
   }
 
   .next-button,

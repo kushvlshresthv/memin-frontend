@@ -354,27 +354,17 @@ dialog {
     display: none;
   }
 
-  dialog {
-    display: flex;
-    flex-direction: column;
-    width: 100vw;
-    height: calc(100vh - #{constants.$sidebar-height-mobile});
-    margin: 0;
-    padding: 0;
-    border: none;
-    border-bottom: 1px solid colors.$color-border-primary;
-    margin-bottom: constants.$sidebar-height-mobile; //for menu options
-    &::backdrop {
-      background: none;
-      backdrop-filter: none;
-    }
+  .main-dialog {
+      width: 90vw;
   }
 
   .activePartInMobileView {
-      min-height: 0;
+    min-width: 0;  //without this this flexitem expands to accomodate its content and hence its child (.actual-form) overflows dialog in width
+    min-height: 0;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    align-self: stretch;
   }
 
 
@@ -383,7 +373,7 @@ dialog {
   }
 
   .actual-form {
-    // overflow-y: auto !important;
+      min-width: 0;
       flex-grow: 1;
       padding-bottom: 20px;
       overflow: auto;
