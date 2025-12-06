@@ -324,6 +324,7 @@ export class MeetingForm implements OnInit {
     requestBody.heldTime = this.heldTime.value;
     requestBody.agendas = this.agendas;
     requestBody.decisions = this.decisions;
+    console.log(requestBody);
 
     requestBody.inviteeIds = this.selectedInvitees.map(
       (invitee) => invitee.memberId,

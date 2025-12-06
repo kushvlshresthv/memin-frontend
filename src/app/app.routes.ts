@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { ErrorComponent } from './error/error.component';
 import { HomeComponent } from './home/home.component';
-import { committeeRouteGuard, isAuthenticated } from './app.guards';
+import { committeeRouteGuard, isAuthenticated, memberRouteGuard } from './app.guards';
 import { CommitteeSummariesComponent } from './home/committee-summaries/committee-summaries.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { CreateCommitteeComponent } from './home/create-committee/create-committee.component';
@@ -16,6 +16,7 @@ import { MemberSummariesComponent } from './home/member-summaries/member-summari
 import { ViewArchivesComponent } from './home/view-archives/view-archives.component';
 import { CommitteeSummaryComponent } from './home/committee-summaries/committee-summary/committee-summary.component';
 import { CommitteeExtendedSummaryComponent } from './committee-details/committee-extended-summary/committee-extended-summary.component';
+import { EditMemberComponent } from './home/member-summaries/edit-member/edit-member.component';
 
 export const routes: Routes = [
   {
@@ -27,7 +28,6 @@ export const routes: Routes = [
     path: 'login',
     component: LoginComponent,
   },
-  
 
   {
     path: 'home',
@@ -51,12 +51,18 @@ export const routes: Routes = [
         component: CreateMeetingComponent,
       },
       {
-	path: 'members-list',
-	component: MemberSummariesComponent,
+	// it is not a children to members-list because children's require <router-outlet> and it is an independent page to members list 
+	canActivate: [memberRouteGuard],
+	path: 'members-list/edit',
+	component: EditMemberComponent
       },
       {
-	path: 'archives',
-	component: ViewArchivesComponent,
+        path: 'members-list',
+        component: MemberSummariesComponent,
+      },
+      {
+        path: 'archives',
+        component: ViewArchivesComponent,
       },
       {
         path: '**',
@@ -65,31 +71,30 @@ export const routes: Routes = [
     ],
   },
 
-
   {
     path: 'committee-details',
     component: CommitteeDetailsComponent,
     canMatch: [isAuthenticated],
     children: [
       {
-	//TODO: only open this when there is a meetingId
+        //TODO: only open this when there is a meetingId
         path: 'overview/minute',
         component: MinuteComponent,
       },
       {
-	canActivate: [committeeRouteGuard],
+        canActivate: [committeeRouteGuard],
         path: 'overview',
         component: CommitteeOverviewComponent,
       },
       {
-	canActivate: [committeeRouteGuard],
-	path: 'edit',
-	component: EditCommitteeComponent,
+        canActivate: [committeeRouteGuard],
+        path: 'edit',
+        component: EditCommitteeComponent,
       },
       {
-	canActivate: [committeeRouteGuard],
-	path: 'summary',
-	component: CommitteeExtendedSummaryComponent,
+        canActivate: [committeeRouteGuard],
+        path: 'summary',
+        component: CommitteeExtendedSummaryComponent,
       },
       {
         path: '**',
