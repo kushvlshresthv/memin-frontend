@@ -57,6 +57,15 @@ export class MemberSummariesComponent implements OnInit {
     });
   }
 
+  closeMenuOptionsIfOpen() {
+    if(this.showMenuOptions) {
+      this.showMenuOptions = false;
+      //resetting these variables because onMenuOptionClick() uses them for comparison
+      this.dropdownRight = -1;
+      this.dropdownTop = -1;
+    }
+  }
+
   ngOnInit() {
     this.httpClient
       .get<

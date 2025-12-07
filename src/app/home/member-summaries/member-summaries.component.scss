@@ -1,6 +1,11 @@
 @use "constants" as constants;
 @use "colors" as colors;
 
+.available-screen {
+    width: 100%;
+    height: 100%;
+}
+
 .heading {
   margin-bottom: 20px;
   font-size: constants.$font-xxl;

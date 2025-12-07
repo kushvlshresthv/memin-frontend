@@ -439,6 +439,7 @@ dialog {
 @media (max-width: 768px) {
   .main-dialog {
       height: 80vh;
+      border-radius: 8px;
   }
 
   .committee-details-panel,

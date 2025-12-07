@@ -356,6 +356,7 @@ dialog {
 
   .main-dialog {
       width: 90vw;
+      border-radius: 8px;
   }
 
   .activePartInMobileView {
@@ -364,7 +365,6 @@ dialog {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    align-self: stretch;
   }
 
 
