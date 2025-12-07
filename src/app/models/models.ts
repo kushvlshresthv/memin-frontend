@@ -236,3 +236,16 @@ export interface MeetingFormData {
   possibleInvitees: MemberSearchResult[];
   selectedInvitees: MemberSearchResult[];
 }
+
+export interface MeetingDetailsForEdit {
+  meetingId: number;
+  committeeId: number;
+  title: string;
+  heldDate: string;
+  heldTime: string;
+  heldPlace: string;
+  selectedInvitees: MemberSearchResult[];
+  possibleInvitees: MemberSearchResult[];
+  decisions: DecisionDto[];
+  agendas: AgendaDto[];
+}

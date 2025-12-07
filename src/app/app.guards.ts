@@ -52,6 +52,17 @@ export const memberRouteGuard: CanActivateFn= (route:ActivatedRouteSnapshot, sta
 };
 
 
+export const meetingRouteGuard: CanActivateFn= (route:ActivatedRouteSnapshot, state: RouterStateSnapshot)=> {
+  const router = inject(Router);
+  const meetingId = route.queryParams['meetingId'];
+  if (meetingId) {
+    console.log("opening edit page");
+    return true;
+  }
+  return router.parseUrl('/error'); //redirect
+};
+
+
 //ensures route has a meetingId and committeeId
 export const minuteGuard: CanActivateFn= (route:ActivatedRouteSnapshot, state: RouterStateSnapshot)=> {
   const router = inject(Router);
