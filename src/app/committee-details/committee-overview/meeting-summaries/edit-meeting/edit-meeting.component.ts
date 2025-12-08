@@ -2,8 +2,12 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BACKEND_URL } from '../../../../../global_constants';
-import { MeetingCreationDto, MeetingDetailsForEdit, MeetingFormData } from '../../../../models/models';
-import { Response } from '../../../../response/response'
+import {
+  MeetingCreationDto,
+  MeetingDetailsForEdit,
+  MeetingFormData,
+} from '../../../../models/models';
+import { Response } from '../../../../response/response';
 import { MeetingForm } from '../../../../forms/meeting-form/meeting-form.component';
 
 @Component({
@@ -16,6 +20,7 @@ import { MeetingForm } from '../../../../forms/meeting-form/meeting-form.compone
 export class EditMeetingComponent implements OnInit {
   meetingFormData!: MeetingFormData;
   hasMemberFormDataLoaded = false;
+  meetingId!: number;
 
   constructor(
     private httpClient: HttpClient,
@@ -26,37 +31,51 @@ export class EditMeetingComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe((params) => {
       const meetingId = params['meetingId'];
+      this.meetingId = meetingId; //to use in the onFormSave() method
       const committeeId = params['committeeId'];
-      const httpParams = new HttpParams().set('meetingId', meetingId).set("committeeId", committeeId);
+      const httpParams = new HttpParams()
+        .set('meetingId', meetingId)
+        .set('committeeId', committeeId);
       this.httpClient
         .get<
           Response<MeetingDetailsForEdit>
         >(BACKEND_URL + '/api/getMeetingDetailsForEdit', { withCredentials: true, params: httpParams })
         .subscribe({
-	  next: (response) => {
-	    const meetingDetails = response.mainBody;
-	    console.log(meetingDetails);
-	    this.meetingFormData = {
-	      title: meetingDetails.title,
-	      heldDate: meetingDetails.heldDate,
-	      heldTime: meetingDetails.heldTime,
-	      heldPlace: meetingDetails.heldPlace,
-	      committeeName: meetingDetails.committeeName,
-	      decisions: meetingDetails.decisions,
-	      agendas: meetingDetails.agendas,
-	      selectedInvitees: meetingDetails.selectedInvitees,
-	      possibleInvitees: meetingDetails.possibleInvitees,
-	    }
-	    this.hasMemberFormDataLoaded = true;
-	  },
-	  error: (error) => {
-	    console.log("TODO: show error message");
-	  }
-	});
+          next: (response) => {
+            const meetingDetails = response.mainBody;
+            console.log(meetingDetails);
+            this.meetingFormData = {
+              title: meetingDetails.title,
+              heldDate: meetingDetails.heldDate,
+              heldTime: meetingDetails.heldTime,
+              heldPlace: meetingDetails.heldPlace,
+              committeeName: meetingDetails.committeeName,
+              decisions: meetingDetails.decisions,
+              agendas: meetingDetails.agendas,
+              selectedInvitees: meetingDetails.selectedInvitees,
+              possibleInvitees: meetingDetails.possibleInvitees,
+            };
+            this.hasMemberFormDataLoaded = true;
+          },
+          error: (error) => {
+            console.log('TODO: show error message');
+          },
+        });
     });
   }
 
-
   onFormSave(responseBody: MeetingCreationDto) {
+    this.httpClient
+      .patch<
+        Response<Object>
+      >(BACKEND_URL + '/api/updateMeeting', responseBody, { withCredentials: true, params: new HttpParams().set('meetingId', this.meetingId) })
+      .subscribe({
+	next: (response) => {
+	  console.log("TODO: handle the response correctly", response);
+	},
+	error: (error) => {
+	  console.log("TODO: handle the error correctly", error);
+	}
+      });
   }
 }
