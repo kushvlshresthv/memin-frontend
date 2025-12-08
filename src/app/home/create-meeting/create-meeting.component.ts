@@ -24,7 +24,7 @@ export class CreateMeetingComponent  {
     title: '',
     committeeName:'',
     heldDate: '',
-    heldTime: '',
+    heldTime: [],
     heldPlace: '',
     decisions: [],
     agendas: [],

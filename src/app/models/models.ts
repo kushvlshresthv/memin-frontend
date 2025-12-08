@@ -230,7 +230,7 @@ export interface MeetingFormData {
   title: string;
   committeeName: string; //for edit page
   heldDate: string;
-  heldTime: string;
+  heldTime: number[];
   heldPlace: string;
   decisions: DecisionDto[];
   agendas: AgendaDto [];
@@ -244,7 +244,7 @@ export interface MeetingDetailsForEdit {
   committeeName: string;
   title: string;
   heldDate: string;
-  heldTime: string;
+  heldTime: number[];
   heldPlace: string;
   selectedInvitees: MemberSearchResult[];
   possibleInvitees: MemberSearchResult[];

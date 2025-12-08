@@ -240,6 +240,7 @@
           @for (agenda of agendas; track agenda.agendaId; let $i = $index) {
             <div class="agenda-item">
               <textarea
+		#agendaInputFields
                 [(ngModel)]="agenda.agenda"
                 [ngModelOptions]="{ standalone: true }"
                 placeholder="Double click to delete"
@@ -270,6 +271,7 @@
           ) {
             <div class="decision-item">
               <textarea
+		#decisionInputFields
                 [(ngModel)]="decision.decision"
                 [ngModelOptions]="{ standalone: true }"
                 placeholder="Double click to delete"
