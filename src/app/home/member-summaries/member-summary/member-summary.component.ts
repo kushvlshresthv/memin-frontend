@@ -19,9 +19,6 @@ export class MemberSummaryComponent {
 
   toggleMenu = output<{event: Event, memberId: number}>();
 
-  dropdownTop = 0;
-  dropdownLeft = 0;
-
   toggleMenuEvent(eventObj: Event) {
     this.toggleMenu.emit({event: eventObj, memberId: this.memberDetail().memberId});
   }

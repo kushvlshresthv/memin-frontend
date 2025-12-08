@@ -105,10 +105,17 @@ export class MeetingForm implements OnInit {
       nonNullable: true,
     });
 
-    const hour = this.meetingFormData().heldTime[0];
-    const minute = this.meetingFormData().heldTime[1];
+    //formatting time in HH:MM format incase there is no padding infront
+    const [h, m] = this.meetingFormData().heldTime;
 
-    this.heldTime = new FormControl(`${hour}:${minute}`, {
+    // pad with leading zeros
+    const hour = String(h).padStart(2, '0');
+    const minute = String(m).padStart(2, '0');
+
+    // final ISO-ish time string for LocalTime
+    const timeString = `${hour}:${minute}:00`;
+
+    this.heldTime = new FormControl(timeString, {
       nonNullable: true,
     });
 
@@ -335,6 +342,7 @@ export class MeetingForm implements OnInit {
     requestBody.title = this.title.value;
     requestBody.heldPlace = this.heldPlace.value;
     requestBody.heldDate = this.heldDate.value;
+
     requestBody.heldTime = this.heldTime.value;
     requestBody.agendas = this.agendas;
     requestBody.decisions = this.decisions;

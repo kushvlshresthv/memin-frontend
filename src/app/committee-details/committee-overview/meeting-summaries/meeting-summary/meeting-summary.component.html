@@ -5,18 +5,28 @@
         {{ meetingSummary().title }}
       </h3>
     </div>
+    <div class="menu-btn-container">
+      <button class="menu-btn" (click)="toggleMenuEvent($event)">⋯</button>
+    </div>
   </div>
 
-  <div class="card-content">
+  <div
+    class="card-content"
+    routerLink="./minute"
+    [queryParams]="{ meetingId: meetingSummary().id }"
+    [queryParamsHandling]="'merge'"
+  >
     <div class="info-grid">
       <div class="info-item">
         <span class="label">Date</span>
-        <span class="value">{{ meetingSummary().heldDate | date:'d MMM y' }}</span>
+        <span class="value">{{
+          meetingSummary().heldDate | date: "d MMM y"
+        }}</span>
       </div>
 
       <div class="info-item">
         <span class="label">Time</span>
-        <span class="value">{{ meetingHeldTime | date: 'hh: mm'}}</span>
+        <span class="value">{{ meetingHeldTime | date: "hh: mm" }}</span>
       </div>
 
       <div class="info-item">
@@ -26,4 +36,3 @@
     </div>
   </div>
 </div>
-

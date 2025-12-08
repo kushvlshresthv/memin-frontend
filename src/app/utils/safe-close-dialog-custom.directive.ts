@@ -39,6 +39,8 @@ export class SafeCloseDialogCustom implements OnInit, OnDestroy {
       this.router.navigate(['./committee-details/overview/minute'], {queryParamsHandling:'preserve'})
     if(this.router.url.includes("members-list/edit"))
       this.router.navigate(['/home/members-list'], {queryParamsHandling:'preserve'})
+    if(this.router.url.includes("/committee-details/overview/meeting/edit"))
+      this.router.navigate(['/committee-details/overview'], {queryParamsHandling:'preserve'})
     else
       this.router.navigate(['./home/my-committees']);
   }

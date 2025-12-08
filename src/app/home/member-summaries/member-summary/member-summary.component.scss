@@ -1,5 +1,5 @@
-@use 'colors' as colors;
-@use 'constants' as constants;
+@use "colors" as colors;
+@use "constants" as constants;
 
 :host {
   display: flex;
@@ -19,7 +19,7 @@
   cursor: pointer;
 
   &:hover {
-    background: colors.$color-card-hover; 
+    background: colors.$color-card-hover;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
@@ -89,16 +89,10 @@
   }
 }
 
-
 .menu-btn-container {
-  display: flex;
-  gap: 10px;
-  // position: relative; //using relative to have menu-options as 'absolute' //updated menu-options to fixed
-  bottom: 4px;
-
-
+  padding-bottom: 4px;
   .menu-btn {
-  cursor: pointer;
+    cursor: pointer;
     background: colors.$color-background-main;
     color: white;
     font-size: 20px;
