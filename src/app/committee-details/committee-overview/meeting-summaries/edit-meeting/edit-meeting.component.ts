@@ -37,13 +37,11 @@ export class EditMeetingComponent implements OnInit {
 	    const meetingDetails = response.mainBody;
 	    console.log(meetingDetails);
 	    this.meetingFormData = {
-	      meetingId: meetingDetails.meetingId,
-	      committeeId: meetingDetails.committeeId,
-	      committeeName: meetingDetails.committeeName,
 	      title: meetingDetails.title,
 	      heldDate: meetingDetails.heldDate,
 	      heldTime: meetingDetails.heldTime,
 	      heldPlace: meetingDetails.heldPlace,
+	      committeeName: meetingDetails.committeeName,
 	      decisions: meetingDetails.decisions,
 	      agendas: meetingDetails.agendas,
 	      selectedInvitees: meetingDetails.selectedInvitees,

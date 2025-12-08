@@ -127,7 +127,6 @@ export class MeetingForm implements OnInit {
     if (this.isEditPage()) {
       this.committeeSearch.setValue(this.meetingFormData().committeeName);
       this.committeeSearch.disable();
-      this.selectedCommitteeId = this.meetingFormData().committeeId;
     }
 
     //load data for right panel if it isn't an edit page

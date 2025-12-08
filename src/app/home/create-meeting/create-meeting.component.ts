@@ -21,8 +21,6 @@ export class CreateMeetingComponent  {
 
 
   meetingFormData: MeetingFormData = {
-    meetingId: -1,
-    committeeId: -1, 
     title: '',
     committeeName:'',
     heldDate: '',

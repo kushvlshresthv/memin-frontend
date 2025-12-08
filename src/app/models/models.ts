@@ -227,8 +227,6 @@ export interface MemberFormData {
 }
 
 export interface MeetingFormData {
-  meetingId: number,   //for edit page
-  committeeId: number, // for edit page
   title: string;
   committeeName: string; //for edit page
   heldDate: string;
