@@ -5,12 +5,9 @@
   font-family: Roboto, "Annapurna", sans-serif;
   line-height: 1.8rem;
   background: white;
-  // background: colors.$color-background-main;
   color: black;
-  // border: 2px solid colors.$color-border-primary;
-  // color: colors.$color-text-primary; 
   width: constants.$minute-width;
-  height: 297mm;
+  min-height: 297mm;
   margin: 0 auto;
   padding: 30mm 20mm;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);

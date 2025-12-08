@@ -52,6 +52,16 @@ export class MeetingSummariesComponent {
     });
   }
 
+  onMinuteOptionClick(event: Event) {
+    event.stopPropagation();
+    this.router.navigate(['./committee-details/overview/minute'], {
+      queryParams: {
+	meetingId: this.meetingId,
+      },
+      queryParamsHandling: 'merge',
+    });
+  }
+
   closeMenuOptionsIfOpen() {
     if (this.showMenuOptions) {
       this.showMenuOptions = false;

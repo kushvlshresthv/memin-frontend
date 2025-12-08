@@ -99,25 +99,35 @@ export class MeetingForm implements OnInit {
       nonNullable: true,
     });
 
-    const heldDate = new Date(this.meetingFormData().heldDate);
+    if (this.isEditPage()) {
+      const heldDate = new Date(this.meetingFormData().heldDate);
 
-    this.heldDate = new FormControl(heldDate.toISOString().slice(0, 10), {
-      nonNullable: true,
-    });
+      this.heldDate = new FormControl(heldDate.toISOString().slice(0, 10), {
+        nonNullable: true,
+      });
 
-    //formatting time in HH:MM format incase there is no padding infront
-    const [h, m] = this.meetingFormData().heldTime;
+      //formatting time in HH:MM format incase there is no padding infront
+      const [h, m] = this.meetingFormData().heldTime;
 
-    // pad with leading zeros
-    const hour = String(h).padStart(2, '0');
-    const minute = String(m).padStart(2, '0');
+      // pad with leading zeros
+      const hour = String(h).padStart(2, '0');
+      const minute = String(m).padStart(2, '0');
 
-    // final ISO-ish time string for LocalTime
-    const timeString = `${hour}:${minute}:00`;
+      // final ISO-ish time string for LocalTime
+      const timeString = `${hour}:${minute}:00`;
 
-    this.heldTime = new FormControl(timeString, {
-      nonNullable: true,
-    });
+      this.heldTime = new FormControl(timeString, {
+        nonNullable: true,
+      });
+    } else {
+      this.heldDate = new FormControl('', {
+        nonNullable: true,
+      });
+
+      this.heldTime = new FormControl('', {
+        nonNullable: true,
+      });
+    }
 
     this.heldPlace = new FormControl(this.meetingFormData().heldPlace, {
       nonNullable: true,
