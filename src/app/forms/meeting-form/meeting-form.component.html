@@ -45,56 +45,66 @@
 
         <!-- Selected Members Section -->
         @if (this.selectedInvitees.length > 0) {
-        <div class="selected-invitees-section">
-          <h3 class="section-title">Selected Invitees</h3>
-          <div class="selected-invitees-list">
-            @for ( selectedInvitee of selectedInvitees; track
-            selectedInvitee.memberId ) {
-            <div class="selected-invitee-item">
-              <div class="member-info">
-                <span class="selected-name">
-                  {{
-                    selectedInvitee.firstName + " " + selectedInvitee.lastName
-                  }}
-                </span>
-              </div>
+          <div class="selected-invitees-section">
+            <h3 class="section-title">Selected Invitees</h3>
+            <div class="selected-invitees-list">
+              @for (
+                selectedInvitee of selectedInvitees;
+                track selectedInvitee.memberId
+              ) {
+                <div class="selected-invitee-item">
+                  <div class="member-info">
+                    <span class="selected-name">
+                      {{
+                        selectedInvitee.firstName +
+                          " " +
+                          selectedInvitee.lastName
+                      }}
+                    </span>
+                  </div>
+                </div>
+              }
             </div>
-            }
           </div>
-        </div>
         }
 
         <!-- Unselected Members Section -->
         @if (displayedPossibleInvitees.length > 0) {
-        <div class="unselected-invitees-section">
-          <h3 class="section-title">Unselected Invitees</h3>
-        </div>
+          <div class="unselected-invitees-section">
+            <h3 class="section-title">Unselected Invitees</h3>
+          </div>
         }
 
         <div class="available-invitees">
-          @for ( displayedPossibleInvitee of displayedPossibleInvitees; track
-          displayedPossibleInvitee.memberId ) {
-          <div
-            class="available-invitee-item"
-            (click)="onInviteeSelect(displayedPossibleInvitee)"
-          >
-            <span class="member-name">
-              {{
-                displayedPossibleInvitee.firstName +
-                  " " +
-                  displayedPossibleInvitee.lastName
-              }}
-            </span>
-          </div>
-          } @empty { @if (!selectedCommitteeId) {
-          <p class="empty-state">
-            Please select a committee to view the possible invitees
-          </p>
-          } @else { @if (hasInviteeDataLoaded) {
-          <p class="empty-state">
-            No possible invitees, create a new member first
-          </p>
-          } } }
+          @for (
+            displayedPossibleInvitee of displayedPossibleInvitees;
+            track displayedPossibleInvitee.memberId
+          ) {
+            <div
+              class="available-invitee-item"
+              (click)="onInviteeSelect(displayedPossibleInvitee)"
+            >
+              <span class="member-name">
+                {{
+                  displayedPossibleInvitee.firstName +
+                    " " +
+                    displayedPossibleInvitee.lastName
+                }}
+              </span>
+            </div>
+          } @empty {
+            @if (!selectedCommitteeId) {
+              <p class="empty-state">
+                Please select a committee to view the possible invitees
+              </p>
+            } @else {
+              @if (hasInviteeDataLoaded) {
+                <p class="empty-state">
+                  No possible invitees, create a new member first
+                </p>
+              }
+            }
+          }
         </div>
       </div>
     </div>
@@ -133,27 +143,30 @@
             autocomplete="off"
           />
           @if (showDropdown && displayedCommitteeIdsAndNames.length > 0) {
-          <div class="dropdown-options">
-            @for ( committeeIdAndName of displayedCommitteeIdsAndNames; track
-            committeeIdAndName.committeeId ) {
-            <div
-              class="dropdown-option"
-              (mousedown)="onCommitteeSelection(committeeIdAndName)"
-            >
-              {{ committeeIdAndName.committeeName }}
+            <div class="dropdown-options">
+              @for (
+                committeeIdAndName of displayedCommitteeIdsAndNames;
+                track committeeIdAndName.committeeId
+              ) {
+                <div
+                  class="dropdown-option"
+                  (mousedown)="onCommitteeSelection(committeeIdAndName)"
+                >
+                  {{ committeeIdAndName.committeeName }}
+                </div>
+              }
             </div>
-            }
-          </div>
-          } @if (showDropdown && displayedCommitteeIdsAndNames.length === 0) {
-          <div class="dropdown-options">
-            <div
-              class="dropdown-option disabled"
-              (mousedown)="redirectToCreateCommittee()"
-            >
-              No committees found. Create one from
-              <a routerLink="../create-committee">here</a>.
+          }
+          @if (showDropdown && displayedCommitteeIdsAndNames.length === 0) {
+            <div class="dropdown-options">
+              <div
+                class="dropdown-option disabled"
+                (mousedown)="redirectToCreateCommittee()"
+              >
+                No committees found. Create one from
+                <a routerLink="../create-committee">here</a>.
+              </div>
             </div>
-          </div>
           }
         </div>
       </div>
@@ -167,10 +180,11 @@
             formControlName="title"
             class="form-input"
           />
-          @if (title.touched && title.dirty) { @if (title.errors?.["required"])
-          {
-          <p class="field-error">Meeting title is required</p>
-          } }
+          @if (title.touched && title.dirty) {
+            @if (title.errors?.["required"]) {
+              <p class="field-error">Meeting title is required</p>
+            }
+          }
         </div>
 
         <div class="form-group">
@@ -224,16 +238,16 @@
         </div>
         <div class="agendas-list">
           @for (agenda of agendas; track agenda.agendaId; let $i = $index) {
-          <div class="agenda-item">
-            <textarea
-              [(ngModel)]="agenda.agenda"
-              [ngModelOptions]="{ standalone: true }"
-              placeholder="Double click to delete"
-              class="form-input"
-              autocomplete="off"
-              (dblclick)="deleteAgenda(agenda.agendaId)"
-            ></textarea>
-          </div>
+            <div class="agenda-item">
+              <textarea
+                [(ngModel)]="agenda.agenda"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="Double click to delete"
+                class="form-input"
+                autocomplete="off"
+                (dblclick)="deleteAgenda(agenda.agendaId)"
+              ></textarea>
+            </div>
           }
         </div>
       </div>
@@ -249,18 +263,21 @@
           </button>
         </div>
         <div class="decisions-list">
-          @for ( decision of decisions; track decision.decisionId; let $i =
-          $index ) {
-          <div class="decision-item">
-            <textarea
-              [(ngModel)]="decision.decision"
-              [ngModelOptions]="{ standalone: true }"
-              placeholder="Double click to delete"
-              class="form-input"
-              autocomplete="off"
-              (dblclick)="deleteDecision(decision.decisionId)"
-            ></textarea>
-          </div>
+          @for (
+            decision of decisions;
+            track decision.decisionId;
+            let $i = $index
+          ) {
+            <div class="decision-item">
+              <textarea
+                [(ngModel)]="decision.decision"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="Double click to delete"
+                class="form-input"
+                autocomplete="off"
+                (dblclick)="deleteDecision(decision.decisionId)"
+              ></textarea>
+            </div>
           }
         </div>
       </div>

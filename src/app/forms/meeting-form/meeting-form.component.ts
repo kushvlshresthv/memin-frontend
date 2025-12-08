@@ -86,9 +86,12 @@ export class MeetingForm implements OnInit {
 
   ngOnInit(): void {
     //initializing the form groups and controls for both right and left panel
-    this.committeeSearch = new FormControl('', {
-      nonNullable: true,
-    });
+    this.committeeSearch = new FormControl(
+      this.meetingFormData().committeeName,
+      {
+        nonNullable: true,
+      }
+    );
 
     this.title = new FormControl(this.meetingFormData().title, {
       nonNullable: true,
@@ -121,6 +124,34 @@ export class MeetingForm implements OnInit {
     this.selectedInvitees = this.meetingFormData().selectedInvitees;
     this.hasInviteeDataLoaded = true;
 
+    if (this.isEditPage()) {
+      this.committeeSearch.setValue(this.meetingFormData().committeeName);
+      this.committeeSearch.disable();
+      this.selectedCommitteeId = this.meetingFormData().committeeId;
+    }
+
+    //load data for right panel if it isn't an edit page
+    if (!this.isEditPage()) {
+      this.httpClient
+        .get<Response<{ committeeId: number; committeeName: string }[]>>(
+          BACKEND_URL + '/api/getMyActiveCommitteeNamesAndIds',
+          { withCredentials: true }
+        )
+        .subscribe({
+          next: (response) => {
+            console.log(response.mainBody);
+            response.mainBody.forEach((committeeIdAndName) =>
+              this.committeeIdsAndNames.push({
+                committeeId: committeeIdAndName.committeeId,
+                committeeName: committeeIdAndName.committeeName,
+              })
+            );
+            this.displayedCommitteeIdsAndNames = this.committeeIdsAndNames;
+            console.log(this.displayedCommitteeIdsAndNames);
+          },
+        });
+    }
+
     this.setupObservableForInviteeSearchBarInputChange();
     this.setupObservableForCommitteeSearchBarInputChange();
   }
@@ -137,40 +168,17 @@ export class MeetingForm implements OnInit {
   selectedInvitees: MemberSearchResult[] = [];
   displayedPossibleInvitees: MemberSearchResult[] = [];
 
-  constructor(
-    private router: Router,
-    private httpClient: HttpClient,
-  ) {
+  constructor(private router: Router, private httpClient: HttpClient) {
     //open dialog
     effect(() => {
       this.diag()!.nativeElement.showModal();
     });
-
-    //load data for right panel
-    this.httpClient
-      .get<
-        Response<{ committeeId: number; committeeName: string }[]>
-      >(BACKEND_URL + '/api/getMyActiveCommitteeNamesAndIds', { withCredentials: true })
-      .subscribe({
-        next: (response) => {
-          console.log(response.mainBody);
-          response.mainBody.forEach((committeeIdAndName) =>
-            this.committeeIdsAndNames.push({
-              committeeId: committeeIdAndName.committeeId,
-              committeeName: committeeIdAndName.committeeName,
-            }),
-          );
-          this.displayedCommitteeIdsAndNames = this.committeeIdsAndNames;
-          console.log(this.displayedCommitteeIdsAndNames);
-        },
-      });
   }
 
   onInviteeSelect(selectedInvitee: MemberSearchResult) {
     this.selectedInvitees.push(selectedInvitee);
     this.possibleInvitees = this.possibleInvitees.filter(
-      (possibleInvitee) =>
-        possibleInvitee.memberId !== selectedInvitee.memberId,
+      (possibleInvitee) => possibleInvitee.memberId !== selectedInvitee.memberId
     );
     this.displayedPossibleInvitees = this.possibleInvitees;
   }
@@ -186,7 +194,7 @@ export class MeetingForm implements OnInit {
             this.displayedPossibleInvitees = this.possibleInvitees;
           } else {
             this.displayedPossibleInvitees = this.fuzzySearchPossibleInvitees(
-              value as string,
+              value as string
             );
           }
         });
@@ -205,7 +213,7 @@ export class MeetingForm implements OnInit {
 
   private memberSortingFunction = (
     member1: MemberSearchResult,
-    member2: MemberSearchResult,
+    member2: MemberSearchResult
   ) => member1.firstName.localeCompare(member2.firstName);
 
   //---------------------------------RIGHT PANEL-----------------------------
@@ -229,13 +237,11 @@ export class MeetingForm implements OnInit {
     this.committeeSearchSubscription = this.committeeSearch.valueChanges
       .pipe(debounceTime(250))
       .subscribe((value) => {
-        console.log('searching');
-
         if (value === '') {
           this.displayedCommitteeIdsAndNames = this.committeeIdsAndNames;
         } else {
           this.displayedCommitteeIdsAndNames = this.fuzzySearchCommittee(
-            value as string,
+            value as string
           );
         }
       });
@@ -247,7 +253,7 @@ export class MeetingForm implements OnInit {
   }
 
   fuzzySearchCommittee(
-    query: string,
+    query: string
   ): { committeeId: number; committeeName: string }[] {
     const fuse = new Fuse(Array.from(this.committeeIdsAndNames.values()), {
       keys: ['committeeName'],
@@ -261,7 +267,7 @@ export class MeetingForm implements OnInit {
 
   private committeeSortingFunction = (
     committee1: { committeeId: number; committeeName: string },
-    committee2: { committeeId: number; committeeName: string },
+    committee2: { committeeId: number; committeeName: string }
   ) => committee1.committeeName.localeCompare(committee2.committeeName);
 
   //to use in template to make sure invitee has been displayed before displaying: No possible invitees
@@ -294,7 +300,7 @@ export class MeetingForm implements OnInit {
         {
           params: new HttpParams().set('committeeId', this.selectedCommitteeId),
           withCredentials: true,
-        },
+        }
       )
       .subscribe({
         next: (response) => {
@@ -327,7 +333,7 @@ export class MeetingForm implements OnInit {
     console.log(requestBody);
 
     requestBody.inviteeIds = this.selectedInvitees.map(
-      (invitee) => invitee.memberId,
+      (invitee) => invitee.memberId
     );
 
     this.formSaveEvent.emit(requestBody);
@@ -353,13 +359,13 @@ export class MeetingForm implements OnInit {
   deleteAgenda(agendaId: number) {
     console.log('delete agenda executed');
     this.agendas = this.agendas.filter(
-      (agenda) => agenda.agendaId !== agendaId,
+      (agenda) => agenda.agendaId !== agendaId
     );
   }
 
   deleteDecision(decisionId: number) {
     this.decisions = this.decisions.filter(
-      (decision) => decision.decisionId !== decisionId,
+      (decision) => decision.decisionId !== decisionId
     );
   }
 
@@ -380,13 +386,13 @@ export class MeetingForm implements OnInit {
     //also saving the agendas and decisions
     const dataToSave = {
       ...this.meetingFormGroup.getRawValue(),
-      agendas: this.agendas.map(agendaDto => agendaDto.agenda),
-      decisions: this.decisions.map(decisionDto => decisionDto.decision)
+      agendas: this.agendas.map((agendaDto) => agendaDto.agenda),
+      decisions: this.decisions.map((decisionDto) => decisionDto.decision),
     };
 
     // Check if at least one field has some value
     const hasData = Object.values(dataToSave).some(
-      (value) => value !== null && value !== undefined && value !== '',
+      (value) => value !== null && value !== undefined && value !== ''
     );
 
     console.log(hasData);
