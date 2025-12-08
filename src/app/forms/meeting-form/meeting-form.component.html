@@ -52,7 +52,7 @@
                 selectedInvitee of selectedInvitees;
                 track selectedInvitee.memberId
               ) {
-                <div class="selected-invitee-item">
+                <div class="selected-invitee-item" (dblclick)="onSelectedInviteeRemoval(selectedInvitee)">
                   <div class="member-info">
                     <span class="selected-name">
                       {{

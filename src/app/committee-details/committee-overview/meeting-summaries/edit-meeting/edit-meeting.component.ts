@@ -72,6 +72,7 @@ export class EditMeetingComponent implements OnInit {
       .subscribe({
 	next: (response) => {
 	  console.log("TODO: handle the response correctly", response);
+	  this.router.navigate(["./committee-details/overview/minute"], {queryParamsHandling: "preserve"});
 	},
 	error: (error) => {
 	  console.log("TODO: handle the error correctly", error);

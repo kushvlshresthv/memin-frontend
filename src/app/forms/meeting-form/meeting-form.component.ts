@@ -444,9 +444,21 @@ export class MeetingForm implements OnInit {
     }
   };
 
+  onSelectedInviteeRemoval(inviteeToUnselect: MemberSearchResult) {
+    console.log(inviteeToUnselect);
+    //remove from selected invitees
+    this.selectedInvitees = this.selectedInvitees.filter(invitee=>invitee.memberId != inviteeToUnselect.memberId);
+
+    //add to possible invtees
+    this.possibleInvitees.push(inviteeToUnselect);
+  }
+
+
+
   ngOnDestroy() {
     console.log('DEBUG: create-committee component destroyed');
     this.committeeSearchSubscription.unsubscribe();
     this.invitteeSearchInputFieldSubscription.unsubscribe();
   }
+
 }
