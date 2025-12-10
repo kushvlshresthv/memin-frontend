@@ -2,7 +2,7 @@
 
 .total-screen {
   display: flex;
-  height: calc(100vh - #{constants.$header-height});
+  height: calc(100vh - constants.$header-height);
   margin-top: constants.$header-height;
 }
 

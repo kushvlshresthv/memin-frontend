@@ -1,11 +1,9 @@
 <app-header [isLoggedIn]="isLoggedIn"></app-header>
 <div class="total-screen">
-  @if(isLoggedIn) {
+  @if (isLoggedIn) {
     <app-sidebar></app-sidebar>
   }
   <div class="main-content" [class.login-page]="!isLoggedIn">
     <router-outlet></router-outlet>
   </div>
 </div>
-
-<!-- <app-demo [meetingDates]="['2025-01-03', '2025-03-14', '2025-07-10', '2024-01-01']"></app-demo> -->

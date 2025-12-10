@@ -11,7 +11,7 @@
   //fixed header
   position: fixed;
   top: 0; // distance from top of viewport
-  left: 0; // distance from left of viewport
+  right: 0; // distance from right of viewport
   height: constants.$header-height;
 
   background: colors.$color-background-main;
