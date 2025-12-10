@@ -1,25 +1,23 @@
 @use "constants" as constants;
 
 .total-screen {
-  display: flex;
   height: calc(100vh - constants.$header-height);
   margin-top: constants.$header-height;
 }
 
 app-sidebar {
   width: constants.$sidebar-width;
-  flex-grow: 0;
-  flex-shrink: 0;
   border-right: 1px solid #202225;
 }
 
 .main-content {
+  box-sizing: border-box;   //as height is set to 100% ie takes all height of .total-screen, the extra padding causes overflow which is then hidden by the parent which is .total-screen
   margin-left: constants.$sidebar-width;
-  flex-grow: 1;
   padding-left: 25px;
   padding-top: 16px;
   height: 100%;
   overflow: auto;
+  padding-bottom: 20px;
 }
 
 .main-content.login-page {
@@ -31,12 +29,14 @@ app-sidebar {
 
 @media (max-width: 768px) {
   .total-screen {
-    height: calc(100vh - 56px - 60px - 20px);   //leaving out space for header and menu and slight padding for bottom(padding-bottom isn't working idk why)
+    height: calc(
+      100vh - 56px - 60px - 20px
+    ); //leaving out space for header and menu and slight padding for bottom(padding-bottom isn't working idk why)
   }
 
   app-sidebar {
     width: 100vw;
-    border-right: none;   //overriding from desktop view
+    border-right: none; //overriding from desktop view
   }
 
   .main-content {
