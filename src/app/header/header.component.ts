@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { GlobalSearchComponent } from './global-search/global-search.component';
 
 @Component({
@@ -10,4 +10,5 @@ import { GlobalSearchComponent } from './global-search/global-search.component';
 })
 export class HeaderComponent {
   showGlobalSearchDialog = false;
+  isLoggedIn = input.required<boolean>();
 }

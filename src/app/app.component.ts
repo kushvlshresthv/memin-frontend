@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import {  RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { filter } from 'rxjs';
+import { HttpClient} from '@angular/common/http';
+import { BACKEND_URL } from '../global_constants';
+import { Response } from './response/response'
+import { AuthService } from './service/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -12,20 +15,9 @@ import { filter } from 'rxjs';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'memin-frontend';
+  isLoggedIn = false;
 
-  isLoginPage: boolean = false;
-
-  //don't render the sidebar if the current route is the login page
-  constructor(private router: Router) {
-    this.router.events
-      .pipe(
-        filter(
-          (event): event is NavigationEnd => event instanceof NavigationEnd
-        )
-      )
-      .subscribe((event: NavigationEnd) => {
-        this.isLoginPage = event.urlAfterRedirects === '/login';
-      });
+  constructor(private authService: AuthService) {
+    this.authService.loggedIn$.subscribe(value=> this.isLoggedIn = value)
   }
 }

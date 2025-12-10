@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { ErrorComponent } from './error/error.component';
 import { HomeComponent } from './home/home.component';
-import { committeeRouteGuard, isAuthenticated, meetingRouteGuard, memberRouteGuard } from './app.guards';
+import { committeeRouteGuard, isAuthenticated, isNotAuthenticated, meetingRouteGuard, memberRouteGuard } from './app.guards';
 import { CommitteeSummariesComponent } from './home/committee-summaries/committee-summaries.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { CreateCommitteeComponent } from './home/create-committee/create-committee.component';
@@ -14,7 +14,6 @@ import { CreateMeetingComponent } from './home/create-meeting/create-meeting.com
 import { EditCommitteeComponent } from './committee-details/edit-committee/edit-committee.component';
 import { MemberSummariesComponent } from './home/member-summaries/member-summaries.component';
 import { ViewArchivesComponent } from './home/view-archives/view-archives.component';
-import { CommitteeSummaryComponent } from './home/committee-summaries/committee-summary/committee-summary.component';
 import { CommitteeExtendedSummaryComponent } from './committee-details/committee-extended-summary/committee-extended-summary.component';
 import { EditMemberComponent } from './home/member-summaries/edit-member/edit-member.component';
 import { EditMeetingComponent } from './committee-details/committee-overview/meeting-summaries/edit-meeting/edit-meeting.component';
@@ -28,6 +27,7 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+    canMatch: [isNotAuthenticated],
   },
 
   {

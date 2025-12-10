@@ -31,6 +31,41 @@ export function isAuthenticated(
     );
 }
 
+
+export function isNotAuthenticated(
+  route: Route,
+  segment: UrlSegment[],
+): Observable<Boolean | UrlTree> {
+  const httpClient = inject(HttpClient);
+  const router = inject(Router);
+
+  return httpClient
+    .get<Response<Object>>(BACKEND_URL + '/isAuthenticated', {
+      withCredentials: true,
+    })
+    // .subscribe({
+    //   next: (response) => {
+    // 	return of(router.parseUrl('/home/my-committees'));
+    //   },
+    //   error: (error) => {
+    // 	return of(true);
+    //   },
+    // })
+    .pipe(
+      map((response) => {
+	console.log(response?.message);
+        if (response?.message == 'true') {
+          return router.parseUrl('/home/my-committees');
+        } else {
+	  return true;
+	}
+      }),
+      catchError((error: HttpErrorResponse) => {
+	return of(true);
+      }),
+    );
+}
+
 export const committeeRouteGuard: CanActivateFn= (route:ActivatedRouteSnapshot, state: RouterStateSnapshot)=> {
   const router = inject(Router);
   const committeeId = route.queryParams['committeeId'];

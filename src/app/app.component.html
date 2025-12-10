@@ -1,9 +1,9 @@
-<app-header></app-header>
+<app-header [isLoggedIn]="isLoggedIn"></app-header>
 <div class="total-screen">
-  @if(!isLoginPage) {
+  @if(isLoggedIn) {
     <app-sidebar></app-sidebar>
   }
-  <div class="main-content" [class.login-page]="isLoginPage">
+  <div class="main-content" [class.login-page]="!isLoggedIn">
     <router-outlet></router-outlet>
   </div>
 </div>

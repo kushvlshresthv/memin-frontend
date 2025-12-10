@@ -10,6 +10,7 @@ import { Response } from '../response/response';
 import { BACKEND_URL } from '../../global_constants';
 import { validateUsernameFormat } from './login.validators';
 import { Router } from '@angular/router';
+import { AuthService } from '../service/auth.service';
 
 
 @Component({
@@ -20,9 +21,10 @@ import { Router } from '@angular/router';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit {
-  router = inject(Router);
-  httpClient = inject(HttpClient);
-  subscription!: Subscription;
+
+  constructor(private authService: AuthService, private httpClient: HttpClient, private router: Router) {
+    
+  }
 
 
   formData = new FormGroup({
@@ -44,32 +46,6 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     const authenticationDetails = `${this.username.value}:${this.password.value}`;
-    const encodedAuthenticationDetails = btoa(authenticationDetails);
-
-    const headers = new HttpHeaders({
-      Authorization: `Basic ${encodedAuthenticationDetails}`,
-    });
-
-    this.subscription = this.httpClient
-      .get<Response<Object>>(BACKEND_URL + '/api/login', {
-        headers: headers,
-        withCredentials: true,
-      })
-      .subscribe({
-        next: (response) => {
-          console.log(response.message);
-          this.router.navigateByUrl('/home/my-committees');
-        },
-        error: (error) => {
-          console.log(error.error.message);
-          this.router.navigateByUrl('/login');
-        },
-      });
-  }
-
-
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.authService.login(authenticationDetails);
   }
 }
