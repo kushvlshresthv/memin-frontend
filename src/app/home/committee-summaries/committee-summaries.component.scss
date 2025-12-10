@@ -11,7 +11,7 @@
   display: grid;
   grid-template-columns: repeat(
     auto-fit,
-    minmax(310px, 1fr)
+    minmax(270px, 1fr)
   ); //305px because it is the minimum to get 3 cards when full screen
   gap: 20px;
   scrollbar-gutter: stable;

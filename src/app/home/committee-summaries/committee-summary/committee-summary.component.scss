@@ -57,7 +57,7 @@
   bottom: 4px;
 
   .menu-btn {
-  cursor: pointer;
+    cursor: pointer;
     background: colors.$color-background-main;
     color: white;
     font-size: 20px;
@@ -103,9 +103,8 @@
     font-weight: constants.$font-weight-normal;
   }
 
-
   .menu-option:hover {
-      color: white;
+    color: white;
   }
 }
 
@@ -131,9 +130,15 @@
   }
 }
 
+.info-pair {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .info-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 20px;
 }
 

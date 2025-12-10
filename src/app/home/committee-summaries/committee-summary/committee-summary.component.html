@@ -33,20 +33,22 @@
     </div>
 
     <div class="info-grid">
-      <div class="info-item">
-        <span class="label">Members</span>
-        <span class="value">{{ committeeSummary.numberOfMembers }}</span>
-      </div>
+      <div class="info-pair">
+        <div class="info-item">
+          <span class="label">Members</span>
+          <span class="value">{{ committeeSummary.numberOfMembers }}</span>
+        </div>
 
-      <div class="info-item">
-        <span class="label">No. of Meetings</span>
-        <span class="value"
-          >{{ committeeSummary.numberOfMeetings }}
-          @if (committeeSummary.maxNoOfMeetings) {
-            /
-            {{ committeeSummary.maxNoOfMeetings }}
-          }
-        </span>
+        <div class="info-item">
+          <span class="label">Meetings</span>
+          <span class="value"
+            >{{ committeeSummary.numberOfMeetings }}
+            @if (committeeSummary.maxNoOfMeetings) {
+              /
+              {{ committeeSummary.maxNoOfMeetings }}
+            }
+          </span>
+        </div>
       </div>
 
       <div class="info-item">
