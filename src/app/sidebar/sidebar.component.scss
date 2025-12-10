@@ -55,7 +55,7 @@
   }
 
   .icon-selected * {
-    stroke: #9acd32;
+      stroke: colors.$text-select-highlight;
   }
 
   &:hover {
@@ -85,7 +85,7 @@
 
 .selected {
   background: colors.$color-background-input;
-  color: yellowgreen;
+  color: colors.$text-select-highlight;
 }
 
 ///////////////////////////////////////////////

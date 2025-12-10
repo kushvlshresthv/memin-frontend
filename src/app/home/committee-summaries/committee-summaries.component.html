@@ -1,15 +1,25 @@
-<div class="heading">Your Active Committees</div>
+<div class="header-container">
+  <div class="heading">Active Committees</div>
+  <select
+    class="sort-dropdown"
+    (change)="onSortChange($event)"
+    [(ngModel)]="sortBy"
+  >
+    <option value="createdDate">Sort by Date</option>
+    <option value="title">Sort by Title</option>
+  </select>
+</div>
 @if (hasCommitteesLoaded) {
-  <div class="summaryCards">
-    @for (summary of committeeSummaries; track summary.id) {
-      <app-committee-summary
-        [committeeSummary]="summary"
-        class="summaryCard"
-        routerLink="/committee-details/overview"
-        [queryParams]="{ committeeId: summary.id }"
-      ></app-committee-summary>
-    } @empty {
-      <p>There isn't any committee available yet, create a new one please</p>
-    }
-  </div>
+<div class="summaryCards">
+  @for (summary of committeeSummaries; track summary.id) {
+  <app-committee-summary
+    [committeeSummary]="summary"
+    class="summaryCard"
+    routerLink="/committee-details/overview"
+    [queryParams]="{ committeeId: summary.id }"
+  ></app-committee-summary>
+  } @empty {
+  <p>There isn't any committee available yet, create a new one please</p>
+  }
+</div>
 }
