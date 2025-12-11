@@ -51,7 +51,6 @@ export class CommitteeFormComponent implements OnInit {
 
   //for role dropdowns
   showDropdown = false;
-  // memberIdForWhomDropDownIsSelected = -1;
   dropdownTop = 0;
   dropdownLeft = 0;
 
@@ -67,8 +66,6 @@ export class CommitteeFormComponent implements OnInit {
     this.dropdownTop = rect.bottom + 4;
     this.dropdownLeft = rect.left;
     this.memberForWhomRoleDropdownIsShown = targetMember;
-    console.log('assigning');
-    console.log(this.memberForWhomRoleDropdownIsShown);
     this.showDropdown = true;
   }
 

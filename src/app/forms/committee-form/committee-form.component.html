@@ -37,87 +37,90 @@
           formControlName="searchBarInput"
           placeholder="Search members..."
         />
+      </div>
 
-        <!-- Selected Members Section -->
-        @if (selectedMembersWithRoles.length > 0) {
-          <div class="selected-members-section">
-            <h3 class="section-title">Selected Members</h3>
-            <div
-              class="selected-members-list"
-              cdkDropList
-              (cdkDropListDropped)="drop($event)"
-            >
-              @for (
-                selectedMemberWithRole of selectedMembersWithRoles;
-                track selectedMemberWithRole.member.memberId
-              ) {
-                @let selectedMember = selectedMemberWithRole.member;
-                <div class="selected-member-item" cdkDrag>
-                  <div *cdkDragPlaceholder class="custom-placeholder"></div>
-                  <div class="member-info">
-                    <span class="drag-handle" cdkDragHandle>☰</span>
-                    <span class="selected-name">
-                      {{
-                        selectedMember.firstName + " " + selectedMember.lastName
-                      }}
-                    </span>
-                  </div>
-
-                  <!-- the position for the options for custom-topdown is calculated when the <input> field is focused because the .dropdown-options is fixed so that is it no hidden when it overflows the selected member container  -->
-                  <div class="custom-dropdown">
-                    <input
-                      type="text"
-                      class="form-input"
-                      [(ngModel)]="selectedMemberWithRole.role"
-                      [ngModelOptions]="{ standalone: true }"
-                      placeholder="Add"
-                      (focus)="
-                        showCustomDropdownForRoleSelection(
-                          $event,
-                          selectedMember
-                        )
-                      "
-                      (blur)="onRoleAssign($any($event.target).value)"
-                      (keydown.enter)="onRoleAssign($any($event.target).value)"
-                      (input)="showDropdown = false"
-                      autocomplete="off"
-                      spellcheck="false"
-                    />
-
-                    @if (showDropdown) {
-                      <div
-                        class="dropdown-options"
-                        [style.top.px]="dropdownTop"
-                        [style.left.px]="dropdownLeft"
-                      >
-                        <div
-                          class="dropdown-option"
-                          (mousedown)="onRoleAssign('Member')"
-                          (click)="showDropdown = false"
-                        >
-                          Member
-                        </div>
-                        <div
-                          (mousedown)="onRoleAssign('Treasurer')"
-                          class="dropdown-option"
-                          (click)="showDropdown = false"
-                        >
-                          Treasurer
-                        </div>
-                      </div>
-                    }
-                  </div>
+      <!-- Selected Members Section -->
+      @if (selectedMembersWithRoles.length > 0) {
+        <div class="selected-members-section">
+          <h3 class="section-title">Selected Members</h3>
+          <div
+            class="selected-members-list"
+            cdkDropList
+            (cdkDropListDropped)="drop($event)"
+          >
+            @for (
+              selectedMemberWithRole of selectedMembersWithRoles;
+              track selectedMemberWithRole.member.memberId
+            ) {
+              @let selectedMember = selectedMemberWithRole.member;
+              <div
+                class="selected-member-item"
+                cdkDrag
+                (dblclick)="onRemoveSelectedInvitee(selectedMember)"
+              >
+                <div *cdkDragPlaceholder class="custom-placeholder"></div>
+                <div class="member-info">
+                  <span class="drag-handle" cdkDragHandle>☰</span>
+                  <span class="selected-name">
+                    {{
+                      selectedMember.firstName + " " + selectedMember.lastName
+                    }}
+                  </span>
                 </div>
-              }
-            </div>
-          </div>
-        }
 
-        <!-- Unselected Members Section -->
-        @if (displayedMembers.length > 0) {
-          <div class="unselected-members-section">
-            <h3 class="section-title">Unselected Members</h3>
+                <!-- the position for the options for custom-topdown is calculated when the <input> field is focused because the .dropdown-options is fixed so that is it no hidden when it overflows the selected member container  -->
+                <div class="custom-dropdown">
+                  <input
+                    type="text"
+                    class="form-input"
+                    [(ngModel)]="selectedMemberWithRole.role"
+                    [ngModelOptions]="{ standalone: true }"
+                    placeholder="Add"
+                    (focus)="
+                      showCustomDropdownForRoleSelection($event, selectedMember)
+                    "
+                    (blur)="onRoleAssign($any($event.target).value)"
+                    (keydown.enter)="onRoleAssign($any($event.target).value)"
+                    (input)="showDropdown = false"
+                    autocomplete="off"
+                    spellcheck="false"
+                  />
+                </div>
+              </div>
+            }
           </div>
+        </div>
+      }
+      <!--both selected and unselected invitee uses the same drop down options 
+	  -->
+      @if (showDropdown) {
+        <div
+          class="dropdown-options"
+          [style.top.px]="dropdownTop"
+          [style.left.px]="dropdownLeft"
+        >
+          <div
+            class="dropdown-option"
+            (mousedown)="onRoleAssign('Member')"
+            (click)="showDropdown = false"
+          >
+            Member
+          </div>
+          <div
+            (mousedown)="onRoleAssign('Treasurer')"
+            class="dropdown-option"
+            (click)="showDropdown = false"
+          >
+            Treasurer
+          </div>
+        </div>
+      }
+
+      <!-- Unselected Members Section -->
+
+      <div class="unselected-members-section">
+        @if (displayedMembers.length > 0) {
+          <h3 class="section-title">Unselected Members</h3>
         }
 
         <div class="available-members">
