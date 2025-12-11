@@ -72,40 +72,6 @@
     background: colors.$color-card-hover;
     border-radius: 50%;
   }
-
-  .menu-options {
-    width: 100px;
-    position: absolute;
-    right: 0;
-    top: 33px;
-    font-size: constants.$font-large;
-    display: flex;
-    flex-direction: column;
-    padding: 10px 12px;
-    background: colors.$color-background-main;
-    border-radius: 4px;
-    gap: 20px;
-    opacity: 1;
-    visibility: visible;
-    transition:
-      opacity 0.2s ease-in-out,
-      visibility 0.2s ease-in-out;
-  }
-
-  .menu-options.hidden {
-    opacity: 0;
-    visibility: hidden;
-  }
-
-  .menu-option {
-    text-align: left;
-    color: colors.$color-text-primary;
-    font-weight: constants.$font-weight-normal;
-  }
-
-  .menu-option:hover {
-    color: white;
-  }
 }
 
 .card-content {
@@ -160,4 +126,9 @@
     font-weight: 600;
     color: #dcddde;
   }
+}
+
+.hidden {
+  opacity: 0;
+  visibility: hidden;
 }

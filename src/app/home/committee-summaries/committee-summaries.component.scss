@@ -47,6 +47,40 @@
   margin-right: 20px;
 }
 
+.menu-options {
+  cursor: pointer;
+  position: fixed;
+  z-index: 9999;
+  width: 100px;
+  font-size: constants.$font-large;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 12px;
+  background: colors.$color-background-main;
+  border-radius: 4px;
+  gap: 20px;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 0.2s ease-in-out,
+    visibility 0.2s ease-in-out;
+
+  .hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .menu-option {
+    text-align: left;
+    color: colors.$color-text-primary;
+    font-weight: constants.$font-weight-normal;
+  }
+
+  .menu-option:hover {
+    color: white;
+  }
+}
+
 @media (max-width: 768px) {
   .summaryCards {
     margin-right: 0;
