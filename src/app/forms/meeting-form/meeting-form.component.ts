@@ -17,7 +17,7 @@ import {
   ReactiveFormsModule,
   FormsModule,
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import Fuse from 'fuse.js';
 import { Subscription, debounceTime, take } from 'rxjs';
 import { BACKEND_URL } from '../../../global_constants';
@@ -99,26 +99,12 @@ export class MeetingForm implements OnInit {
       nonNullable: true,
     });
 
+    //correctly format the incoming date and time
     if (this.isEditPage()) {
-      const heldDate = new Date(this.meetingFormData().heldDate);
-
-      this.heldDate = new FormControl(heldDate.toISOString().slice(0, 10), {
-        nonNullable: true,
-      });
-
-      //formatting time in HH:MM format incase there is no padding infront
-      const [h, m] = this.meetingFormData().heldTime;
-
-      // pad with leading zeros
-      const hour = String(h).padStart(2, '0');
-      const minute = String(m).padStart(2, '0');
-
-      // final ISO-ish time string for LocalTime
-      const timeString = `${hour}:${minute}:00`;
-
-      this.heldTime = new FormControl(timeString, {
-        nonNullable: true,
-      });
+      this.assignLoadedHeldDateAndTimeToFormControl(
+        this.meetingFormData().heldDate,
+        this.meetingFormData().heldTime,
+      );
     } else {
       this.heldDate = new FormControl('', {
         nonNullable: true,
@@ -143,39 +129,85 @@ export class MeetingForm implements OnInit {
       heldPlace: this.heldPlace,
     });
 
+    //INITIALIZING VARIABLES FOR THE LEFT PANEL
     this.possibleInvitees = this.meetingFormData().possibleInvitees;
     this.displayedPossibleInvitees = this.possibleInvitees;
     this.selectedInvitees = this.meetingFormData().selectedInvitees;
     this.hasInviteeDataLoaded = true;
 
+    //INITIALIZING RIGHT PANELS SELECT COMMITTEE DROPDOWN
     if (this.isEditPage()) {
       this.committeeSearch.setValue(this.meetingFormData().committeeName);
       this.committeeSearch.disable();
-    }
-
-    //load data for right panel if it isn't an edit page
-    if (!this.isEditPage()) {
-      this.httpClient
-        .get<
-          Response<{ committeeId: number; committeeName: string }[]>
-        >(BACKEND_URL + '/api/getMyActiveCommitteeNamesAndIds', { withCredentials: true })
-        .subscribe({
-          next: (response) => {
-            console.log(response.mainBody);
-            response.mainBody.forEach((committeeIdAndName) =>
-              this.committeeIdsAndNames.push({
-                committeeId: committeeIdAndName.committeeId,
-                committeeName: committeeIdAndName.committeeName,
-              }),
-            );
-            this.displayedCommitteeIdsAndNames = this.committeeIdsAndNames;
-            console.log(this.displayedCommitteeIdsAndNames);
-          },
-        });
+    } else {
+      //load data for right panel's select committee dropdown if it isn't an edit page
+      this.loadActiveCommitteeNamesAndIdsForDropdown();
     }
 
     this.setupObservableForInviteeSearchBarInputChange();
     this.setupObservableForCommitteeSearchBarInputChange();
+  }
+
+  assignLoadedHeldDateAndTimeToFormControl(
+    heldDate: string,
+    heldTime: number[],
+  ) {
+    const heldDateObj = new Date(heldDate);
+
+    this.heldDate = new FormControl(heldDateObj.toISOString().slice(0, 10), {
+      nonNullable: true,
+    });
+
+    //formatting time in HH:MM format incase there is no padding infront
+    const [h, m] = heldTime;
+
+    // pad with leading zeros
+    const hour = String(h).padStart(2, '0');
+    const minute = String(m).padStart(2, '0');
+
+    // final ISO-ish time string for LocalTime
+    const timeString = `${hour}:${minute}:00`;
+
+    this.heldTime = new FormControl(timeString, {
+      nonNullable: true,
+    });
+  }
+
+  loadActiveCommitteeNamesAndIdsForDropdown() {
+    this.httpClient
+      .get<
+        Response<{ committeeId: number; committeeName: string }[]>
+      >(BACKEND_URL + '/api/getMyActiveCommitteeNamesAndIds', { withCredentials: true })
+      .subscribe({
+        next: (response) => {
+          console.log(response.mainBody);
+          response.mainBody.forEach((committeeIdAndName) =>
+            this.committeeIdsAndNames.push({
+              committeeId: committeeIdAndName.committeeId,
+              committeeName: committeeIdAndName.committeeName,
+            }),
+          );
+          this.checkIfCommitteeIdAvailableInRoute();
+          this.displayedCommitteeIdsAndNames = this.committeeIdsAndNames;
+          console.log(this.displayedCommitteeIdsAndNames);
+        },
+      });
+  }
+
+  checkIfCommitteeIdAvailableInRoute() {
+    //if not edit page, first check the route, if there is a committeeId, set that committeeId(when coming from /home/committee-details -> menu option)
+    const committeeId =
+      this.activatedRoute.snapshot.queryParamMap.get('committeeId');
+    if (committeeId) {
+      const selectedCommitteeIdAndName = this.committeeIdsAndNames.find(
+        (committeeIdAndName) =>
+          committeeIdAndName.committeeId == Number(committeeId),
+      );
+      if (selectedCommitteeIdAndName) {
+        this.committeeSearch.setValue(selectedCommitteeIdAndName.committeeName);
+        this.loadPossibleInvitees(selectedCommitteeIdAndName.committeeId);
+      }
+    }
   }
 
   //////////////////////////////////////////////
@@ -193,6 +225,7 @@ export class MeetingForm implements OnInit {
   constructor(
     private router: Router,
     private httpClient: HttpClient,
+    private activatedRoute: ActivatedRoute,
   ) {
     //open dialog
     effect(() => {
@@ -250,7 +283,7 @@ export class MeetingForm implements OnInit {
 
   showDropdown = false;
 
-  selectedCommitteeId!: number;
+  selectedCommitteeId!: number; //required to get the committeeId during request submission because the CommitteeSearch FormControl only stores the committeeName
   committeeSearchSubscription!: Subscription;
   committeeIdsAndNames: { committeeId: number; committeeName: string }[] = [];
   displayedCommitteeIdsAndNames: {
@@ -317,13 +350,15 @@ export class MeetingForm implements OnInit {
     this.selectedInvitees = [];
 
     this.hasInviteeDataLoaded = false;
+    this.loadPossibleInvitees(committeeIdAndName.committeeId);
+  }
 
-    //load the possible invitees
+  loadPossibleInvitees(committeeId: number) {
     this.httpClient
       .get<Response<MemberSearchResult[]>>(
         BACKEND_URL + '/api/getPossibleInvitees',
         {
-          params: new HttpParams().set('committeeId', this.selectedCommitteeId),
+          params: new HttpParams().set('committeeId', committeeId),
           withCredentials: true,
         },
       )

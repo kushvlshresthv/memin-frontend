@@ -107,6 +107,15 @@ export class CommitteeSummariesComponent {
     });
   }
 
+  onNewMeetingClick(event: Event) {
+    event?.stopPropagation();
+    this.router.navigate(['./home/create-meeting'], {
+      queryParams: {
+        committeeId: this.committeeId,
+      },
+    })
+  }
+
   onOverviewOptionClick(event: Event) {
     event.stopPropagation();
     this.router.navigate(['./committee-details/overview'], {
