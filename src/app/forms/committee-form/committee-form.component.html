@@ -23,8 +23,16 @@
     <div class="panel-header">
       <h2>Select Members</h2>
       <p class="panel-subtitle">Search and assign roles to committee members</p>
-      <button class="btn btn-primary save-button" (click)="onSubmit($event)">
-        Save
+      <button
+        class="btn btn-primary save-button"
+        (click)="onSubmit($event)"
+        [disabled]="isFormSaving"
+      >
+        @if (isFormSaving) {
+          Saving
+        } @else {
+          Save
+        }
       </button>
     </div>
 

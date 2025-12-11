@@ -145,11 +145,12 @@ export class CommitteeFormComponent implements OnInit {
       this.committeeFormData().maxNoOfMeetings,
       { nonNullable: true },
     );
-    this.minuteLanguage = new FormControl(
+    ((this.minuteLanguage = new FormControl(
       this.committeeFormData().minuteLanguage,
-    ), {
-      validators: [Validators.required],
-    };
+    )),
+      {
+        validators: [Validators.required],
+      });
 
     //set unselected members and display them as well
     this.unselectedMembers = this.committeeFormData().unselectedMembers;
@@ -368,11 +369,15 @@ export class CommitteeFormComponent implements OnInit {
     this.currentCoordinator = newCoordinator;
   }
 
-
   showAllFormErrors = false;
+  isFormSaving = false;
+
   onSubmit($event: Event) {
     $event.preventDefault();
-    if(this.committeeFormGroup?.invalid) {
+    if (
+      this.committeeFormGroup?.invalid ||
+      this.selectedMembersWithRoles.length < 1
+    ) {
       this.showAllFormErrors = true;
       return;
     }
@@ -391,13 +396,11 @@ export class CommitteeFormComponent implements OnInit {
       memberIdAndRole.memberId = memberWithRole.member.memberId;
       memberIdAndRole.role = memberWithRole.role;
       committeeCreationDto.members.push(memberIdAndRole);
-
       console.log(memberWithRole.member.firstName);
     });
-
     console.log('emitting event');
     console.log(committeeCreationDto);
-
+    this.isFormSaving = true;
     this.formSaveEvent.emit(committeeCreationDto);
   }
 
