@@ -25,7 +25,11 @@
       <p class="panel-subtitle">Search invitees for the meeting</p>
 
       <button class="btn btn-primary save-button" (click)="onSubmit($event)">
-        Save
+        @if (isFormSaving) {
+          Saving
+        } @else {
+          Save
+        }
       </button>
     </div>
     <!-- <app-select-invitee-for-meeting></app-select-invitee-for-meeting> -->
@@ -145,6 +149,11 @@
             (blur)="showDropdown = false"
             autocomplete="off"
           />
+          @if (showAllFormErrors && selectedCommitteeId == undefined) {
+            <p class="field-error" style="margin-top: 10px">
+              (Select a valid committee)
+            </p>
+          }
           @if (showDropdown && displayedCommitteeIdsAndNames.length > 0) {
             <div class="dropdown-options">
               @for (

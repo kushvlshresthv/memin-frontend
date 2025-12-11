@@ -387,10 +387,11 @@ export class MeetingForm implements OnInit {
   }
 
   showAllFormErrors = false;
+  isFormSaving = false;
 
   onSubmit($event: Event) {
     $event.preventDefault();
-    if(this.meetingFormGroup.invalid || this.decisions.length < 1 ) {
+    if(this.meetingFormGroup.invalid || this.decisions.length < 1 || this.selectedCommitteeId == undefined) {
       this.showAllFormErrors = true;
       return;
     }
@@ -409,7 +410,10 @@ export class MeetingForm implements OnInit {
       (invitee) => invitee.memberId,
     );
 
+    this.isFormSaving = true;
     this.formSaveEvent.emit(requestBody);
+
+    //TODO: should be done in the create meeting or edit meeting as request might fail as well 
     localStorage.removeItem(this.FORM_NAME);
   }
 
