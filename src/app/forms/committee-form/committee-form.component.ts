@@ -7,7 +7,12 @@ import {
   output,
   viewChild,
 } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import {
   MemberSearchResult,
   CommitteeCreationDto,
@@ -26,34 +31,45 @@ import {
 @Component({
   selector: 'app-committee-form',
   standalone: true,
-  imports: [ReactiveFormsModule, SafeCloseDialogCustom, DragDropModule],
+  imports: [
+    ReactiveFormsModule,
+    SafeCloseDialogCustom,
+    DragDropModule,
+    FormsModule,
+  ],
   templateUrl: './committee-form.component.html',
   styleUrl: './committee-form.component.scss',
 })
 export class CommitteeFormComponent implements OnInit {
   diag = viewChild<ElementRef<HTMLDialogElement>>('committee_form_dialog');
 
-
   ///////////////////////////////////
   //for multipart form in mobile view, this variable is not used in desktop view
   isCommitteeDetailsPart = true;
-
-
-
 
   ///////////////////////////////////
 
   //for role dropdowns
   showDropdown = false;
-  memberIdForWhomDropDownIsSelected = -1;
+  // memberIdForWhomDropDownIsSelected = -1;
   dropdownTop = 0;
   dropdownLeft = 0;
 
-  onFocus(event: FocusEvent) {
+  //member for whom the dropdown is rendered should be stored for later use in case a drop down option is selected(as same drop down is rendered for each member)
+  memberForWhomRoleDropdownIsShown: MemberSearchResult | undefined;
+
+  showCustomDropdownForRoleSelection(
+    event: FocusEvent,
+    targetMember: MemberSearchResult,
+  ) {
     const input = event.target as HTMLElement;
     const rect = input.getBoundingClientRect();
     this.dropdownTop = rect.bottom + 4;
     this.dropdownLeft = rect.left;
+    this.memberForWhomRoleDropdownIsShown = targetMember;
+    console.log('assigning');
+    console.log(this.memberForWhomRoleDropdownIsShown);
+    this.showDropdown = true;
   }
 
   ////////////////////////////////////
@@ -64,21 +80,10 @@ export class CommitteeFormComponent implements OnInit {
     moveItemInArray(
       this.selectedMembersWithRoles,
       event.previousIndex,
-      event.currentIndex
+      event.currentIndex,
     );
     console.log('drop executed');
     console.log(this.selectedMembersWithRoles);
-  }
-
-  initializeFormControls() {
-    this.selectedMembersWithRoles.forEach((item) => {
-      const control = this.memberAndRoleFormControlMap.get(
-        item.member.memberId
-      );
-      if (control) {
-        control.setValue(item.role, { emitEvent: false });
-      }
-    });
   }
 
   //////////////////////////////////////////
@@ -99,9 +104,7 @@ export class CommitteeFormComponent implements OnInit {
     role: string;
   }[] = [];
 
-
-
-  //FORM CONTROLS: 
+  //FORM CONTROLS:
 
   //setting aliases for this.committeeFormGroup().controls
   name!: FormControl<string>;
@@ -121,11 +124,9 @@ export class CommitteeFormComponent implements OnInit {
   }>;
 
   //formControls for left panel:
-  memberAndRoleFormControlMap = new Map<number, FormControl<string>>();
   selectMemberFormGroup = new FormGroup({
     searchBarInput: new FormControl(''),
   });
-
 
   //initialize form-controls for both right and left panel
   ngOnInit(): void {
@@ -142,23 +143,15 @@ export class CommitteeFormComponent implements OnInit {
     });
     this.maxNoOfMeetings = new FormControl(
       this.committeeFormData().maxNoOfMeetings,
-      { nonNullable: true }
+      { nonNullable: true },
     );
     this.minuteLanguage = new FormControl(
-      this.committeeFormData().minuteLanguage
+      this.committeeFormData().minuteLanguage,
     );
 
     //set unselected members and display them as well
     this.unselectedMembers = this.committeeFormData().unselectedMembers;
     this.displayedMembers = this.unselectedMembers;
-
-    //add form controls for each member
-    this.unselectedMembers.forEach((member) => {
-      this.memberAndRoleFormControlMap.set(
-        member.memberId,
-        new FormControl('', { nonNullable: true })
-      );
-    });
 
     if (this.isEditPage()) {
       //if edit page, there may be already some selected members
@@ -166,14 +159,9 @@ export class CommitteeFormComponent implements OnInit {
         (memberWithRole) => {
           this.addMemberToSelectedMembersWithRolesAndSync(
             memberWithRole.member,
-            memberWithRole.role
+            memberWithRole.role,
           );
-
-          //for those selected members, initialize the RoleFormControl with the roles of selected members as well
-          this.memberAndRoleFormControlMap
-            .get(memberWithRole.member.memberId)!
-            .setValue(memberWithRole.role);
-        }
+        },
       );
     }
 
@@ -185,7 +173,7 @@ export class CommitteeFormComponent implements OnInit {
     this.currentCoordinator = this.committeeFormData().coordinator;
     this.removeMemberFromDisplayedMembers(this.committeeFormData().coordinator);
     this.removeMemberFromUnselectedMembers(
-      this.committeeFormData().coordinator
+      this.committeeFormData().coordinator,
     );
 
     //finally initialize the form group for right panel
@@ -204,7 +192,6 @@ export class CommitteeFormComponent implements OnInit {
     }
   }
 
-
   //when the search bar input changes filter the displayed members after a debounce time,
   setupObservableForSearchBarInputChange() {
     this.searchInputFieldSubscription =
@@ -216,7 +203,7 @@ export class CommitteeFormComponent implements OnInit {
             this.displayedMembers = this.unselectedMembers;
           } else {
             this.displayedMembers = this.fuzzySearchUnselectedMembers(
-              value as string
+              value as string,
             );
           }
         });
@@ -235,7 +222,7 @@ export class CommitteeFormComponent implements OnInit {
 
   private memberSortingFunction = (
     member1: MemberSearchResult,
-    member2: MemberSearchResult
+    member2: MemberSearchResult,
   ) => member1.firstName.localeCompare(member2.firstName);
 
   sortUnselected() {
@@ -247,19 +234,10 @@ export class CommitteeFormComponent implements OnInit {
     console.log('DEBUG: select-member-for-committee component destroyed');
   }
 
-  onRoleSelect(selectedMember: MemberSearchResult) {
-    const role = this.memberAndRoleFormControlMap.get(
-      selectedMember.memberId
-    )!.value;
-    if (role != '') {
-      this.addMemberToSelectedMembersWithRolesAndSync(selectedMember, role);
-    }
-  }
-
   //by sync we mean to remove the selected member from unselected member and displayed member array
   addMemberToSelectedMembersWithRolesAndSync(
     selectedMember: MemberSearchResult,
-    role: string
+    role: string,
   ) {
     this.removeMemberFromUnselectedMembers(selectedMember);
     this.removeMemberFromDisplayedMembers(selectedMember);
@@ -271,43 +249,58 @@ export class CommitteeFormComponent implements OnInit {
 
   removeMemberFromUnselectedMembers(memberToRemove: MemberSearchResult) {
     this.unselectedMembers = this.unselectedMembers.filter(
-      (member) => member.memberId != memberToRemove.memberId
+      (member) => member.memberId != memberToRemove.memberId,
     );
   }
 
   removeMemberFromDisplayedMembers(memberToRemove: MemberSearchResult) {
     this.displayedMembers = this.displayedMembers.filter(
-      (member) => member.memberId != memberToRemove.memberId
+      (member) => member.memberId != memberToRemove.memberId,
     );
   }
 
   removeMemberFromSelectedMembersWithRoles(memberToRemove: MemberSearchResult) {
     this.selectedMembersWithRoles = this.selectedMembersWithRoles.filter(
       (memberWithRole) =>
-        memberWithRole.member.memberId != memberToRemove.memberId
+        memberWithRole.member.memberId != memberToRemove.memberId,
     );
   }
 
-  onRoleChange(targetMember: MemberSearchResult): void {
-    if (
-      this.memberAndRoleFormControlMap.get(targetMember.memberId)!.value ===
-      'Remove'
-    ) {
-      this.unselectedMembers.push(targetMember);
-      this.displayedMembers.push(targetMember);
-      this.removeMemberFromSelectedMembersWithRoles(targetMember);
-      this.memberAndRoleFormControlMap
-        .get(targetMember.memberId)!
-        .setValue('Add');
-    } else {
-      const memberToBeUpdatedWithRole = this.selectedMembersWithRoles.find(
-        (memberWithRole) =>
-          memberWithRole.member.memberId == targetMember.memberId
-      );
-      memberToBeUpdatedWithRole!.role = this.memberAndRoleFormControlMap.get(
-        targetMember.memberId
-      )!.value;
+  onRoleAssign(role: string) {
+    /* there are two possibilities:
+       1. the member is already selected, this means, it is a role change
+       2. the member is not yet select, this means, it is a new selected
+    */
+
+    if (this.memberForWhomRoleDropdownIsShown == undefined || role == '') {
+      return;
     }
+
+    //check if the member is already selected
+    const memberToBeUpdatedWithRole = this.selectedMembersWithRoles.find(
+      (memberWithRole) =>
+        memberWithRole.member.memberId ==
+        this.memberForWhomRoleDropdownIsShown?.memberId,
+    );
+
+    if (memberToBeUpdatedWithRole) {
+      //change the role
+      memberToBeUpdatedWithRole!.role = role;
+    } else {
+      //add the member to the selected array with the selected/assigned role
+      this.addMemberToSelectedMembersWithRolesAndSync(
+        this.memberForWhomRoleDropdownIsShown,
+        role,
+      );
+    }
+    this.showDropdown = false;
+    this.memberForWhomRoleDropdownIsShown = undefined;
+  }
+
+  onRemoveSelectedInvitee(member: MemberSearchResult) {
+    this.unselectedMembers.push(member);
+    this.displayedMembers.push(member);
+    this.removeMemberFromSelectedMembersWithRoles(member);
   }
 
   restoreSelectedMembersFromLocalStorage(): void {
@@ -316,7 +309,7 @@ export class CommitteeFormComponent implements OnInit {
 
     //restore the selected members and remove them from the unselected list
     const savedSelectedMembers = localStorage.getItem(
-      'selectedMembersWithRole'
+      'selectedMembersWithRole',
     );
     if (savedSelectedMembers) {
       try {
@@ -330,10 +323,11 @@ export class CommitteeFormComponent implements OnInit {
         //2. restore the form control value for their role
         //3. remove them from the unselected members list and displayed members list
 
+        console.log(selectedMembersWithRoles);
         selectedMembersWithRoles.forEach((memberWithRole) => {
           this.addMemberToSelectedMembersWithRolesAndSync(
             memberWithRole.member,
-            memberWithRole.role
+            memberWithRole.role,
           );
         });
       } catch (err) {
@@ -347,7 +341,6 @@ export class CommitteeFormComponent implements OnInit {
 
   //outputs
   formSaveEvent = output<CommitteeCreationDto>();
-
 
   constructor() {
     effect(() => {
@@ -418,13 +411,13 @@ export class CommitteeFormComponent implements OnInit {
     (this.committeeFormGroup as any).removeControl('coordinator');
     localStorage.setItem(
       'createCommitteeForm',
-      JSON.stringify(this.committeeFormGroup.getRawValue())
+      JSON.stringify(this.committeeFormGroup.getRawValue()),
     );
 
     //save the selected members
     localStorage.setItem(
       'selectedMembersWithRole',
-      JSON.stringify(this.selectedMembersWithRoles)
+      JSON.stringify(this.selectedMembersWithRoles),
     );
   };
 
