@@ -12,6 +12,7 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import {
   MemberSearchResult,
@@ -130,9 +131,11 @@ export class CommitteeFormComponent implements OnInit {
     this.setupObservableForSearchBarInputChange();
 
     this.name = new FormControl(this.committeeFormData().name, {
+      validators: [Validators.required],
       nonNullable: true,
     });
     this.description = new FormControl(this.committeeFormData().description, {
+      validators: [Validators.required],
       nonNullable: true,
     });
     this.status = new FormControl(this.committeeFormData().status, {
@@ -144,7 +147,9 @@ export class CommitteeFormComponent implements OnInit {
     );
     this.minuteLanguage = new FormControl(
       this.committeeFormData().minuteLanguage,
-    );
+    ), {
+      validators: [Validators.required],
+    };
 
     //set unselected members and display them as well
     this.unselectedMembers = this.committeeFormData().unselectedMembers;
@@ -164,8 +169,10 @@ export class CommitteeFormComponent implements OnInit {
 
     //at last, add coordinator at last because coordinator has to be removed from the unselectedMembers
     this.coordinator = new FormControl(this.committeeFormData().coordinator, {
+      validators: [Validators.required],
       nonNullable: true,
     });
+
     //this needs to be set because onCoordinatorSelect() relies on this to restore when a new coordaintor is selected
     this.currentCoordinator = this.committeeFormData().coordinator;
     this.removeMemberFromDisplayedMembers(this.committeeFormData().coordinator);
@@ -361,8 +368,14 @@ export class CommitteeFormComponent implements OnInit {
     this.currentCoordinator = newCoordinator;
   }
 
+
+  showAllFormErrors = false;
   onSubmit($event: Event) {
     $event.preventDefault();
+    if(this.committeeFormGroup?.invalid) {
+      this.showAllFormErrors = true;
+      return;
+    }
 
     const committeeCreationDto = new CommitteeCreationDto();
     committeeCreationDto.name = this.name.value as string;
