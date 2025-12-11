@@ -294,8 +294,8 @@ dialog {
   justify-content: space-between;
   gap: 10px;
   .form-group {
-      min-width: 0;  //without this the form-group(title and held place) overflows in flex layout in mobile layout
-      width: 50%;
+    min-width: 0; //without this the form-group(title and held place) overflows in flex layout in mobile layout
+    width: 50%;
   }
 
   .plus-button {
@@ -344,39 +344,43 @@ dialog {
   display: none;
 }
 
+textarea:has(+ .field-error),
+input:has(+ .field-error),
+select:has(+ .field-error){
+  border: 1px solid colors.$color-text-error !important;
+}
+
 ////////////////////////////////////////////////////
 // MOBILE RESPONSIVE STYLES
 
 @media (max-width: 768px) {
-
   .invitee-selection-panel,
   .meeting-details-panel {
     display: none;
   }
 
   .main-dialog {
-      width: 90vw;
-      border-radius: 8px;
+    width: 90vw;
+    border-radius: 8px;
   }
 
   .activePartInMobileView {
-    min-width: 0;  //without this this flexitem expands to accomodate its content and hence its child (.actual-form) overflows dialog in width
+    min-width: 0; //without this this flexitem expands to accomodate its content and hence its child (.actual-form) overflows dialog in width
     min-height: 0;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
   }
 
-
   .panel-subtitle {
     display: none;
   }
 
   .actual-form {
-      min-width: 0;
-      flex-grow: 1;
-      padding-bottom: 20px;
-      overflow: auto;
+    min-width: 0;
+    flex-grow: 1;
+    padding-bottom: 20px;
+    overflow: auto;
   }
 
   .next-button,
@@ -391,7 +395,6 @@ dialog {
   }
 
   .plus-button {
-      padding: 2px 6px !important;
+    padding: 2px 6px !important;
   }
-
 }

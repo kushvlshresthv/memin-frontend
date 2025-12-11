@@ -52,7 +52,10 @@
                 selectedInvitee of selectedInvitees;
                 track selectedInvitee.memberId
               ) {
-                <div class="selected-invitee-item" (dblclick)="onSelectedInviteeRemoval(selectedInvitee)">
+                <div
+                  class="selected-invitee-item"
+                  (dblclick)="onSelectedInviteeRemoval(selectedInvitee)"
+                >
                   <div class="member-info">
                     <span class="selected-name">
                       {{
@@ -179,10 +182,12 @@
             placeholder="Enter meeting title"
             formControlName="title"
             class="form-input"
+            autocomplete="off"
+            spellcheck="false"
           />
-          @if (title.touched && title.dirty) {
+          @if ((title.touched && title.dirty) || showAllFormErrors) {
             @if (title.errors?.["required"]) {
-              <p class="field-error">Meeting title is required</p>
+              <p class="field-error">(Meeting title is required)</p>
             }
           }
         </div>
@@ -198,6 +203,12 @@
             autocomplete="off"
             formControlName="heldPlace"
           />
+
+          @if ((heldPlace.touched && heldPlace.dirty) || showAllFormErrors) {
+            @if (heldPlace.errors?.["required"]) {
+              <p class="field-error">(Meeting held place is required)</p>
+            }
+          }
         </div>
       </div>
 
@@ -211,6 +222,11 @@
             name="meetingHeldDate"
             formControlName="heldDate"
           />
+          @if ((heldDate.touched && heldPlace.dirty) || showAllFormErrors) {
+            @if (heldDate.errors?.["required"]) {
+              <p class="field-error">(Meeting held date is required)</p>
+            }
+          }
         </div>
 
         <div class="form-group">
@@ -223,6 +239,12 @@
             formControlName="heldTime"
             name="meetingHeldTime"
           />
+
+          @if ((heldTime.touched && heldPlace.dirty) || showAllFormErrors) {
+            @if (heldTime.errors?.["required"]) {
+              <p class="field-error">(Meeting held time is required)</p>
+            }
+          }
         </div>
       </div>
 
@@ -240,7 +262,7 @@
           @for (agenda of agendas; track agenda.agendaId; let $i = $index) {
             <div class="agenda-item">
               <textarea
-		#agendaInputFields
+                #agendaInputFields
                 [(ngModel)]="agenda.agenda"
                 [ngModelOptions]="{ standalone: true }"
                 placeholder="Double click to delete"
@@ -263,6 +285,9 @@
             +
           </button>
         </div>
+        @if (showAllFormErrors && decisions.length < 1) {
+          <p class="field-error">(Add at least one decision)</p>
+        }
         <div class="decisions-list">
           @for (
             decision of decisions;
@@ -271,7 +296,7 @@
           ) {
             <div class="decision-item">
               <textarea
-		#decisionInputFields
+                #decisionInputFields
                 [(ngModel)]="decision.decision"
                 [ngModelOptions]="{ standalone: true }"
                 placeholder="Double click to delete"

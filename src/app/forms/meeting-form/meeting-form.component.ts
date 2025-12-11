@@ -16,6 +16,7 @@ import {
   FormControl,
   ReactiveFormsModule,
   FormsModule,
+  Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import Fuse from 'fuse.js';
@@ -96,6 +97,7 @@ export class MeetingForm implements OnInit {
     );
 
     this.title = new FormControl(this.meetingFormData().title, {
+      validators:[Validators.required],
       nonNullable: true,
     });
 
@@ -107,15 +109,18 @@ export class MeetingForm implements OnInit {
       );
     } else {
       this.heldDate = new FormControl('', {
+	validators: [Validators.required],
         nonNullable: true,
       });
 
       this.heldTime = new FormControl('', {
         nonNullable: true,
+	validators: [Validators.required],
       });
     }
 
     this.heldPlace = new FormControl(this.meetingFormData().heldPlace, {
+      validators: [Validators.required],
       nonNullable: true,
     });
 
@@ -153,8 +158,8 @@ export class MeetingForm implements OnInit {
     heldTime: number[],
   ) {
     const heldDateObj = new Date(heldDate);
-
     this.heldDate = new FormControl(heldDateObj.toISOString().slice(0, 10), {
+      validators: [Validators.required],
       nonNullable: true,
     });
 
@@ -169,6 +174,7 @@ export class MeetingForm implements OnInit {
     const timeString = `${hour}:${minute}:00`;
 
     this.heldTime = new FormControl(timeString, {
+      validators: [Validators.required],
       nonNullable: true,
     });
   }
@@ -380,8 +386,14 @@ export class MeetingForm implements OnInit {
     this.router.navigate(['/home/create-committee']);
   }
 
+  showAllFormErrors = false;
+
   onSubmit($event: Event) {
     $event.preventDefault();
+    if(this.meetingFormGroup.invalid || this.decisions.length < 1 ) {
+      this.showAllFormErrors = true;
+      return;
+    }
     const requestBody = new MeetingCreationDto();
     requestBody.committeeId = this.selectedCommitteeId;
     requestBody.title = this.title.value;
