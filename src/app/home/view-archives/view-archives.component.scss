@@ -9,13 +9,11 @@
 
 .summaryCards {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(270px, 1fr)
-  ); //305px because it is the minimum to get 3 cards when full screen
-  margin-right: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(270px, max-content)); //max-content prevents the cards to grow beyond its natural siz
+  justify-content: start;
   gap: 20px;
   scrollbar-gutter: stable;
+  margin-right: 20px;
 }
 
 
