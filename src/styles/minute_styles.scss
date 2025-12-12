@@ -99,3 +99,16 @@ ol {
 .decision-lists {
   margin-left: 13px;
 }
+
+
+@media (max-width: 768px) {
+
+#a4-box {
+    margin: 0;
+    padding: 25px;
+    font-size: 7.5px;
+    width: 90vw !important;
+    min-height: calc(90vw * 1.414) !important; /* maintain A4 aspect ratio */
+    overflow-y: auto; /* scroll if content is too long */
+  }
+}

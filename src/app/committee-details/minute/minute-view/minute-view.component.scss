@@ -88,13 +88,11 @@
 
   //if we keep display: flex outside, the dialog content will be shown even when the dialog is closed
 
-
   &::backdrop {
     background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(4px);
   }
 }
-
 
 .panel-header {
   padding: 0;
@@ -160,3 +158,26 @@
   opacity: 0.5;
 }
 
+
+
+@media (max-width: 768px) {
+  .minute {
+    width: 90vw !important;
+    height: calc(90vw * 1.414) !important; /* maintain A4 aspect ratio */
+    min-height: 95vh; /* avoid overflowing screen */
+    overflow-y: auto; /* scroll if content is too long */
+  }
+
+  .menu-btn-container {
+      padding-bottom: 0px;
+      position: fixed;
+      top: 80px;
+      right: 30px;
+      font-size: 5px;
+  }
+  .minute-options {
+      position: fixed;
+      top: 110px;
+      right: 30px;
+  }
+}
