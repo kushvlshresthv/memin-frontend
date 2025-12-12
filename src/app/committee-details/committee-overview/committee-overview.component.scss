@@ -156,5 +156,32 @@ app-member-summaries {
   }
 }
 
+app-meeting-summaries {
+    width: 100%;
+}
+
+@media(max-width: 768px) {
+    app-member-summaries {
+	display: none;
+    } 
+
+    .details-and-calendar {
+	margin: 0;
+	padding: 0;
+    }
+
+    .committee-details {
+    }
+
+    .committee-statistics {
+	display: none;
+    }
+
+    app-calendar {
+	display: none;
+    }
+}
+
+
 
 
