@@ -290,7 +290,7 @@ export class MeetingForm implements OnInit {
 
   showDropdown = false;
 
-  selectedCommitteeId!: number; //required to get the committeeId during request submission because the CommitteeSearch FormControl only stores the committeeName
+  selectedCommitteeId!: number ; //required to get the committeeId during request submission because the CommitteeSearch FormControl only stores the committeeName
   committeeSearchSubscription!: Subscription;
   committeeIdsAndNames: { committeeId: number; committeeName: string }[] = [];
   displayedCommitteeIdsAndNames: {
@@ -313,7 +313,7 @@ export class MeetingForm implements OnInit {
   }
 
   //if a committee is already selected, and again 'Select Committee' is clicked, all possible committees are displayed
-  onFocus() {
+  onCommitteeSearchBarFocus() {
     this.displayedCommitteeIdsAndNames = this.committeeIdsAndNames;
   }
 

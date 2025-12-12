@@ -32,7 +32,6 @@
         }
       </button>
     </div>
-    <!-- <app-select-invitee-for-meeting></app-select-invitee-for-meeting> -->
 
     <div
       class="invitee-selection-container"
@@ -145,7 +144,7 @@
             [formControl]="committeeSearch"
             placeholder="Click here to see all committees"
             (focus)="showDropdown = true"
-            (focus)="onFocus()"
+            (focus)="onCommitteeSearchBarFocus()"
             (blur)="showDropdown = false"
             autocomplete="off"
           />
