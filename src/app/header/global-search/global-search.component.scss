@@ -1,5 +1,6 @@
 @use "colors" as colors;
 @use "constants" as constants;
+
 .main-dialog {
   position: fixed !important;
   height: fit-content;
@@ -10,8 +11,14 @@
   gap: 10px;
   flex-direction: column;
   padding: 0 15px;
-  overflow:hidden;
+
   width: 600px;
+  background: colors.$color-background-card;
+  border: 1px solid colors.$color-border-primary;
+  padding: 0px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+
   &[open] {
     top: 20vh !important;
     left: 50% !important;
@@ -74,3 +81,76 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+
+.form-input {
+  padding: 12px 20px;
+  background: colors.$color-background-input;
+  border: 1px solid colors.$color-border-primary;
+  border-radius: 6px;
+  color: colors.$color-text-primary;
+  font-size: constants.$font-normal;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.field-error{
+  color: colors.$color-text-error;
+  font-size: constants.$font-medium;
+  font-weight: constants.$font-weight-medium;
+  margin: 0;
+  padding: 0.25rem 0;
+}
+
+
+//astrick in forms
+.required-astrick {
+  color: colors.$color-text-error;
+  padding-left: 4px;
+  font-size: 0.9rem;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+
+
+form label, .data-label {
+  font-size: constants.$font-small;
+  font-weight: constants.$font-weight-medium;
+  color: colors.$color-text-secondary;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+
+.form-input {
+  padding: 12px 20px;
+  background: colors.$color-background-input;
+  border: 1px solid colors.$color-border-primary;
+  border-radius: 6px;
+  color: colors.$color-text-primary;
+  font-size: constants.$font-normal;
+  font-family: inherit;
+  transition: all 0.2s ease;
+
+  &::placeholder {
+    color: colors.$color-text-muted;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: colors.$color-border-focus;
+    background: colors.$color-background-input-hover;
+    box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.1);
+  }
+
+  &:hover:not(:focus) {
+    border-color: colors.$color-background-input;
+    background: colors.$color-background-input-hover;
+  }
+
+  &.error {
+    border-color: colors.$color-text-error;
+  }
+}
+
+
