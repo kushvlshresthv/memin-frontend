@@ -135,7 +135,7 @@
     >
       <!-- Committee Selection Dropdown with Search -->
       <div class="form-group">
-        <label for="committee-search">Select Committee</label>
+        <label for="committee-search">Select Committee<span class="required-astrick">*</span></label>
         <div class="custom-dropdown">
           <input
             id="committee-search"
@@ -183,7 +183,7 @@
       </div>
       <div class="form-element-pair">
         <div class="form-group">
-          <label for="meeting-title">Meeting Title</label>
+          <label for="meeting-title">Meeting Title<span class="required-astrick">*</span></label>
           <input
             id="meeting-title"
             type="text"
@@ -201,7 +201,7 @@
         </div>
 
         <div class="form-group">
-          <label for="meeting-held-place">Meeting Place</label>
+          <label for="meeting-held-place">Meeting Place<span class="required-astrick">*</span></label>
           <input
             id="meeting-held-place"
             type="text"
@@ -222,7 +222,7 @@
 
       <div class="form-element-pair">
         <div class="form-group">
-          <label for="meeting-date">Meeting Date</label>
+          <label for="meeting-date">Meeting Date<span class="required-astrick">*</span></label>
           <input
             id="meeting-date"
             type="date"
@@ -238,7 +238,7 @@
         </div>
 
         <div class="form-group">
-          <label for="meeting-held-time">Meeting Time</label>
+          <label for="meeting-held-time">Meeting Time<span class="required-astrick">*</span></label>
           <input
             id="meeting-held-time"
             type="time"
@@ -285,7 +285,7 @@
 
       <div class="form-group">
         <div class="form-element-pair">
-          <label>Decisions</label>
+          <label>Decisions<span class="required-astrick">*</span></label>
           <button
             class="btn btn-primary plus-button"
             (click)="createEmptyDecision()"
