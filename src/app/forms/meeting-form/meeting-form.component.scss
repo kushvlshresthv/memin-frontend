@@ -346,8 +346,25 @@ dialog {
 
 textarea:has(+ .field-error),
 input:has(+ .field-error),
-select:has(+ .field-error){
+select:has(+ .field-error) {
   border: 1px solid colors.$color-text-error !important;
+}
+
+.form-input[type="date"],
+.form-input[type="time"] {
+  //render calendar in dark mode
+  color-scheme: dark;
+}
+
+//Customizing the Calendar Icon
+.form-input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.form-input[type="time"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
 }
 
 ////////////////////////////////////////////////////

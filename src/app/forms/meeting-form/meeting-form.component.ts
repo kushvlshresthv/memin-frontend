@@ -97,7 +97,7 @@ export class MeetingForm implements OnInit {
     );
 
     this.title = new FormControl(this.meetingFormData().title, {
-      validators:[Validators.required],
+      validators: [Validators.required],
       nonNullable: true,
     });
 
@@ -109,13 +109,13 @@ export class MeetingForm implements OnInit {
       );
     } else {
       this.heldDate = new FormControl('', {
-	validators: [Validators.required],
+        validators: [Validators.required],
         nonNullable: true,
       });
 
       this.heldTime = new FormControl('', {
         nonNullable: true,
-	validators: [Validators.required],
+        validators: [Validators.required],
       });
     }
 
@@ -211,6 +211,7 @@ export class MeetingForm implements OnInit {
       );
       if (selectedCommitteeIdAndName) {
         this.committeeSearch.setValue(selectedCommitteeIdAndName.committeeName);
+        this.selectedCommitteeId = Number(committeeId);
         this.loadPossibleInvitees(selectedCommitteeIdAndName.committeeId);
       }
     }
@@ -386,12 +387,23 @@ export class MeetingForm implements OnInit {
     this.router.navigate(['/home/create-committee']);
   }
 
+  hasNoNonEmptyDecisions(): boolean {
+    return (
+      this.decisions.filter((d) => d.decision && d.decision.length > 0).length <
+      1
+    );
+  }
+
   showAllFormErrors = false;
   isFormSaving = false;
 
   onSubmit($event: Event) {
     $event.preventDefault();
-    if(this.meetingFormGroup.invalid || this.decisions.length < 1 || this.selectedCommitteeId == undefined) {
+    if (
+      this.meetingFormGroup.invalid ||
+      this.hasNoNonEmptyDecisions() ||
+      this.selectedCommitteeId == undefined
+    ) {
       this.showAllFormErrors = true;
       return;
     }
@@ -402,8 +414,12 @@ export class MeetingForm implements OnInit {
     requestBody.heldDate = this.heldDate.value;
 
     requestBody.heldTime = this.heldTime.value;
-    requestBody.agendas = this.agendas;
-    requestBody.decisions = this.decisions;
+    requestBody.agendas = this.agendas.filter(
+      (agenda) => agenda.agenda.length > 0,
+    );
+    requestBody.decisions = this.decisions.filter(
+      (decision) => decision.decision.length > 0,
+    );
     console.log(requestBody);
 
     requestBody.inviteeIds = this.selectedInvitees.map(
@@ -413,7 +429,7 @@ export class MeetingForm implements OnInit {
     this.isFormSaving = true;
     this.formSaveEvent.emit(requestBody);
 
-    //TODO: should be done in the create meeting or edit meeting as request might fail as well 
+    //TODO: should be done in the create meeting or edit meeting as request might fail as well
     localStorage.removeItem(this.FORM_NAME);
   }
 

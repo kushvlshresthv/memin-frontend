@@ -294,8 +294,8 @@
             +
           </button>
         </div>
-        @if (showAllFormErrors && decisions.length < 1) {
-          <p class="field-error">(Add at least one decision)</p>
+        @if (showAllFormErrors && hasNoNonEmptyDecisions()) {
+          <p class="field-error">(Add at least one non-empty decision)</p>
         }
         <div class="decisions-list">
           @for (
