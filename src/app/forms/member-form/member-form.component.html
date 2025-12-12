@@ -10,7 +10,9 @@
       <h2>Create New Member</h2>
       <p class="panel-subtitle">Add a new member to the system</p>
       <!-- TODO: only if form data is valid, enable the save button  -->
-      <button class="btn btn-primary save-button" (click) ="onFormSave($event)">Save</button>
+      <button class="btn btn-primary save-button" (click)="onFormSave($event)">
+        Save
+      </button>
     </div>
 
     <form [formGroup]="memberFormGroup" class="actual-form">
@@ -28,6 +30,8 @@
             [class.error]="
               firstName.touched && firstName.dirty && firstName.invalid
             "
+            spellcheck="false"
+            autocomplete="off"
           />
           @if ((firstName.touched && firstName.dirty) || showAllErrors) {
             @if (firstName.errors?.["required"]) {
@@ -57,6 +61,8 @@
             [class.error]="
               lastName.touched && lastName.dirty && lastName.invalid
             "
+            spellcheck="false"
+            autocomplete="off"
           />
           @if ((lastName.touched && lastName.dirty) || showAllErrors) {
             @if (lastName.errors?.["required"]) {
@@ -66,7 +72,9 @@
                 (Last name should be at least 2 characters long)
               </p>
             } @else if (lastName.errors?.["maxlength"]) {
-              <p class="field-error">(Last name should be under 50 characters)</p>
+              <p class="field-error">
+                (Last name should be under 50 characters)
+              </p>
             }
           }
         </div>
@@ -84,6 +92,8 @@
             class="form-input"
             placeholder="Enter title"
             [class.error]="title.touched && title.dirty && title.invalid"
+            spellcheck="false"
+            autocomplete="off"
           />
           @if ((title.touched && title.dirty) || showAllErrors) {
             @if (title.errors?.["required"]) {
@@ -93,7 +103,9 @@
         </div>
 
         <div class="form-group half-width">
-          <label for="control-post">Post <span class="required-astrick">*</span></label>
+          <label for="control-post"
+            >Post <span class="required-astrick">*</span></label
+          >
           <input
             id="control-post"
             type="text"
@@ -101,6 +113,8 @@
             class="form-input"
             placeholder="Enter post"
             [class.error]="post.touched && post.dirty && post.invalid"
+            spellcheck="false"
+            autocomplete="off"
           />
           @if ((post.touched && post.dirty) || showAllErrors) {
             @if (post.errors?.["required"]) {

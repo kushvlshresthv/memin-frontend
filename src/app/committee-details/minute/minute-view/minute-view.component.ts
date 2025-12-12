@@ -6,37 +6,47 @@ import { BACKEND_URL } from '../../../../global_constants';
 import { HttpClient } from '@angular/common/http';
 import { Response } from '../../../response/response';
 import { AutoOpenDialogDirective } from '../../../utils/auto-open-dialog.directive';
-import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+import {
+  CdkDragDrop,
+  DragDropModule,
+  moveItemInArray,
+} from '@angular/cdk/drag-drop';
 import { MemberSearchResult } from '../../../models/models';
 import { SafeCloseDialogCustom } from '../../../utils/safe-close-dialog-custom.directive';
 
 @Component({
   selector: 'app-minute-view',
   standalone: true,
-  imports: [MinuteNepali1Component, MinuteEnglish1Component, AutoOpenDialogDirective, DragDropModule, SafeCloseDialogCustom],
+  imports: [
+    MinuteNepali1Component,
+    MinuteEnglish1Component,
+    AutoOpenDialogDirective,
+    DragDropModule,
+    SafeCloseDialogCustom,
+  ],
   templateUrl: './minute-view.component.html',
   styleUrl: './minute-view.component.scss',
 })
 export class MinuteViewComponent {
-
+  showMinuteOptions = false;
 
   ////////////////////////////////////////////////////////////
   //for participant order change dialog
- 
+
   drop(event: CdkDragDrop<MemberSearchResult[]>) {
     moveItemInArray(
       this.minuteData().participants,
       event.previousIndex,
-      event.currentIndex
+      event.currentIndex,
     );
     console.log('drop executed');
   }
 
   diag = viewChild<ElementRef<HTMLDialogElement>>('participant_order_dialog');
   showChangeParticipantOrderDialog() {
-      this.diag()!.nativeElement.showModal();
+    this.showMinuteOptions = false;
+    this.diag()!.nativeElement.showModal();
   }
-
 
   //data loading logic is not in the component because data needs to be shared with minute-edit component.
   minuteData = inject(MinuteDataService).getMinuteData();
@@ -45,14 +55,17 @@ export class MinuteViewComponent {
 
   constructor(private httpClient: HttpClient) {}
 
-  htmlContent!: string|undefined;
+  htmlContent!: string | undefined;
 
-  onWordFileDownload($event:Event) {
+  onWordFileDownload($event: Event) {
     $event.preventDefault();
-    if(this.minuteData().minuteLanguage == 'ENGLISH') {
-      this.htmlContent = this.minuteEnglish1()?.processedMinute()?.nativeElement?.innerHTML;
-    } else if(this.minuteData().minuteLanguage = 'NEPALI') {
-      this.htmlContent = this.minuteNepali1()?.processedMinute()?.nativeElement?.innerHTML;
+    this.showMinuteOptions = false;
+    if (this.minuteData().minuteLanguage == 'ENGLISH') {
+      this.htmlContent =
+        this.minuteEnglish1()?.processedMinute()?.nativeElement?.innerHTML;
+    } else if ((this.minuteData().minuteLanguage = 'NEPALI')) {
+      this.htmlContent =
+        this.minuteNepali1()?.processedMinute()?.nativeElement?.innerHTML;
     }
 
     this.httpClient
@@ -73,7 +86,7 @@ export class MinuteViewComponent {
           window.URL.revokeObjectURL(url);
         },
         error: (error) => {
-	  //TODO: handle error properly
+          //TODO: handle error properly
           console.error('Download failed', error.error);
         },
       });

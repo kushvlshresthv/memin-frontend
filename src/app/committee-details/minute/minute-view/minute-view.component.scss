@@ -8,25 +8,58 @@
 
 .minute {
   width: 210mm;
-  position: relative;
   height: 297mm;
   overflow-y: auto;
 }
 
+.menu-btn-container {
+  padding-bottom: 4px;
+  position: fixed;
+  right: 650px;
+  top: 80px;
+  .menu-btn {
+    cursor: pointer;
+    background: colors.$color-background-main;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    border: none;
+    bottom: 3px;
+    right: 0;
+    padding: 0 6px;
+
+    border-radius: 50%;
+  }
+
+  .menu-btn:hover {
+    background: colors.$color-card-hover;
+  }
+}
+
 .minute-options {
   position: fixed;
-  left: 0px;
-  width: constants.$sidebar-width;
-  bottom: 0px;
+  right: 600px;
+  top: 110px;
   z-index: 9999;
-  border-top: 1px solid colors.$color-border-primary;
-  height: 150px;
   display: flex;
   flex-direction: column;
+  background: colors.$color-background-main;
+  color: colors.$color-text-primary;
   padding: 15px;
-  box-sizing: border-box;
   gap: 20px;
+  box-sizing: border-box;
   font-size: constants.$font-normal;
+  border: 1px solid colors.$color-border-primary;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 0.2s ease-in-out,
+    visibility 0.2s ease-in-out;
+}
+
+.minute-options.hidden {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .option:hover {
@@ -34,19 +67,34 @@
   cursor: pointer;
 }
 
+//for dialog while changing the order of meeting participants
+
 .main-dialog {
   width: 500px;
   height: fit-content;
   max-height: 600px;
   padding: 13px;
   outline: none;
+  background: colors.$color-background-card;
+  border: 1px solid colors.$color-border-primary;
+  overflow: hidden;
 
   &[open] {
-    display: flex;
+    display: flex; //flex container only when the dialog is open
+
     flex-direction: column;
     gap: 20px;
   }
+
+  //if we keep display: flex outside, the dialog content will be shown even when the dialog is closed
+
+
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+  }
 }
+
 
 .panel-header {
   padding: 0;
@@ -58,9 +106,8 @@
 }
 
 .panel-subtitle {
-    color: colors.$color-text-muted;
+  color: colors.$color-text-muted;
 }
-
 
 .participants {
   display: flex;
@@ -112,3 +159,4 @@
   min-height: 60px;
   opacity: 0.5;
 }
+

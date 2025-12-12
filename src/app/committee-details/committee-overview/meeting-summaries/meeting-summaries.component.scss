@@ -103,6 +103,6 @@
     grid-template-columns: repeat(
       auto-fit,
       minmax(150px, 1fr)
-    ); //150px because it is the minimum to get 2 cards when mobile screen
+    );
   }
 }
