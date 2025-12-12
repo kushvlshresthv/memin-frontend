@@ -83,7 +83,13 @@ export class MemberFormComponent implements AfterViewInit, OnInit {
     }
   }
 
+  showAllErrors = false;
+
   onFormSave($event: Event) {
+    if(this.memberFormGroup.invalid) {
+      this.showAllErrors = true;
+      return;
+    }
     $event.preventDefault();
     const memberCreationDto = new MemberCreationDto();
     memberCreationDto.firstName = this.firstName.value!;

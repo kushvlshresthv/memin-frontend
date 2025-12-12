@@ -10,15 +10,23 @@
   gap: 10px;
   flex-direction: column;
   padding: 0 15px;
-
+  overflow:hidden;
   width: 600px;
   &[open] {
     top: 20vh !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     margin: 0 !important;
+    display: flex; //flex container only when the dialog is open
+  }
+
+  //if we keep display: flex outside, the dialog content will be shown even when the dialog is closed
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
   }
 }
+
 
 .search-bar {
     box-sizing: border-box;
