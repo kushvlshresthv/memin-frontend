@@ -37,6 +37,10 @@ app-member-summaries {
   gap: 24px;
   align-items: start;
   margin-right: constants.$app-committee-member-summaries-width;
+  //enable the following styling if want to capture the scroll bar within the .detail-and-calender and NOT in the .main-content
+  // min-height: 0;
+  // max-height: 100%;
+  // overflow-y: auto;
   padding-right: 25px;  //space from the right committee member panel
 }
 

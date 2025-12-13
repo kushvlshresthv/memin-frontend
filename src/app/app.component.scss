@@ -17,6 +17,8 @@ app-sidebar {
   padding-top: 16px;
   height: 100%;
   padding-bottom: 20px;
+  overflow: auto;
+  scrollbar-gutter: stable;
 }
 
 .main-content.login-page {
