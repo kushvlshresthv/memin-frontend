@@ -100,15 +100,64 @@ ol {
   margin-left: 13px;
 }
 
-
 @media (max-width: 768px) {
-
-#a4-box {
+  #a4-box {
     margin: 0;
     padding: 25px;
     font-size: 7.5px;
     width: 90vw !important;
     min-height: calc(90vw * 1.414) !important; /* maintain A4 aspect ratio */
     overflow-y: auto; /* scroll if content is too long */
+  }
+}
+
+/* Print styles */
+@media print {
+  /* Hide everything except the a4-box content */
+  body * {
+    visibility: hidden;
+  }
+
+  #a4-box,
+  #a4-box * {
+    visibility: visible;
+  }
+
+  #a4-box {
+    position: absolute;
+    left: 0;
+    font-size: constants.$font-normal; 
+    top: 0;
+    width: 210mm;
+    min-height: auto;
+    margin: 0;
+    padding: 20mm;
+    box-shadow: none;
+    page-break-after: auto;
+  }
+
+  /* Prevent page breaks inside these elements */
+  table,
+  tr,
+  td,
+  th {
+    page-break-inside: avoid;
+  }
+
+  .introduction,
+  .memberships,
+  .agendas,
+  .decisions {
+    page-break-inside: avoid;
+  }
+
+  /* Allow page breaks between list items if needed */
+  li {
+    page-break-inside: avoid;
+  }
+
+  /* Ensure proper page sizing */
+  @page {
+    size: A4;
   }
 }
