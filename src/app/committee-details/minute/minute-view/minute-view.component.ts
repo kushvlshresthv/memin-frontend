@@ -1,4 +1,11 @@
-import { Component, ElementRef, inject, input, viewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  input,
+  ViewChild,
+  viewChild,
+} from '@angular/core';
 import { MinuteEnglish1Component } from './minute-english-1/minute-english-1.component';
 import { MinuteNepali1Component } from './minute-nepali-1/minute-nepali-1.component';
 import { MinuteDataService } from '../minute-data.service';
@@ -13,6 +20,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { MemberSearchResult } from '../../../models/models';
 import { SafeCloseDialogCustom } from '../../../utils/safe-close-dialog-custom.directive';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-minute-view',
@@ -29,10 +37,19 @@ import { SafeCloseDialogCustom } from '../../../utils/safe-close-dialog-custom.d
 })
 export class MinuteViewComponent {
   showMinuteOptions = false;
+  isEditMode = false;
+
+  toggleEditMode() {
+    this.isEditMode = !this.isEditMode;
+    this.showMinuteOptions = false;
+  }
 
   printPage() {
     this.showMinuteOptions = false;
-    window.print();
+    // Small delay to allow Angular to update the DOM before printing
+    setTimeout(() => {
+      window.print();
+    }, 1);
   }
 
   ////////////////////////////////////////////////////////////
@@ -42,7 +59,7 @@ export class MinuteViewComponent {
     moveItemInArray(
       this.minuteData().participants,
       event.previousIndex,
-      event.currentIndex,
+      event.currentIndex
     );
     console.log('drop executed');
   }

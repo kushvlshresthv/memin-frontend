@@ -11,12 +11,13 @@ import NepaliDate from 'nepali-date-converter';
   imports: [DatePipe],
   templateUrl: './minute-nepali-1.component.html',
   styleUrl: './minute-nepali-1.component.scss',
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
 export class MinuteNepali1Component {
   minuteData = input.required<MinuteDataDto>();
+  isEditable = input<boolean>(false);
   constructor(private datePipe: DatePipe) {}
-  processedMinute = viewChild<ElementRef<HTMLDivElement>>("processedMinute");
+  processedMinute = viewChild<ElementRef<HTMLDivElement>>('processedMinute');
 
   // to use it in the template
   toNepaliDigits = toNepaliDigits;
@@ -25,14 +26,22 @@ export class MinuteNepali1Component {
     return toNepaliDigits(this.datePipe.transform(dateStr, 'yyyy/MM/dd') || '');
   }
 
-  getDay(dateStr: string){
+  getDay(dateStr: string) {
     const date = new Date(dateStr);
-    const daysInNepali = ['आइतबार', 'सोमबार', 'मङ्गलबार', 'बुधबार', 'बिहिबार', 'शुक्रबार', 'शनिबार'];
+    const daysInNepali = [
+      'आइतबार',
+      'सोमबार',
+      'मङ्गलबार',
+      'बुधबार',
+      'बिहिबार',
+      'शुक्रबार',
+      'शनिबार',
+    ];
     return daysInNepali[date.getDay()];
   }
 
   toNepaliDate(dateStr: string) {
-    const nepaliDate = NepaliDate.fromAD(new Date(dateStr));;
+    const nepaliDate = NepaliDate.fromAD(new Date(dateStr));
     return toNepaliDigits(nepaliDate.format('YYYY/MM/DD'));
   }
 }
