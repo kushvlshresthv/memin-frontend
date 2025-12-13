@@ -11,6 +11,7 @@
   <button
     class="btn btn-primary next-button"
     (click)="isCommitteeDetailsPart = !isCommitteeDetailsPart"
+      [disabled]="!isNextButtonInMobileViewActive()"
   >
     Next
   </button>
@@ -264,7 +265,7 @@
           </select>
 
           @if (coordinator.touched || showAllFormErrors) {
-            @if (description.errors?.["required"]) {
+            @if (!isCoordinatorValid()) {
               <p class="field-error">
                 (Committee coordinator must be selected)
               </p>
@@ -294,8 +295,8 @@
           </label>
         </div>
         @if (showAllFormErrors) {
-          @if (description.errors?.["required"]) {
-            <p class="field-error">(Committee coordinator must be selected)</p>
+          @if (!isMinuteLanguageValid()) {
+            <p class="field-error">(Minute language must be selected)</p>
           }
         }
       </div>

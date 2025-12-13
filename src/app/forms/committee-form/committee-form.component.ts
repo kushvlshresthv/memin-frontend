@@ -44,6 +44,30 @@ import {
 export class CommitteeFormComponent implements OnInit {
   diag = viewChild<ElementRef<HTMLDialogElement>>('committee_form_dialog');
 
+  //////////////////////////////////////
+  // for next button mobile view
+  isNextButtonInMobileViewActive() {
+    if (
+      this.name.valid &&
+      this.description.valid &&
+      this.isCoordinatorValid() &&
+	this.isMinuteLanguageValid()
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  //just checking if the selected coordinator id > 0(may need more rebust implementation)
+  isCoordinatorValid() {
+    return this.coordinator.value.memberId > 0;
+  }
+
+  isMinuteLanguageValid() {
+    return (this.minuteLanguage.value == 'ENGLISH' || this.minuteLanguage.value=='NEPALI');
+  }
+
   ///////////////////////////////////
   //for multipart form in mobile view, this variable is not used in desktop view
   isCommitteeDetailsPart = true;

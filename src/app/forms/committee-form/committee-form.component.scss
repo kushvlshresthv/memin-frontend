@@ -6,7 +6,6 @@
 ///////////////////////////////
 //styling for the custom role dropdown
 
-
 .custom-dropdown {
   box-sizing: border-box;
   position: static;
@@ -81,7 +80,6 @@
   }
 }
 
-
 //////////////////////////////////
 //for drag and drop feature
 .drag-handle {
@@ -117,9 +115,9 @@
 }
 
 .search-section {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   input {
     font-family: Roboto, "Baloo", sans-serif;
   }
@@ -171,7 +169,7 @@
   }
 
   .selected-members-list {
-    max-height: 100%;  //height selected such that it accomodates exactly 3 members
+    max-height: 100%; //height selected such that it accomodates exactly 3 members
     display: flex;
     flex-direction: column;
     min-height: 0;
@@ -208,8 +206,8 @@
 }
 
 .unselected-members-section {
-  max-height: 100%;  
-  height: 45%;   //first take 45% of the available height (also taking account of height of search bar)
+  max-height: 100%;
+  height: 45%; //first take 45% of the available height (also taking account of height of search bar)
   flex-grow: 1;
   min-height: 0;
   display: flex;
@@ -351,11 +349,11 @@
   }
 }
 
-textarea:has(+ .field-error), input:has(+ .field-error), select:has(+ .field-error) {
-    border: 1px solid colors.$color-text-error !important;
+textarea:has(+ .field-error),
+input:has(+ .field-error),
+select:has(+ .field-error) {
+  border: 1px solid colors.$color-text-error !important;
 }
-
-
 
 #committee-description {
   &::-webkit-scrollbar {
@@ -424,7 +422,6 @@ textarea:has(+ .field-error), input:has(+ .field-error), select:has(+ .field-err
   }
 }
 
-
 .language-radio-group {
   display: flex;
   gap: 50px;
@@ -451,9 +448,7 @@ textarea:has(+ .field-error), input:has(+ .field-error), select:has(+ .field-err
   border-radius: 50%;
   background-color: grey;
   cursor: pointer;
-  transition:
-    background-color 0.2s,
-    border-color 0.2s;
+  transition: background-color 0.2s, border-color 0.2s;
 }
 
 .language-radio-item input[type="radio"]:checked {
@@ -497,8 +492,7 @@ textarea:has(+ .field-error), input:has(+ .field-error), select:has(+ .field-err
   }
 }
 
-
-.field-error{
+.field-error {
   color: colors.$color-text-error;
   font-size: constants.$font-medium;
   font-weight: constants.$font-weight-medium;
@@ -506,26 +500,21 @@ textarea:has(+ .field-error), input:has(+ .field-error), select:has(+ .field-err
   padding: 0.25rem 0;
 }
 
-
 //astrick in forms
 .required-astrick {
   color: colors.$color-text-error;
   padding-left: 4px;
-  font-size: 0.9rem;
   display: inline-block;
-  padding-bottom: 5px;
 }
 
-
-
-form label, .data-label {
+form label,
+.data-label {
   font-size: constants.$font-small;
   font-weight: constants.$font-weight-medium;
   color: colors.$color-text-secondary;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
-
 
 .form-input {
   padding: 12px 20px;
@@ -558,7 +547,6 @@ form label, .data-label {
   }
 }
 
-
 //heading section of the form
 .panel-header {
   padding: 10px;
@@ -571,13 +559,12 @@ form label, .data-label {
   //padding for the header for left and right is kept same as padding for .actual-form
   padding: 20px 15px;
 
-
   h2 {
     font-size: constants.$font-xl;
     font-weight: constants.$font-weight-semibold;
     color: colors.$color-text-primary;
     margin: 0 0 4px 0;
-    line-height:1; 
+    line-height: 1;
   }
 
   .panel-subtitle {
@@ -587,8 +574,6 @@ form label, .data-label {
     line-height: 1.3;
   }
 }
-
-
 
 ////////////////////////////////////////////////////
 // MOBILE RESPONSIVE STYLES
@@ -606,6 +591,15 @@ form label, .data-label {
 
   .activePartInMobileView {
     display: block;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .actual-form {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-gutter: stable; // Reserve space for scrollbar
   }
 
   .panel-subtitle {
