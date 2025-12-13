@@ -1,7 +1,8 @@
-@use 'colors' as colors;
+@use "colors" as colors;
+@use "constants" as constants;
 
 :host {
-  flex-grow: 1;  //take the remaining space in the flex container
+  flex-grow: 1; //take the remaining space in the flex container
 }
 
 .login-container {
@@ -55,9 +56,8 @@
 }
 
 label {
-    line-height: 1;
+  line-height: 1;
 }
-
 
 .form-input {
   padding: 12px 20px;
@@ -66,9 +66,58 @@ label {
   margin-top: 10px;
 }
 
-
-
 .btn-primary {
   margin-top: 10px;
 }
 
+//Migration from global styles
+
+//astrick in forms
+.required-astrick {
+  color: colors.$color-text-error;
+  padding-left: 4px;
+  font-size: 0.9rem;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.form-input {
+  padding: 12px 20px;
+  background: colors.$color-background-input;
+  border: 1px solid colors.$color-border-primary;
+  border-radius: 6px;
+  color: colors.$color-text-primary;
+  font-size: constants.$font-normal;
+  font-family: inherit;
+  transition: all 0.2s ease;
+
+  &::placeholder {
+    color: colors.$color-text-muted;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: colors.$color-border-focus;
+    background: colors.$color-background-input-hover;
+    box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.1);
+  }
+
+  &:hover:not(:focus) {
+    border-color: colors.$color-background-input;
+    background: colors.$color-background-input-hover;
+  }
+
+  &.error {
+    border-color: colors.$color-text-error;
+  }
+}
+
+
+.field-error{
+  color: colors.$color-text-error;
+  font-size: constants.$font-medium;
+  font-weight: constants.$font-weight-medium;
+  margin: 0;
+  margin-top: 10px;
+  padding: 0.25rem 0;
+}

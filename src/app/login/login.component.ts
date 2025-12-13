@@ -44,7 +44,11 @@ export class LoginComponent implements OnInit {
     this.password = this.formData.controls.password;
   }
 
+  showAllErrors = false;
   onSubmit() {
+    if(this.formData.invalid) {
+      this.showAllErrors = true;
+    }
     const authenticationDetails = `${this.username.value}:${this.password.value}`;
     this.authService.login(authenticationDetails);
   }
