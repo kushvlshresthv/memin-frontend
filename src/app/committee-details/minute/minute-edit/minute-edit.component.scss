@@ -40,7 +40,6 @@
   display: flex;
   flex-direction: column;
   height: 90vh;
-  overflow-y: auto;
 }
 
 .form-group {
@@ -139,6 +138,23 @@
   overflow-y: auto;
   resize: none;
   height: 70px;
+}
+
+.form-input[type="date"],
+.form-input[type="time"] {
+  //render calendar in dark mode
+  color-scheme: dark;
+}
+
+//Customizing the Calendar Icon
+.form-input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.form-input[type="time"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
 }
 
 

@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit } from '@angular/core';
+import { Component, ElementRef, inject, input, OnInit, viewChildren } from '@angular/core';
 import { MinuteDataService } from '../minute-data.service';
 import { FormsModule } from '@angular/forms';
 import {
@@ -42,18 +42,68 @@ export class MinuteEditComponent implements OnInit {
     });
   }
 
+  hasNoNonEmptyDecisions(): boolean {
+    return (
+      this.minuteData().decisions.filter(
+        (d) => d.decision && d.decision.length > 0,
+      ).length < 1
+    );
+  }
+
+  
+  agendaInputFields = viewChildren<ElementRef>('agendaInputFields');
+
   createEmptyAgenda() {
     const newAgenda = new AgendaDto();
     newAgenda.agendaId = this.count;
     this.count--;
     this.minuteData().agendas.push(newAgenda);
+
+    // Wait for DOM Update
+    setTimeout(() => {
+      const inputs = this.agendaInputFields();
+      const lastInput = inputs[inputs.length - 1];
+
+      if (lastInput) {
+        const element = lastInput.nativeElement;
+
+        element.focus();
+
+        //Scroll it into the center of the view
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
+      }
+    });
   }
+
+  
+  decisionInputFields = viewChildren<ElementRef>('decisionInputFields');
 
   createEmptyDecision() {
     const newDecision = new DecisionDto();
     newDecision.decisionId = this.count;
     this.count--;
     this.minuteData().decisions.push(newDecision);
+
+    // Wait for DOM Update
+    setTimeout(() => {
+      const inputs = this.decisionInputFields();
+      const lastInput = inputs[inputs.length - 1];
+
+      if (lastInput) {
+        const element = lastInput.nativeElement;
+
+        element.focus();
+
+        //Scroll it into the center of the view
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
+      }
+    });
   }
 
   deleteAgenda(agendaId: number) {
@@ -67,7 +117,24 @@ export class MinuteEditComponent implements OnInit {
       (decision) => decision.decisionId !== decisionId,
     );
   }
+
+  showAllErrors = false;
   onSubmit() {
+    if (
+      this.minuteData().committeeName.trim().length < 1 ||
+      this.minuteData().committeeDescription.trim().length < 1 ||
+      this.minuteData().meetingHeldDate.trim().length <1 ||
+	this.minuteData().meetingHeldTime.trim().length < 1 ||
+	this.minuteData().meetingHeldPlace.trim().length < 1 ||
+	this.hasNoNonEmptyDecisions()
+    ) {
+      this.showAllErrors = true;
+      return;
+    } else {
+      this.showAllErrors = false;
+    }
+    
+
     const minuteUpdateDto = new MinuteUpdateDto();
     minuteUpdateDto.committeeName = this.minuteData().committeeName;
     minuteUpdateDto.committeeDescription =

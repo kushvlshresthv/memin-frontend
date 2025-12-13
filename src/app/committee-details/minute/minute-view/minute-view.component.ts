@@ -20,7 +20,6 @@ import {
 } from '@angular/cdk/drag-drop';
 import { MemberSearchResult } from '../../../models/models';
 import { SafeCloseDialogCustom } from '../../../utils/safe-close-dialog-custom.directive';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-minute-view',

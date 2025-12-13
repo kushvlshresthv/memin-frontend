@@ -41,7 +41,11 @@ export class MinuteNepali1Component {
   }
 
   toNepaliDate(dateStr: string) {
-    const nepaliDate = NepaliDate.fromAD(new Date(dateStr));
-    return toNepaliDigits(nepaliDate.format('YYYY/MM/DD'));
+    try {
+      const nepaliDate = NepaliDate.fromAD(new Date(dateStr));
+      return toNepaliDigits(nepaliDate.format('YYYY/MM/DD'));
+    } catch {
+      return 'Invalid Date';
+    }
   }
 }
