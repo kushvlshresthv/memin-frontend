@@ -112,52 +112,43 @@ ol {
 }
 
 /* Print styles */
-@media print {
-  /* Hide everything except the a4-box content */
-  body * {
-    visibility: hidden;
-  }
+// @media print {
 
-  #a4-box,
-  #a4-box * {
-    visibility: visible;
-  }
+//   #a4-box {
+//     position: absolute;
+//     left: 0;
+//     font-size: constants.$font-normal; 
+//     top: 0;
+//     width: 210mm;
+//     min-height: auto;
+//     margin: 0;
+//     padding: 20mm;
+//     box-shadow: none;
+//     page-break-after: auto;
+//   }
 
-  #a4-box {
-    position: absolute;
-    left: 0;
-    font-size: constants.$font-normal; 
-    top: 0;
-    width: 210mm;
-    min-height: auto;
-    margin: 0;
-    padding: 20mm;
-    box-shadow: none;
-    page-break-after: auto;
-  }
+//   /* Prevent page breaks inside these elements */
+//   table,
+//   tr,
+//   td,
+//   th {
+//     page-break-inside: avoid;
+//   }
 
-  /* Prevent page breaks inside these elements */
-  table,
-  tr,
-  td,
-  th {
-    page-break-inside: avoid;
-  }
+//   .introduction,
+//   .memberships,
+//   .agendas,
+//   .decisions {
+//     page-break-inside: avoid;
+//   }
 
-  .introduction,
-  .memberships,
-  .agendas,
-  .decisions {
-    page-break-inside: avoid;
-  }
+//   /* Allow page breaks between list items if needed */
+//   li {
+//     page-break-inside: avoid;
+//   }
 
-  /* Allow page breaks between list items if needed */
-  li {
-    page-break-inside: avoid;
-  }
-
-  /* Ensure proper page sizing */
-  @page {
-    size: A4;
-  }
-}
+//   /* Ensure proper page sizing */
+//   @page {
+//     size: A4;
+//   }
+// }

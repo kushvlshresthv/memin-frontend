@@ -4,7 +4,7 @@
 @import "dialog_styles";
 @import "button_styles";
 @import "reset";
-@import '@angular/cdk/overlay-prebuilt.css';
+@import "@angular/cdk/overlay-prebuilt.css";
 
 //SOME GLOBAL SYTLES
 
@@ -83,16 +83,15 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-
 //FOR PRINTING MINUTE
 
-@page {
-  size: A4; 
-}
-
 @media print {
-
   /* 1. Hide everything in the body */
+
+  @page {
+    size: A4;
+    margin: 25mm;
+  }
   body * {
     visibility: hidden;
     margin: 0 !important;
@@ -100,10 +99,9 @@ body {
 
   //withinout this there is some margin/padding
   .main-content {
-      margin: 0 !important;
-      padding: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
-
 
   /* 2. Make the target div and its children visible */
   #a4-box,
@@ -113,6 +111,9 @@ body {
 
   /* 3. Position the target div at the top-left of the paper */
   #a4-box {
+    position: absolute;
     box-shadow: none;
+    // margin: 0 !important;
+    // padding: 0 !important;
   }
 }
