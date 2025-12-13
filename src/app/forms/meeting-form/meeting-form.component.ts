@@ -62,6 +62,24 @@ export class MeetingForm implements OnInit {
   isEditPage = input.required<boolean>();
   meetingFormData = input.required<MeetingFormData>();
 
+  ////////////////////////////////////////////
+  // for next button mobile view
+
+  isNextButtonInMobileViewActive() {
+    if (
+      this.title.valid &&
+      this.heldPlace.valid &&
+      this.heldTime.valid &&
+      this.heldDate.valid &&
+      this.selectedCommitteeId != undefined &&
+      !this.hasNoNonEmptyDecisions()
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   /////////////////////////////////////////////
   //Form control initalization with @Input data for left and right panel
 
@@ -290,7 +308,7 @@ export class MeetingForm implements OnInit {
 
   showDropdown = false;
 
-  selectedCommitteeId!: number ; //required to get the committeeId during request submission because the CommitteeSearch FormControl only stores the committeeName
+  selectedCommitteeId!: number; //required to get the committeeId during request submission because the CommitteeSearch FormControl only stores the committeeName
   committeeSearchSubscription!: Subscription;
   committeeIdsAndNames: { committeeId: number; committeeName: string }[] = [];
   displayedCommitteeIdsAndNames: {

@@ -11,6 +11,7 @@
   <button
     class="btn btn-primary next-button"
     (click)="isMeetingDetailsPart = !isMeetingDetailsPart"
+      [disabled]="!isNextButtonInMobileViewActive()"
   >
     Next
   </button>
