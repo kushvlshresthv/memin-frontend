@@ -24,6 +24,7 @@
   cdkDropList
   (cdkDropListDropped)="drop($event)"
   #participant_order_dialog
+    (click)="onDialogClick($event)"
 >
   <div class="panel-header">
     <p class="heading">Drag and Drop with ☰ as handle</p>

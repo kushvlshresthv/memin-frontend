@@ -6,11 +6,11 @@ import { MinuteDataDto } from '../../models/models';
 import { Response } from '../../response/response';
 
 @Injectable()
-//data loading logic is not in the component because data needs to be shared with minute-edit component. 
+//data loading logic is not in the component because data needs to be shared with minute-edit component.
 export class MinuteDataService {
   private minuteData = signal<MinuteDataDto>(new MinuteDataDto());
 
-  private originalData:string = "";
+  private originalDataString: string = '';
 
   constructor(
     private httpClient: HttpClient,
@@ -29,8 +29,19 @@ export class MinuteDataService {
         .subscribe({
           next: (response) => {
             this.minuteData.set(response.mainBody);
-            this.originalData = JSON.stringify(response.mainBody);
-	    console.log(response.mainBody);
+
+	    //originalDataString should no contain invitees because when invitee order changs, 'Save' button should not appear
+            const originalData = {
+              committeeName: this.minuteData().committeeName,
+              committeeDescription: this.minuteData().committeeDescription,
+              meetingHeldDate: this.minuteData().meetingHeldDate,
+              meetingHeldTime: this.minuteData().meetingHeldTime,
+              meetingHeldPlace: this.minuteData().meetingHeldPlace,
+              agendas: this.minuteData().agendas,
+              decisions: this.minuteData().decisions,
+            };
+            this.originalDataString = JSON.stringify(originalData);
+            console.log(response.mainBody);
           },
           error: (response) => {
             console.log(response);
@@ -44,7 +55,20 @@ export class MinuteDataService {
   }
 
   hasDataChanged(): boolean {
-    if(this.originalData.length != 0 && JSON.stringify(this.minuteData()) !== this.originalData) {
+    const newData = {
+      committeeName: this.minuteData().committeeName,
+      committeeDescription: this.minuteData().committeeDescription,
+      meetingHeldDate: this.minuteData().meetingHeldDate,
+      meetingHeldTime: this.minuteData().meetingHeldTime,
+      meetingHeldPlace: this.minuteData().meetingHeldPlace,
+      agendas: this.minuteData().agendas,
+      decisions: this.minuteData().decisions,
+    };
+
+    if (
+      this.originalDataString.length != 0 &&
+      JSON.stringify(newData) !== this.originalDataString
+    ) {
       return true;
     }
     return false;

@@ -11,15 +11,12 @@ import { MinuteNepali1Component } from './minute-nepali-1/minute-nepali-1.compon
 import { MinuteDataService } from '../minute-data.service';
 import { BACKEND_URL } from '../../../../global_constants';
 import { HttpClient } from '@angular/common/http';
-import { Response } from '../../../response/response';
-import { AutoOpenDialogDirective } from '../../../utils/auto-open-dialog.directive';
 import {
   CdkDragDrop,
   DragDropModule,
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
 import { MemberSearchResult } from '../../../models/models';
-import { SafeCloseDialogCustom } from '../../../utils/safe-close-dialog-custom.directive';
 
 @Component({
   selector: 'app-minute-view',
@@ -27,9 +24,7 @@ import { SafeCloseDialogCustom } from '../../../utils/safe-close-dialog-custom.d
   imports: [
     MinuteNepali1Component,
     MinuteEnglish1Component,
-    AutoOpenDialogDirective,
     DragDropModule,
-    SafeCloseDialogCustom,
   ],
   templateUrl: './minute-view.component.html',
   styleUrl: './minute-view.component.scss',
@@ -37,6 +32,22 @@ import { SafeCloseDialogCustom } from '../../../utils/safe-close-dialog-custom.d
 export class MinuteViewComponent {
   showMinuteOptions = false;
   isEditMode = false;
+
+  ///////////////////////////////////////////
+  // for invitee order change dialog
+  @ViewChild('participant_order_dialog')
+  dialogElementRef!: ElementRef<HTMLDialogElement>;
+
+  onDialogClick(event: MouseEvent) {
+    const dlg = this.dialogElementRef.nativeElement;
+    if (event.target === dlg && dlg.open) {
+      const dialog = this.dialogElementRef?.nativeElement;
+      dialog.close();
+    }
+  }
+
+  ////////////////////////////////////////////
+  // for menu options
 
   toggleEditMode() {
     this.isEditMode = !this.isEditMode;
@@ -58,7 +69,7 @@ export class MinuteViewComponent {
     moveItemInArray(
       this.minuteData().participants,
       event.previousIndex,
-      event.currentIndex
+      event.currentIndex,
     );
     console.log('drop executed');
   }
