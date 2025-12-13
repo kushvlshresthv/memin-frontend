@@ -117,7 +117,7 @@ ol {
 //   #a4-box {
 //     position: absolute;
 //     left: 0;
-//     font-size: constants.$font-normal; 
+//     font-size: constants.$font-normal;
 //     top: 0;
 //     width: 210mm;
 //     min-height: auto;
@@ -150,5 +150,40 @@ ol {
 //   /* Ensure proper page sizing */
 //   @page {
 //     size: A4;
+//   }
+// }
+
+// //FOR PRINTING MINUTE
+
+// @media print {
+//   /* 1. Hide everything in the body */
+
+//   @page {
+//     size: A4;
+//     margin: 25mm;
+//   }
+//   body * {
+//     visibility: hidden;
+//     margin: 0 !important;
+//   }
+
+//   //withinout this there is some margin/padding
+//   .main-content {
+//     margin: 0 !important;
+//     padding: 0 !important;
+//   }
+
+//   /* 2. Make the target div and its children visible */
+//   #a4-box,
+//   #a4-box * {
+//     visibility: visible;
+//   }
+
+//   /* 3. Position the target div at the top-left of the paper */
+//   #a4-box {
+//     position: absolute;
+//     box-shadow: none;
+//     // margin: 0 !important;
+//     // padding: 0 !important;
 //   }
 // }

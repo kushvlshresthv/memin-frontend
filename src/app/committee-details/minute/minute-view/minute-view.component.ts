@@ -30,6 +30,11 @@ import { SafeCloseDialogCustom } from '../../../utils/safe-close-dialog-custom.d
 export class MinuteViewComponent {
   showMinuteOptions = false;
 
+  printPage() {
+    this.showMinuteOptions = false;
+    window.print();
+  }
+
   ////////////////////////////////////////////////////////////
   //for participant order change dialog
 

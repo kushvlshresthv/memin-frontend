@@ -86,12 +86,13 @@ body {
 //FOR PRINTING MINUTE
 
 @media print {
-  /* 1. Hide everything in the body */
-
   @page {
     size: A4;
-    margin: 25mm;
+    margin: 25mm 0;
+    // margin-top: 25mm; // Browser will apply this margin on all pages
   }
+
+  /* 1. Hide everything in the body */
   body * {
     visibility: hidden;
     margin: 0 !important;
@@ -109,11 +110,25 @@ body {
     visibility: visible;
   }
 
+  .minute-options * {
+    display: none;
+  }
+
+  .menu-btn {
+    display: none;
+  }
+
+  .menu-btn-container * {
+    display: none;
+  }
+
   /* 3. Position the target div at the top-left of the paper */
   #a4-box {
     position: absolute;
-    box-shadow: none;
-    // margin: 0 !important;
-    // padding: 0 !important;
+    box-shadow: none !important;
+    font-size: constants.$font-large !important;
+    padding: 0 0 0 25mm !important; //NOTE: the right margin is also set to 0 because right margin is automatically inserted in the print preview(dont know how), verify by turning on the border here.
+    // border: 1px solid red;
+    margin: 0 !important;
   }
 }
