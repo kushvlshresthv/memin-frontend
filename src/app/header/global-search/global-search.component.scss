@@ -154,3 +154,13 @@ form label, .data-label {
 }
 
 
+@media(max-width: 768px) {
+    .main-dialog {
+	width: 90vw;
+    }
+
+    .results {
+	width: 90vw;
+    }
+    
+}
