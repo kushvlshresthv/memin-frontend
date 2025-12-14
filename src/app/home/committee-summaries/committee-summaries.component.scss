@@ -1,6 +1,13 @@
 @use "colors" as colors;
 @use "constants" as constants;
 
+.available-screen:has(.loader) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; 
+}
+
 .header-container {
   display: flex;
   align-items: center;
@@ -79,9 +86,12 @@
   }
 }
 
+
 @media (max-width: 768px) {
   .summaryCards {
     margin-right: 0;
     padding-bottom: 20px;
   }
 }
+
+

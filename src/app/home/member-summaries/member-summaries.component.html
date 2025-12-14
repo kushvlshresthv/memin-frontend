@@ -1,6 +1,4 @@
 <div class="available-screen" (click)="closeMenuOptionsIfOpen()">
-  <div class="heading">Your Members</div>
-
   @if (showMenuOptions) {
     <div
       class="menu-options"
@@ -13,14 +11,18 @@
     </div>
   }
 
-  <div class="member-summaries">
-    @if (memberDetailsLoaded) {
+  @if (memberDetailsLoaded) {
+    <div class="heading">Member Lists</div>
+
+    <div class="member-summaries">
       @for (memberDetail of memberDetails; track memberDetail.memberId) {
         <app-member-summary
           [memberDetail]="memberDetail"
           (toggleMenu)="onMenuOptionClick($event)"
         ></app-member-summary>
       }
+    </div>
+    } @else {
+	<span class="loader"></span>
     }
-  </div>
 </div>

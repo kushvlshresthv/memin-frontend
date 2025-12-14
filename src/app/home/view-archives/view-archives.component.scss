@@ -1,6 +1,17 @@
 @use 'colors' as colors;
+
 @use 'constants' as constants;
+
+
+:host:has(.loader) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; 
+}
+
 .heading {
+
     margin-bottom: 25px;
     font-size: constants.$font-xxl;
     font-weight: constants.$font-weight-semibold;

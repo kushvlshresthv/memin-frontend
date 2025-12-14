@@ -1,5 +1,5 @@
-<div class="heading">Inactive Committees</div>
 @if (hasCommitteesLoaded) {
+<div class="heading">Inactive Committees</div>
   <div class="summaryCards">
     @for (summary of committeeSummaries; track summary.id) {
       <app-committee-summary
@@ -12,4 +12,6 @@
       <p>There isn't any committee available yet, create a new one please</p>
     }
   </div>
-}
+  } @else {
+    <span class="loader"></span>
+  }

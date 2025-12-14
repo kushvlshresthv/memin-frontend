@@ -6,6 +6,14 @@
     height: 100%;
 }
 
+.available-screen:has(.loader) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; 
+}
+
+
 .heading {
   margin-bottom: 20px;
   font-size: constants.$font-xxl;

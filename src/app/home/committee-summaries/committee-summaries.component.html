@@ -1,16 +1,16 @@
 <div class="available-screen" (click)="closeMenuOptionsIfOpen()">
-  <div class="header-container">
-    <div class="heading">Active Committees</div>
-    <select
-      class="sort-dropdown"
-      (change)="onSortChange($event)"
-      [(ngModel)]="sortBy"
-    >
-      <option value="createdDate">Sort by Date</option>
-      <option value="title">Sort by Title</option>
-    </select>
-  </div>
   @if (showMenuOptions) {
+    <div class="header-container">
+      <div class="heading">Active Committees</div>
+      <select
+        class="sort-dropdown"
+        (change)="onSortChange($event)"
+        [(ngModel)]="sortBy"
+      >
+        <option value="createdDate">Sort by Date</option>
+        <option value="title">Sort by Title</option>
+      </select>
+    </div>
     <div
       class="menu-options"
       [class.hidden]="!showMenuOptions"
@@ -47,5 +47,7 @@
         <p>There isn't any committee available yet, create a new one please</p>
       }
     </div>
+  } @else {
+    <span class="loader"></span>
   }
 </div>
