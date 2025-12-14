@@ -12,6 +12,8 @@ export class MinuteDataService {
 
   private originalDataString: string = '';
 
+  public hasMinuteDataLoaded = false;
+
   constructor(
     private httpClient: HttpClient,
     private activatedRoute: ActivatedRoute,
@@ -29,6 +31,7 @@ export class MinuteDataService {
         .subscribe({
           next: (response) => {
             this.minuteData.set(response.mainBody);
+	    this.hasMinuteDataLoaded = true;
 
 	    //originalDataString should no contain invitees because when invitee order changs, 'Save' button should not appear
             const originalData = {

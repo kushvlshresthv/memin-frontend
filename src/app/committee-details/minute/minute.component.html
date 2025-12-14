@@ -1,2 +1,6 @@
-<app-minute-view></app-minute-view>
-<app-minute-edit></app-minute-edit>
+@if (minuteDataService.hasMinuteDataLoaded) {
+  <app-minute-view></app-minute-view>
+  <app-minute-edit></app-minute-edit>
+  } @else {
+    <span class="loader"></span>
+  }

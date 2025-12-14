@@ -85,6 +85,26 @@ body {
 
 
 // <span class="loader"></span>
+// .loader {
+//   width: 48px;
+//   height: 48px;
+//   border-radius: 50%;
+//   display: inline-block;
+//   border-top: 3px solid #FFF;
+//   border-right: 3px solid transparent;
+//   box-sizing: border-box;
+//   animation: rotation 1s linear infinite;
+// }
+
+// @keyframes rotation {
+//   0% {
+//     transform: rotate(0deg);
+//   }
+//   100% {
+//     transform: rotate(360deg);
+//   }
+// } 
+
 .loader {
   width: 48px;
   height: 48px;
@@ -93,7 +113,16 @@ body {
   border-top: 3px solid #FFF;
   border-right: 3px solid transparent;
   box-sizing: border-box;
-  animation: rotation 1s linear infinite;
+
+  /* Start completely invisible */
+  opacity: 0;
+
+  /* Chain two animations:
+      - 'rotation': runs immediately and forever (your original animation)
+      - 'fadeIn': waits 0.7s, then runs once to make opacity 1 */
+  animation: 
+    rotation 1s linear infinite, 
+    fadeIn 0.5s ease-in 0.7s forwards; 
 }
 
 @keyframes rotation {
@@ -103,7 +132,14 @@ body {
   100% {
     transform: rotate(360deg);
   }
-} 
+}
+
+/* Define the fade-in animation */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
 
 
 

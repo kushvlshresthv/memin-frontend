@@ -7,6 +7,14 @@
 }
 
 
+:host:has(.loader) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; 
+}
+
+
 //------------------RIGHT PANEL that shows committee members---------------------------
 
 app-member-summaries {

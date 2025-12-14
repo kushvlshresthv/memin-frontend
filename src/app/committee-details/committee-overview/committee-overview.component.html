@@ -80,4 +80,6 @@
       [meetingDates]="committeeOverview.meetingDates"
     ></app-calendar>
   </div>
-}
+  } @else {
+    <span class="loader"></span>
+  }
