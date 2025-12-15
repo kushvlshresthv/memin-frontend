@@ -119,10 +119,10 @@ body {
 
   /* Chain two animations:
       - 'rotation': runs immediately and forever (your original animation)
-      - 'fadeIn': waits 0.7s, then runs once to make opacity 1 */
+      - 'fadeIn': waits 0.4s, then runs once to make opacity 1 */
   animation: 
     rotation 1s linear infinite, 
-    fadeIn 0.5s ease-in 0.7s forwards; 
+    fadeIn 0.5s ease-in 0.4s forwards; 
 }
 
 @keyframes rotation {

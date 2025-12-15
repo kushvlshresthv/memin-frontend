@@ -251,3 +251,10 @@ export interface MeetingDetailsForEdit {
   decisions: DecisionDto[];
   agendas: AgendaDto[];
 }
+
+export interface Popup {
+  message: string;
+  type: "Error" | "Normal";
+  displayTime: number;
+}
+

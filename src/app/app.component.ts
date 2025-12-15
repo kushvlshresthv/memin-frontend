@@ -2,15 +2,13 @@ import { Component } from '@angular/core';
 import {  RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { HttpClient} from '@angular/common/http';
-import { BACKEND_URL } from '../global_constants';
-import { Response } from './response/response'
 import { AuthService } from './service/auth.service';
+import { PopupComponent } from './popup/popup.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, SidebarComponent /*DemoComponent*/],
+  imports: [RouterOutlet, HeaderComponent, SidebarComponent /*DemoComponent*/, PopupComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
