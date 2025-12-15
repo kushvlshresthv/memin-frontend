@@ -161,6 +161,10 @@ export class MeetingForm implements OnInit {
     //INITIALIZING RIGHT PANELS SELECT COMMITTEE DROPDOWN
     if (this.isEditPage()) {
       this.committeeSearch.setValue(this.meetingFormData().committeeName);
+      //edit page must be accessed with /committeeId in the route
+      this.selectedCommitteeId = Number(
+        this.activatedRoute.snapshot.queryParamMap.get('committeeId'),
+      );
       this.committeeSearch.disable();
     } else {
       //load data for right panel's select committee dropdown if it isn't an edit page

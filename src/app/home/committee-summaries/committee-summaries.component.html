@@ -1,5 +1,4 @@
 <div class="available-screen" (click)="closeMenuOptionsIfOpen()">
-  @if (showMenuOptions) {
     <div class="header-container">
       <div class="heading">Active Committees</div>
       <select
@@ -11,6 +10,7 @@
         <option value="title">Sort by Title</option>
       </select>
     </div>
+  @if (showMenuOptions) {
     <div
       class="menu-options"
       [class.hidden]="!showMenuOptions"

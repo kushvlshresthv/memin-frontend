@@ -9,6 +9,7 @@ import {
 } from '../../../../models/models';
 import { Response } from '../../../../response/response';
 import { MeetingForm } from '../../../../forms/meeting-form/meeting-form.component';
+import { PopupService } from '../../../../popup/popup.service';
 
 @Component({
   selector: 'app-edit-meeting',
@@ -26,6 +27,7 @@ export class EditMeetingComponent implements OnInit {
     private httpClient: HttpClient,
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    private popupService: PopupService, 
   ) {}
 
   ngOnInit() {
@@ -73,9 +75,10 @@ export class EditMeetingComponent implements OnInit {
 	next: (response) => {
 	  console.log("TODO: handle the response correctly", response);
 	  this.router.navigate(["./committee-details/overview/minute"], {queryParamsHandling: "preserve"});
+	  this.popupService.showPopup("Meeting Edited!", "Success", 2000);
 	},
 	error: (error) => {
-	  console.log("TODO: handle the error correctly", error);
+	  this.popupService.showPopup("Meeting Edit Failed!", "Error", 2000);
 	}
       });
   }

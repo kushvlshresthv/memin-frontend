@@ -9,6 +9,7 @@ import {
 import { BACKEND_URL } from '../../../../global_constants';
 import { Response } from '../../../response/response';
 import { MemberFormComponent } from '../../../forms/member-form/member-form.component';
+import { PopupService } from '../../../popup/popup.service';
 
 @Component({
   selector: 'app-edit-member',
@@ -22,6 +23,7 @@ export class EditMemberComponent implements OnInit {
     private httpClient: HttpClient,
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    private popupService: PopupService,
   ) {
     console.log('EditMemberComponent constructor called');
   }
@@ -87,10 +89,10 @@ export class EditMemberComponent implements OnInit {
             console.log('TODO: handle this response');
             console.log(response);
 	this.router.navigate(['/home/members-list'], {queryParamsHandling:'preserve'})
+	    this.popupService.showPopup("Member Edited!", "Success", 2000);
           },
           error: (error) => {
-            console.log('TODO: handle this error');
-            console.log(error);
+	    this.popupService.showPopup("Member Edit Failed!", "Error", 2000);
           },
         });
     });

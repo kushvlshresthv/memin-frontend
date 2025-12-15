@@ -75,7 +75,7 @@ export const routes: Routes = [
     path: 'committee-details/overview/meeting/edit',
     component: EditMeetingComponent,
     canMatch: [isAuthenticated],
-    canActivate: [meetingRouteGuard]
+    canActivate: [meetingRouteGuard, committeeRouteGuard]
   },
 
   {

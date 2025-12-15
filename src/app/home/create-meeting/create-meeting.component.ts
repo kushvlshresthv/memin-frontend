@@ -5,6 +5,7 @@ import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { Response } from "../../response/response"
 import { MeetingForm } from "../../forms/meeting-form/meeting-form.component";
+import { PopupService } from "../../popup/popup.service";
 
 @Component({
   selector: 'app-create-meeting',
@@ -15,7 +16,7 @@ import { MeetingForm } from "../../forms/meeting-form/meeting-form.component";
 })
 export class CreateMeetingComponent  {
 
-  constructor(private httpClient: HttpClient,private router: Router) {
+  constructor(private httpClient: HttpClient,private router: Router, private popupService: PopupService) {
     
   }
 
@@ -49,12 +50,12 @@ export class CreateMeetingComponent  {
         next: (response) => {
           console.log(response.message);
           this.router.navigate(['/home/my-committees']);
-          console.log('TODO: show in popup' + response.message);
+	  this.popupService.showPopup("Meeting Created!", "Success", 2000);
         },
 
         error: (error) => {
           console.log('TODO: show in popup' + error.error.message);
-          //TODO: show popup and redirect to my-committees
+	  this.popupService.showPopup("Meeting Creation Failed!", "Error", 2000);
         },
       });
   }

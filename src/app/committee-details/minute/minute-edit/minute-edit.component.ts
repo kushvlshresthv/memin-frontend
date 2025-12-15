@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Response } from '../../../response/response';
 import { BACKEND_URL } from '../../../../global_constants';
+import { PopupService } from '../../../popup/popup.service';
 
 @Component({
   selector: 'app-minute-edit',
@@ -28,6 +29,7 @@ export class MinuteEditComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private httpClient: HttpClient,
     private router: Router,
+    private popupService: PopupService,
   ) {}
 
   ngOnInit() {
@@ -155,10 +157,12 @@ export class MinuteEditComponent implements OnInit {
           this.router.navigate(['./committee-details/overview'], {
             queryParamsHandling: 'preserve',
           });
+
+	  this.popupService.showPopup("Minute Edited!", "Success", 2000);
         },
 
         error: (error) => {
-          console.log('TODO: handle this properly');
+	  this.popupService.showPopup("Minute Edit Failed!", "Error", 2000);
         },
       });
 

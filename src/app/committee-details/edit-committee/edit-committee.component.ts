@@ -11,6 +11,7 @@ import {
   CommitteeFormData,
 } from '../../models/models';
 import { LoadMemberService } from '../../load-member.service';
+import { PopupService } from '../../popup/popup.service';
 
 @Component({
   selector: 'app-edit-committee',
@@ -25,6 +26,7 @@ export class EditCommitteeComponent implements OnInit {
     private httpClient: HttpClient,
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    private popupService: PopupService,
   ) {}
   httpParams!: HttpParams;
 
@@ -112,9 +114,10 @@ export class EditCommitteeComponent implements OnInit {
 	  console.log("TODO: show response properly");
 	  console.log(response.mainBody);
       this.router.navigate(['./committee-details/overview'], {queryParamsHandling:'preserve'})
+	  this.popupService.showPopup("Committee Edited!", "Success", 2000);
 	},
 	error: (error) => {
-	  console.log("TODO: show errors properly");
+	  this.popupService.showPopup("Committee Edit Failed!", "Error", 2000);
 	}
       });
   }

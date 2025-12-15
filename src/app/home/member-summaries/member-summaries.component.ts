@@ -5,7 +5,6 @@ import { HttpClient } from '@angular/common/http';
 import { BACKEND_URL } from '../../../global_constants';
 import { MemberSummaryComponent } from './member-summary/member-summary.component';
 import { Router } from '@angular/router';
-import { PopupService } from '../../popup/popup.service';
 
 @Component({
   selector: 'app-member-summaries',
@@ -21,9 +20,7 @@ export class MemberSummariesComponent implements OnInit {
   constructor(
     private httpClient: HttpClient,
     private router: Router,
-    private popupService: PopupService,
   ) {
-    this.popupService.showPopup('Hello There', 'Success', 2000);
   }
 
   showMenuOptions = false;
