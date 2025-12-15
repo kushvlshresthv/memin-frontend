@@ -9,7 +9,7 @@ export class PopupService {
   private messageSource = new BehaviorSubject<Popup | null>(null);
   currentMessage$ = this.messageSource.asObservable();
 
-  showPopup(message: string, type: "Error" | "Normal" = "Normal", displayTimeInMs = 2000) {
+  showPopup(message: string, type: "Error" | "Success" = "Success", displayTimeInMs = 2000) {
     this.messageSource.next({
       message: message,
       type: type,

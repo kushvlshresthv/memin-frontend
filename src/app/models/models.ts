@@ -254,7 +254,7 @@ export interface MeetingDetailsForEdit {
 
 export interface Popup {
   message: string;
-  type: "Error" | "Normal";
+  type: "Error" | "Success";
   displayTime: number;
 }
 

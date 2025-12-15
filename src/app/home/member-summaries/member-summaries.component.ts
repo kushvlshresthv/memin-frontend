@@ -23,7 +23,7 @@ export class MemberSummariesComponent implements OnInit {
     private router: Router,
     private popupService: PopupService,
   ) {
-    this.popupService.showPopup('Hello There', 'Normal', 2000);
+    this.popupService.showPopup('Hello There', 'Success', 2000);
   }
 
   showMenuOptions = false;

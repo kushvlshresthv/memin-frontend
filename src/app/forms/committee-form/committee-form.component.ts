@@ -28,7 +28,6 @@ import {
   DragDropModule,
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
-import { PopupService } from '../../popup/popup.service';
 
 @Component({
   selector: 'app-committee-form',
@@ -372,11 +371,10 @@ export class CommitteeFormComponent implements OnInit {
   //outputs
   formSaveEvent = output<CommitteeCreationDto>();
 
-  constructor(private popupService: PopupService) {
+  constructor() {
     effect(() => {
       this.diag()!.nativeElement.showModal();
     });
-
   }
 
   currentCoordinator!: MemberSearchResult;
@@ -402,7 +400,8 @@ export class CommitteeFormComponent implements OnInit {
     $event.preventDefault();
     if (
       this.committeeFormGroup?.invalid ||
-      this.selectedMembersWithRoles.length < 1
+      this.selectedMembersWithRoles.length < 1 ||
+      !this.isCoordinatorValid()
     ) {
       this.showAllFormErrors = true;
       return;

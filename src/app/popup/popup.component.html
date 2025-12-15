@@ -1,3 +1,21 @@
-<div [class]="popup.type" class="popup" [class.hide-popup]="!displayPopup"> 
-    <p class="message">{{popup.message}}</p>
+<!-- <div
+     class="popup"
+     [ngClass]="[popup.type, !displayPopup ? 'hide-popup' : '']" popover="manual">
+     <p class="message">{{ popup.message }}</p>
+     </div>
+-->
+<div 
+  #myPopup
+  id="myPopup"
+  class="popup" 
+  popover="manual"
+     [ngClass]="[popup.type, startPopupDisappearingAnimation ? 'hide-popup' : '']" popover="manual">
+    <p class="message">{{ popup.message }}</p>
 </div>
+
+<!-- <dialog
+     class="popup"
+     open
+     [ngClass]="[popup.type, !displayPopup ? 'hide-popup' : '']" >
+     <p class="message">{{ popup.message }}</p>
+     </dialog> -->
