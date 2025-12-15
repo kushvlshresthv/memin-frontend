@@ -23,7 +23,7 @@ export class CommitteeSummariesComponent {
   ngOnInit(): void {
     this.httpClient
       .get<Response<CommitteeSummary[]>>(
-        BACKEND_URL + '/api/getMyActiveCommittees',
+        BACKEND_URL + '/api/my-active-committees',
         {
           withCredentials: true,
         }
@@ -143,7 +143,7 @@ export class CommitteeSummariesComponent {
     );
     this.httpClient
       .patch<Response<Object>>(
-        BACKEND_URL + '/api/toggleCommitteeStatus',
+        BACKEND_URL + '/api/toggle-committee-status',
         null,
         {
           withCredentials: true,

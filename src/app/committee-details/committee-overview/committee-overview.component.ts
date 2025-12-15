@@ -44,7 +44,7 @@ export class CommitteeOverviewComponent {
       this.httpClient
         .get<
           Response<MemberOfCommitteeDto[]>
-        >(BACKEND_URL + '/api/getAllMembersOfCommittee', {params: params,  withCredentials: true })
+        >(BACKEND_URL + '/api/all-members-of-committee', {params: params,  withCredentials: true })
         .subscribe({
           next: (response) => {
             this.membersOfCommittee = response.mainBody;
@@ -64,7 +64,7 @@ export class CommitteeOverviewComponent {
       this.httpClient
         .get<
           Response<CommitteeOverviewDto>
-        >(BACKEND_URL + '/api/getCommitteeOverview', { params: params, withCredentials: true })
+        >(BACKEND_URL + '/api/committee-overview', { params: params, withCredentials: true })
         .subscribe({
           next: (response) => {
             this.committeeOverview = response.mainBody;

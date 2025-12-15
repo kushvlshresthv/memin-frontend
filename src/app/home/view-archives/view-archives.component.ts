@@ -20,7 +20,7 @@ export class ViewArchivesComponent {
 
   ngOnInit(): void {
     this.httpClient
-      .get<Response<CommitteeSummary[]>>(BACKEND_URL + '/api/getMyInactiveCommittees', {
+      .get<Response<CommitteeSummary[]>>(BACKEND_URL + '/api/my-inactive-committees', {
         withCredentials: true,
       })
       .subscribe({

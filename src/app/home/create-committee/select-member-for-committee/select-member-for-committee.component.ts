@@ -39,49 +39,6 @@ export class SelectMemberForCommitteeComponent implements OnInit {
     this.restoreSelectedMembersFromLocalStorage();
   }
 
-  // //when the member is loaded by memberSelectionService initializethe form controls for each member in a map with memberId as key
-  // loadAllMembers() {
-  //   this.memberLoadService.loadAllMembers().subscribe({
-  //     next: (loadedMembers) => {
-  // 	this.memberSelectionService.setUnselected(loadedMembers);
-  // 	loadedMembers.forEach((member)=> {
-  // 	  this.memberAndRoleFormControlMap.set(
-  // 	    member.memberId,
-  // 	    new FormControl('Add', {nonNullable:true})
-  // 	  );
-  // 	});
-  // 	this.isLoadingMemberDataAndFormControlInitializationComplete = true;
-
-  //   if (this.loadDataForEditCommitteePage()) {
-  //     this.activatedRoute.queryParams.subscribe((receivedParams) => {
-  //       const params = new HttpParams().set(
-  //         'committeeId',
-  //         receivedParams['committeeId'],
-  //       );
-  //       // this.httpClient
-  //       //   .get<
-  //       //     Response<CommitteeDetailsForEditDto>
-  //       //   >(BACKEND_URL + '/api/getCommitteeDetailsForEditPage', { params: params, withCredentials: true })
-  //       //   .subscribe({
-  //       //     next: (response) => {
-  // 	//       // this.coordinator.setValue(committeeDetails.coordinator);
-  // 	//       //to synchronize coordinator selection
-  // 	//       // this.onCoordinatorSelectionOrChange();
-
-  // 	//       // committeeDetails.membersWithRoles.forEach(memberWithRole=> {
-  // 	// 	// this.memberSelectionService.addMemberToSelectedMembersWithRolesAndSync(memberWithRole.member, memberWithRole.role);
-  // 	//       });
-	      
-  //       //     },
-  //       //   });
-  //     });
-  //   }
-  //     },
-  //     error: (error) => {
-  // 	console.log("TODO: show in popup"+error);
-  //     }
-  //   })
-  // }
 
   //when the search bar input changes filter the displayed members after a debounce time,
   setupObservableForSearchBarInputChange() {

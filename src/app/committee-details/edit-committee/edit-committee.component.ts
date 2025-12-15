@@ -53,10 +53,13 @@ export class EditCommitteeComponent implements OnInit {
 
   loadAllData() {
     this.activatedRoute.queryParams.subscribe((receivedParams) => {
-     this.httpParams = new HttpParams().set('committeeId', receivedParams['committeeId']);
+      this.httpParams = new HttpParams().set(
+        'committeeId',
+        receivedParams['committeeId'],
+      );
       this.httpClient
         .get<Response<CommitteeDetailsForEditDto>>(
-          BACKEND_URL + '/api/getCommitteeDetailsForEditPage',
+          BACKEND_URL + '/api/committee-details-for-edit-page',
           {
             withCredentials: true,
             params: this.httpParams,
@@ -104,21 +107,21 @@ export class EditCommitteeComponent implements OnInit {
   onFormSave(committeeCreationDto: CommitteeCreationDto) {
     console.log('saving form');
     this.httpClient
-      .post<Response<Object>>(
-        BACKEND_URL + '/api/updateCommitteeDetails',
-        committeeCreationDto,
-        { withCredentials: true, params: this.httpParams },
-      )
+      .patch<
+        Response<Object>
+      >(BACKEND_URL + '/api/committee', committeeCreationDto, { withCredentials: true, params: this.httpParams })
       .subscribe({
-	next: (response) => {
-	  console.log("TODO: show response properly");
-	  console.log(response.mainBody);
-      this.router.navigate(['./committee-details/overview'], {queryParamsHandling:'preserve'})
-	  this.popupService.showPopup("Committee Edited!", "Success", 2000);
-	},
-	error: (error) => {
-	  this.popupService.showPopup("Committee Edit Failed!", "Error", 2000);
-	}
+        next: (response) => {
+          console.log('TODO: show response properly');
+          console.log(response.mainBody);
+          this.router.navigate(['./committee-details/overview'], {
+            queryParamsHandling: 'preserve',
+          });
+          this.popupService.showPopup('Committee Edited!', 'Success', 2000);
+        },
+        error: (error) => {
+          this.popupService.showPopup('Committee Edit Failed!', 'Error', 2000);
+        },
       });
   }
 }

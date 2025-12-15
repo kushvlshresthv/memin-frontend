@@ -68,7 +68,7 @@ export class CreateCommitteeComponent implements OnInit {
     console.log(committeeCreationDto);
     this.httpClient
       .post<Response<string[]>>(
-        BACKEND_URL + '/api/createCommittee',
+        BACKEND_URL + '/api/committee',
         committeeCreationDto,
         {
           withCredentials: true,

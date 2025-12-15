@@ -171,7 +171,7 @@ export class MinuteEditComponent implements OnInit {
 
     //when form is submitted, first remove the empty decision and agenda, as server won't accept those(probably, check later);
 
-    //no include all decisions and agendas, server will not save the empty ones, remove the deleted ones, and add new ones
+    //now include all decisions and agendas, server will not save the empty ones, remove the deleted ones, and add new ones
 
     //the submit to the backend
   }

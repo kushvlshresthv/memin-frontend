@@ -205,7 +205,7 @@ export class MeetingForm implements OnInit {
     this.httpClient
       .get<
         Response<{ committeeId: number; committeeName: string }[]>
-      >(BACKEND_URL + '/api/getMyActiveCommitteeNamesAndIds', { withCredentials: true })
+      >(BACKEND_URL + '/api/my-active-committee-names-and-ids', { withCredentials: true })
       .subscribe({
         next: (response) => {
           console.log(response.mainBody);
