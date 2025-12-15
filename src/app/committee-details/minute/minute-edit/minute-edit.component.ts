@@ -148,9 +148,9 @@ export class MinuteEditComponent implements OnInit {
     minuteUpdateDto.agendas = this.minuteData().agendas;
 
     this.httpClient
-      .post<
+      .patch<
         Response<Object>
-      >(BACKEND_URL + '/api/updateMinute', minuteUpdateDto, { withCredentials: true, params: this.httpParams })
+      >(BACKEND_URL + '/api/minute', minuteUpdateDto, { withCredentials: true, params: this.httpParams })
       .subscribe({
         next: (response) => {
           console.log('TODO: handle this properly' + response.message);

@@ -16,7 +16,7 @@ export class LoadMemberService implements OnDestroy {
   public loadAllMembers() {
     console.log("DEBUG: trying to load all members")
     return this.httpClient
-      .get<Response<MemberDetails[]>>(BACKEND_URL + '/api/getAllMembers', {
+      .get<Response<MemberDetails[]>>(BACKEND_URL + '/api/all-members', {
         withCredentials: true,
       })
       .pipe(

@@ -385,7 +385,7 @@ export class MeetingForm implements OnInit {
   loadPossibleInvitees(committeeId: number) {
     this.httpClient
       .get<Response<MemberSearchResult[]>>(
-        BACKEND_URL + '/api/getPossibleInvitees',
+        BACKEND_URL + '/api/possible-invitees',
         {
           params: new HttpParams().set('committeeId', committeeId),
           withCredentials: true,

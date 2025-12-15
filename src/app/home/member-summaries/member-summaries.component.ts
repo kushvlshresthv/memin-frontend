@@ -72,7 +72,7 @@ export class MemberSummariesComponent implements OnInit {
     this.httpClient
       .get<
         Response<MemberDetailsDto[]>
-      >(BACKEND_URL + '/api/getAllMembers', { withCredentials: true })
+      >(BACKEND_URL + '/api/all-members', { withCredentials: true })
       .subscribe({
         next: (response) => {
           this.memberDetails = response.mainBody;

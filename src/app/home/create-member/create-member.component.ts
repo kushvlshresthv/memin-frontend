@@ -31,7 +31,7 @@ export class CreateMemberComponent {
     console.log('onSubmitted called');
 
     this.httpClient
-      .post<Response>(BACKEND_URL + '/api/createMember', requestBody, {
+      .post<Response>(BACKEND_URL + '/api/member', requestBody, {
         withCredentials: true,
       })
       .subscribe({

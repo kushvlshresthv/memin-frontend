@@ -84,7 +84,7 @@ export class CommitteeOverviewComponent {
       this.httpClient
         .get<
           Response<MeetingSummaryDto[]>
-        >(BACKEND_URL + '/api/getMeetingsOfCommittee', { params: params, withCredentials: true })
+        >(BACKEND_URL + '/api/meetings-of-committee', { params: params, withCredentials: true })
         .subscribe({
           next: (response) => {
             this.meetingSummaries = response.mainBody;

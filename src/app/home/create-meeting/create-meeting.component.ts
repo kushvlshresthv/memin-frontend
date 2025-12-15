@@ -40,7 +40,7 @@ export class CreateMeetingComponent  {
 
     this.httpClient
       .post<Response<MeetingSummaryDto>>(
-        BACKEND_URL + '/api/createMeeting',
+        BACKEND_URL + '/api/meeting',
         requestBody,
         {
           withCredentials: true,

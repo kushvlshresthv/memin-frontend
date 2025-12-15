@@ -41,7 +41,7 @@ export class EditMeetingComponent implements OnInit {
       this.httpClient
         .get<
           Response<MeetingDetailsForEdit>
-        >(BACKEND_URL + '/api/getMeetingDetailsForEdit', { withCredentials: true, params: httpParams })
+        >(BACKEND_URL + '/api/meeting-details-for-edit', { withCredentials: true, params: httpParams })
         .subscribe({
           next: (response) => {
             const meetingDetails = response.mainBody;
@@ -70,7 +70,7 @@ export class EditMeetingComponent implements OnInit {
     this.httpClient
       .patch<
         Response<Object>
-      >(BACKEND_URL + '/api/updateMeeting', responseBody, { withCredentials: true, params: new HttpParams().set('meetingId', this.meetingId) })
+      >(BACKEND_URL + '/api/meeting', responseBody, { withCredentials: true, params: new HttpParams().set('meetingId', this.meetingId) })
       .subscribe({
 	next: (response) => {
 	  console.log("TODO: handle the response correctly", response);

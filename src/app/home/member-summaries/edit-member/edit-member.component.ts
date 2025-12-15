@@ -48,7 +48,7 @@ export class EditMemberComponent implements OnInit {
 
       this.httpClient
         .get<Response<MemberDetailsDto>>(
-          BACKEND_URL + '/api/getMemberDetails',
+          BACKEND_URL + '/api/member-details',
           {
             withCredentials: true,
             params: this.httpParams,
@@ -83,7 +83,7 @@ export class EditMemberComponent implements OnInit {
       this.httpClient
         .patch<
           Response<Object>
-        >(BACKEND_URL + '/api/updateMember', requestBody, { withCredentials: true, params: this.httpParams })
+        >(BACKEND_URL + '/api/member', requestBody, { withCredentials: true, params: this.httpParams })
         .subscribe({
           next: (response) => {
             console.log('TODO: handle this response');
