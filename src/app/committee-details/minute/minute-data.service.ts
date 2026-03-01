@@ -24,7 +24,7 @@ export class MinuteDataService {
         receivedParams['meetingId'],
       );
       this.httpClient
-        .get<Response<MinuteDataDto>>(BACKEND_URL + '/api/getDataForMinute', {
+        .get<Response<MinuteDataDto>>(BACKEND_URL + '/api/data-for-minute', {
           params: params,
           withCredentials: true,
         })

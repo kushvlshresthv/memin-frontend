@@ -11,3 +11,4 @@ import { MemberOfCommitteeDto } from '../../../../models/models';
 export class CommitteeMemberSummaryComponent {
   memberOfCommittee = input.required<MemberOfCommitteeDto>();
 }
+

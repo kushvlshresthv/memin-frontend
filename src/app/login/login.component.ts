@@ -52,4 +52,5 @@ export class LoginComponent implements OnInit {
     const authenticationDetails = `${this.username.value}:${this.password.value}`;
     this.authService.login(authenticationDetails);
   }
+
 }

@@ -101,7 +101,7 @@ export class MinuteViewComponent {
     }
 
     this.httpClient
-      .post(BACKEND_URL + '/api/getWordFileForMinute', this.htmlContent, {
+      .post(BACKEND_URL + '/api/word-file-for-minute', this.htmlContent, {
         withCredentials: true,
         responseType: 'blob', // This tells Angular to parse the body as binary
       })
