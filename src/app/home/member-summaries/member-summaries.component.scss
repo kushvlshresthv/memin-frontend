@@ -19,6 +19,7 @@
   font-size: constants.$font-xxl;
   font-weight: constants.$font-weight-semibold;
 }
+
 .member-summaries {
   display: grid;
   // grid-template-columns: repeat(6, 1fr);
@@ -29,6 +30,7 @@
   gap: 20px;
   scrollbar-gutter: stable;
   margin-right: 20px;
+
 }
 
 @media (max-width: 768px) {
