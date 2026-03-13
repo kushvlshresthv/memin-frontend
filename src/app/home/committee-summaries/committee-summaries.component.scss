@@ -1,11 +1,13 @@
 @use "colors" as colors;
 @use "constants" as constants;
 
-.available-screen:has(.loader) {
+
+.loader-wrapper {
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%; 
+    height: 70vh; 
 }
 
 .header-container {
