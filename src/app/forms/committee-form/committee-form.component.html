@@ -116,18 +116,35 @@
         >
           <div
             class="dropdown-option"
-            (mousedown)="onRoleAssign('Member')"
+            (mousedown)="onRoleAssign('अध्यक्')"
             (click)="showDropdown = false"
           >
-            Member
+            अध्यक्ष
           </div>
+
           <div
-            (mousedown)="onRoleAssign('Treasurer')"
+            (mousedown)="onRoleAssign('सचिव')"
             class="dropdown-option"
             (click)="showDropdown = false"
           >
-            Treasurer
+            सचिव
           </div>
+          <div
+            (mousedown)="onRoleAssign('सह सचिव')"
+            class="dropdown-option"
+            (click)="showDropdown = false"
+          >
+            सह सचिव
+          </div>
+
+          <div
+            (mousedown)="onRoleAssign('सदस्य')"
+            class="dropdown-option"
+            (click)="showDropdown = false"
+          >
+            सदस्य
+          </div>
+
         </div>
       }
 

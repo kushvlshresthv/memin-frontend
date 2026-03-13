@@ -17,6 +17,7 @@ import { ViewArchivesComponent } from './home/view-archives/view-archives.compon
 import { CommitteeExtendedSummaryComponent } from './committee-details/committee-extended-summary/committee-extended-summary.component';
 import { EditMemberComponent } from './home/member-summaries/edit-member/edit-member.component';
 import { EditMeetingComponent } from './committee-details/committee-overview/meeting-summaries/edit-meeting/edit-meeting.component';
+import { DocumentationComponent } from './documentation/documentation.component';
 
 export const routes: Routes = [
   {
@@ -28,6 +29,10 @@ export const routes: Routes = [
     path: 'login',
     component: LoginComponent,
     canMatch: [isNotAuthenticated],
+  },
+  {
+    path: 'documentation',
+    component: DocumentationComponent,
   },
 
   {
