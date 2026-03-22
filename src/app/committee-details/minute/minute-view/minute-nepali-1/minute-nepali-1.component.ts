@@ -18,7 +18,6 @@ export class MinuteNepali1Component {
   isEditable = input<boolean>(false);
   constructor(private datePipe: DatePipe) {}
   processedMinute = viewChild<ElementRef<HTMLDivElement>>('processedMinute');
-  randomVariable = "{{minuteData().committeeName}}";
 
   
   // to use it in the template

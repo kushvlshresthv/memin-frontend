@@ -90,7 +90,7 @@
             type="text"
             formControlName="title"
             class="form-input"
-            placeholder="Enter title"
+            placeholder = "Eg: डा., प्रा."
             [class.error]="title.touched && title.dirty && title.invalid"
             spellcheck="false"
             autocomplete="off"
@@ -111,16 +111,10 @@
             type="text"
             formControlName="post"
             class="form-input"
-            placeholder="Enter post"
-            [class.error]="post.touched && post.dirty && post.invalid"
+            placeholder="Eg:IOE Chief, DHOD"
             spellcheck="false"
             autocomplete="off"
           />
-          @if ((post.touched && post.dirty) || showAllErrors) {
-            @if (post.errors?.["required"]) {
-              <p class="field-error">(Post is required)</p>
-            }
-          }
         </div>
 
       </div>

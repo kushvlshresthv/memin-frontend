@@ -63,17 +63,13 @@ export class MemberFormComponent implements AfterViewInit, OnInit {
       Validators.maxLength(50),
     ]},);
 
-    this.post = new FormControl(this.memberFormData().post,{nonNullable: true, validators:  [
-      Validators.required,
-    ]} );
+    this.post = new FormControl(this.memberFormData().post,{nonNullable: true} );
     this.title = new FormControl(this.memberFormData().title, {nonNullable: true, validators: [
       Validators.required,
     ]});
 
 
-    this.institution = new FormControl(this.memberFormData().institution, {nonNullable: true, validators: [
-      Validators.required,
-    ]});
+    this.institution = new FormControl(this.memberFormData().institution, {nonNullable: true });
 
     
     this.memberFormGroup = new FormGroup({
