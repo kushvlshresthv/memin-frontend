@@ -1,5 +1,6 @@
 import { Component, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { DateAndMeetingIdsDto } from '../../../models/models';
 
 @Component({
   selector: 'app-calendar',
@@ -9,7 +10,8 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './calendar.component.scss',
 })
 export class CalendarComponent {
-  meetingDates = input.required<string[]>();
+  meetingDates: string[] = [];
+  meetings = input.required<DateAndMeetingIdsDto[]>();
 
   currentYear = new Date().getFullYear();
   selectedYear = this.currentYear;
@@ -19,13 +21,20 @@ export class CalendarComponent {
   ngOnInit() {
     //if at least one meeting date is present
     if (
-      this.meetingDates() != null &&
-      this.meetingDates() != undefined &&
-      this.meetingDates().length > 0
+      this.meetings() != null &&
+        this.meetings() != undefined &&
+        this.meetings().length > 0
     ) {
+      console.log(this.meetings());
+
+        this.meetingDates = this.meetings().map((dateAndMeetingIds) => dateAndMeetingIds.meetingDate);
+
+      console.log(this.meetingDates);
       this.years = new Set(
-        this.meetingDates().map((date) => new Date(date).getFullYear()),
+        this.meetingDates.map((date) => new Date(date).getFullYear()),
       );
+
+      this.years.add(this.currentYear);
     } else {
       this.years.add(this.currentYear);
     }
@@ -48,10 +57,10 @@ export class CalendarComponent {
   }
 
   isMeeting(date: Date): boolean {
-    if(this.meetingDates() == null || this.meetingDates() == undefined || this.meetingDates().length <= 0){
+    if(this.meetingDates == null || this.meetingDates == undefined || this.meetingDates.length <= 0){
       return false;
     }
-    return this.meetingDates().some(
+    return this.meetingDates.some(
       (d) => new Date(d).toDateString() === date.toDateString(),
     );
   }

@@ -60,7 +60,13 @@ export class CommitteeOverviewDto {
   firstMeetingDate: string = '';
   lastMeetingDate: string = '';
   meetingDates: string[] = [];
+  meetings: DateAndMeetingIdsDto[] = [];
   language: string = '';
+}
+
+export class DateAndMeetingIdsDto {
+  meetingDate: string = '';
+  meetingIds: number[] = [];
 }
 
 export class MemberOfCommitteeDto {
