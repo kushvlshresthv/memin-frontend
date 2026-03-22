@@ -26,7 +26,7 @@ export class CreateCommitteeComponent implements OnInit {
   constructor(
     private httpClient: HttpClient,
     private router: Router,
-    private popupService: PopupService
+    private popupService: PopupService,
   ) {}
 
   //preparing data from CommitteeFormComponent
@@ -72,7 +72,7 @@ export class CreateCommitteeComponent implements OnInit {
         committeeCreationDto,
         {
           withCredentials: true,
-        }
+        },
       )
       .subscribe({
         next: (response) => {
@@ -83,7 +83,11 @@ export class CreateCommitteeComponent implements OnInit {
           this.popupService.showPopup('Committee Created!', 'Success', 2000);
         },
         error: (error) => {
-          this.popupService.showPopup('Committee Creation Failed!', 'Error', 2000);
+          this.popupService.showPopup(
+            'Committee Creation Failed!',
+            'Error',
+            2000,
+          );
           console.log('showing error popup');
         },
       });

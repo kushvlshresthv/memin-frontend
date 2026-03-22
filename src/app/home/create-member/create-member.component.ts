@@ -18,7 +18,8 @@ export class CreateMemberComponent {
     firstName: '',
     lastName: '',
     post: '',
-    title: '',
+    title: '',
+    institution: '',
   };
 
   constructor(

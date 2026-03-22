@@ -40,12 +40,14 @@ export class MemberFormComponent implements AfterViewInit, OnInit {
   lastName!: FormControl<string>;
   post!: FormControl<string>;
   title!: FormControl<string>;
+  institution!: FormControl<string>;
 
   memberFormGroup!: FormGroup<{
     firstName: FormControl<string>;
     lastName: FormControl<string>;
     post: FormControl<string>;
     title: FormControl<string>;
+    institution: FormControl<string>;
   }>;
 
   ngOnInit(): void {
@@ -68,11 +70,18 @@ export class MemberFormComponent implements AfterViewInit, OnInit {
       Validators.required,
     ]});
 
+
+    this.institution = new FormControl(this.memberFormData().institution, {nonNullable: true, validators: [
+      Validators.required,
+    ]});
+
+    
     this.memberFormGroup = new FormGroup({
       firstName: this.firstName,
       lastName: this.lastName,
       post: this.post,
       title: this.title,
+      institution: this.institution,
     });
   }
 
@@ -96,9 +105,11 @@ export class MemberFormComponent implements AfterViewInit, OnInit {
     memberCreationDto.lastName = this.lastName.value!;
     memberCreationDto.post = this.post.value!;
     memberCreationDto.title = this.title.value!;
+    memberCreationDto.institution = this.institution.value!;
     localStorage.removeItem(this.FORM_NAME);
     this.formSaveEvent.emit(memberCreationDto);
     this.diag()!.nativeElement.close();
+    console.log("saving form", memberCreationDto);
   }
 
   saveFormData = () => {
