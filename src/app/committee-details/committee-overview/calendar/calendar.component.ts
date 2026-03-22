@@ -1,6 +1,10 @@
 import { Component, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DateAndMeetingIdsDto } from '../../../models/models';
+import { Router } from '@angular/router';
+import {
+  DateAndMeetingIdsDto,
+  MeetingSummaryDto,
+} from '../../../models/models';
 
 @Component({
   selector: 'app-calendar',
@@ -18,16 +22,25 @@ export class CalendarComponent {
   months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
   years: Set<number> = new Set();
 
+  // Popup state
+  showPopup = false;
+  popupMeetings: MeetingSummaryDto[] = [];
+  popupDate: string = '';
+
+  constructor(private router: Router) {}
+
   ngOnInit() {
     //if at least one meeting date is present
     if (
       this.meetings() != null &&
-        this.meetings() != undefined &&
-        this.meetings().length > 0
+      this.meetings() != undefined &&
+      this.meetings().length > 0
     ) {
       console.log(this.meetings());
 
-        this.meetingDates = this.meetings().map((dateAndMeetingIds) => dateAndMeetingIds.meetingDate);
+      this.meetingDates = this.meetings().map(
+        (dateAndMeetingIds) => dateAndMeetingIds.meetingDate,
+      );
 
       console.log(this.meetingDates);
       this.years = new Set(
@@ -57,7 +70,11 @@ export class CalendarComponent {
   }
 
   isMeeting(date: Date): boolean {
-    if(this.meetingDates == null || this.meetingDates == undefined || this.meetingDates.length <= 0){
+    if (
+      this.meetingDates == null ||
+      this.meetingDates == undefined ||
+      this.meetingDates.length <= 0
+    ) {
       return false;
     }
     return this.meetingDates.some(
@@ -67,5 +84,44 @@ export class CalendarComponent {
 
   isToday(date: Date): boolean {
     return date.toDateString() === new Date().toDateString();
+  }
+
+  onMeetingDateClick(date: Date): void {
+    if (!this.isMeeting(date)) return;
+
+    const dateString = date.toDateString();
+    const matchingDate = this.meetings().find(
+      (m) => new Date(m.meetingDate).toDateString() === dateString,
+    );
+
+    if (matchingDate && matchingDate.meetings.length > 0) {
+      this.popupMeetings = matchingDate.meetings;
+      this.popupDate = date.toLocaleDateString('default', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+      this.showPopup = true;
+    }
+  }
+
+  closePopup(): void {
+    this.showPopup = false;
+    this.popupMeetings = [];
+    this.popupDate = '';
+  }
+
+  goToMeeting(meetingId: number): void {
+    this.closePopup();
+    this.router.navigate(['/committee-details/overview/minute'], {
+      queryParams: { meetingId },
+    });
+  }
+
+  formatTime(heldTime: number[]): string {
+    if (!heldTime || heldTime.length < 2) return '';
+    const hours = heldTime[0].toString().padStart(2, '0');
+    const minutes = heldTime[1].toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
   }
 }

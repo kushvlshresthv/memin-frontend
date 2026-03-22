@@ -66,7 +66,7 @@ export class CommitteeOverviewDto {
 
 export class DateAndMeetingIdsDto {
   meetingDate: string = '';
-  meetingIds: number[] = [];
+  meetings: MeetingSummaryDto[] = [];
 }
 
 export class MemberOfCommitteeDto {
